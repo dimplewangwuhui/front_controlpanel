@@ -6,6 +6,7 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import { Message } from 'element-ui';
+import { Toast } from 'vant';
 import axios from 'axios';
 import VueResource from 'vue-resource'
 import SIdentify from './components/login/Identify';    //引入验证码组件
@@ -65,7 +66,6 @@ axios.interceptors.request.use(
   });
 
 //添加响应拦截器
-//异步请求后，判断token是否过期
 axios.interceptors.response.use(
   response =>{
     return response;
@@ -74,6 +74,23 @@ axios.interceptors.response.use(
     if(error.response){
       console.log(error.response);
       switch (error.response.status) {
+        //400 Bad Request
+        case 400:
+          Toast({
+            message: 'bad request',
+            duration: 1000,
+            forbidClick: true
+          });
+          setTimeout(() => {
+            router.replace({
+              path: '/page400',
+              query: {
+                redirect: router.currentRoute.fullPath
+              }
+            });
+          }, 1000);
+          break;
+
         //401未登录
         case 401:
           sessionStorage.removeItem('token');

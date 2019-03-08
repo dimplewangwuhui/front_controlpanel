@@ -2,7 +2,7 @@
   <div class="main" style="margin: 0 auto">
     <el-button type="primary" plain size="mini" icon="el-icon-circle-plus-outline" @click="add">添加</el-button>
     <el-table
-      :data="tableData1"
+      :data="tableData1.slice((pageIndex - 1) * pageSize, pageIndex * pageSize)"
       ref="table"
       border
       v-loading="loading"
@@ -33,7 +33,7 @@
             <el-button type="primary" icon="el-icon-edit" size="mini" style="cursor: pointer;" @click="edit(scope.row,scope.$index)"></el-button>
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button type="danger" icon="el-icon-delete"size="mini"  style="cursor: pointer;" @click="delete(scope.row)"></el-button>
+            <el-button type="danger" icon="el-icon-delete" size="mini"  style="cursor: pointer;" @click="deletejob(scope.row)"></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -79,11 +79,8 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="添加库存" :visible.sync="addVisible">
+    <el-dialog title="添加" :visible.sync="addVisible">
       <el-form :model="addForm" :rules="Rules" ref="addForm" status-icon label-width="130px" label-position="right" style="margin: 0 auto;">
-        <el-form-item label="序号:" prop="id">
-          <el-input disabled v-model="addForm.id" style="width: 80%"></el-input>
-        </el-form-item>
         <el-form-item label="城市:" prop="city">
           <el-input v-model="addForm.city" style="width: 80%"></el-input>
         </el-form-item>
@@ -135,17 +132,13 @@
         },
         addVisible: false,
         addForm:{
-          id:'',
           city:'',
           maxsalary:'',
           minsalary: '',
           avgsalary:'',
           jobcount:''
         },
-        hostRules:{
-          id: [
-            { required: true, message: '请输入序号', trigger: 'blur' }
-          ],
+        Rules:{
           city:[
             { required: true, message: '请输入城市', trigger: 'blur' }
           ],
@@ -198,13 +191,13 @@
         }
       },
 
-      //显示编辑Dialog
+      //编辑
       edit(row, index){
         this.currentId = row.id;
         this.editVisible = true;
-        this.editHostForm = Object.assign({},row);
+        this.editForm = Object.assign({},row);
       },
-      //编辑库存提交
+      //编辑提交
       editSubmit(){
         this.$refs.editForm.validate((valid) => {
           if (valid) {
@@ -227,7 +220,7 @@
           }
         });
       },
-      //显示添加Dialog
+      //添加
       add(){
         this.addVisible = true;
       },
@@ -238,13 +231,17 @@
             this.loading = true;
             this.$confirm('确认提交吗？', '提示', {}).then(() => {
               let params = Object.assign({}, this.addForm);
-              let data = new URLSearchParams();
-              for (let key in params) {
-                data.append(key, params[key]);
-              }
-              api.host_post(data)
-                .then((response) => {
-                  console.log('添加job'+response);
+              console.log(params);
+              // let data = new URLSearchParams();
+              // for (let key in params) {
+              //   data.append(key, params[key]);
+              // }
+              this.$axios({
+                method: 'post',
+                url: 'http://127.0.0.1:5000/jobAdd',
+                data: params,
+                // emulateJSON:true
+            }).then((response) => {
                   if(response){
                     this.$message({message: '提交成功', type: 'success'});
                     this.$refs.addForm.resetFields();  //resetFields 对整个表单进行重置，将所有字段值重置为初始值并移除校验结果
@@ -263,12 +260,12 @@
           }
         });
       },
-      //删除库存
-      deleteHost(host) {
+      //删除
+      deletejob(row) {
         this.$confirm('是否执行删除操作?', '提示',{
           type: 'warning'
         }).then(() => {
-          api.host_remove(host).then(res => {
+          api.host_remove(row).then(res => {
             this.$message.success('删除成功!');
             this.getHost();
           }).catch((res) => {

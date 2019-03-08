@@ -86,11 +86,11 @@ export default {
     return oPost('http://127.0.0.1:5000/jobAdd' + '?' + params);
   },
   host_put (param,params) {
-    return oPut('' + param, params);
+    return oPut('http://127.0.0.1:5000/jobUpdate/' + param, params);
   },
-  host_remove(host){
-    let hostid = host.id;
-    return oRemove(''+ hostid);
+  host_remove(row){
+    let rowid = row.id;
+    return oRemove('http://127.0.0.1:5000/jobDelete/'+ rowid);
   },
   host_removes(params){
     return oRemove(''+params);

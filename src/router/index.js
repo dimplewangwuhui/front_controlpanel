@@ -6,6 +6,7 @@ import login from '@/components/login/login'
 import register from '@/components/login/register'
 import register2login from '@/components/login/register2login'
 
+import page400 from '@/components/errorPage/page400'
 import page403 from '@/components/errorPage/page403'
 import page404 from '@/components/errorPage/page404'
 
@@ -37,6 +38,11 @@ const router = new Router({
       path: '/register2login',
       name: 'register2login',
       component: register2login,
+    },
+    {
+      path: '/page400',
+      name: 'page400',
+      component: page400,
     },
     {
       path: '/page403',
