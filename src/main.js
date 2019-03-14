@@ -12,7 +12,9 @@ import VueResource from 'vue-resource'
 import SIdentify from './components/login/Identify';    //引入验证码组件
 import Vuex from 'vuex'
 import store from "./store";
-import qs from 'qs'
+import qs from 'qs';
+import util from './common/util';
+
 
 
 Vue.config.productionTip = false;
@@ -30,9 +32,11 @@ Vue.prototype.$message = Message;
 Vue.prototype.$http = window.axios;
 Vue.prototype.$qs = qs;
 
+
 Vue.use(ElementUI);
 Vue.use(VueResource);
 Vue.use(Vuex);
+Vue.use(util);
 
 
 /* eslint-disable no-new */

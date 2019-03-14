@@ -2,31 +2,16 @@
   <div class="main" style="margin: 0 auto">
     <el-form  :inline="true" ref="formSearch" :model="formSearch" class="demo-form">
       <el-form-item label="" prop="city">
-        <el-input class="input-form" v-model="formSearch.city" placeholder="城市"></el-input>
+        <el-input class="input-form" v-model="formSearch.region" placeholder="区域"></el-input>
       </el-form-item>
-      <el-form-item label="" prop="minsalary">
-        <el-input class="input-form" v-model="formSearch.minsalary" placeholder="最低薪资"></el-input>
-      </el-form-item>
-      <el-form-item label="" prop="maxsalary">
-        <el-input class="input-form" v-model="formSearch.maxsalary" placeholder="最高薪资"></el-input>
-      </el-form-item>
-      <!--<el-form-item label="" prop="create_date">-->
-        <!--<el-date-picker-->
-          <!--v-model="formSearch.create_date"-->
-          <!--type="datetimerange"-->
-          <!--range-separator="至"-->
-          <!--start-placeholder="开始日期"-->
-          <!--end-placeholder="结束日期">-->
-        <!--</el-date-picker>-->
-      <!--</el-form-item>-->
       <el-form-item label="">
-        <el-button type="primary" size="small" @click="getJob" style="height: 32px">查询</el-button>
+        <el-button type="primary" size="small" @click="getHouse" style="height: 32px">查询</el-button>
         <el-button type="warning" size="small" plain @click="onReset">重置</el-button>
       </el-form-item>
       <hr style="height:1px;border:none;border-top:1px dashed rgba(0, 0, 0, .05);" />
       <el-form-item label="操作">
         <el-button size="small" @click="add">添加</el-button>
-        <el-button size="small" @click="removes">批量删除</el-button>
+        <el-button size="small" @click="multi_remove">批量删除</el-button>
       </el-form-item>
     </el-form>
 
@@ -34,6 +19,7 @@
       :data="tableData1.slice((pageIndex - 1) * pageSize, pageIndex * pageSize)"
       ref="table"
       border
+      tooltip-effect="light"
       v-loading="loading"
       element-loading-text="拼命加载中..."
       :highlight-current-row="true"
@@ -41,21 +27,33 @@
       @selection-change="handleSelectionChange">
       <el-table-column fixed="left" type="selection" align="center" width="50">
       </el-table-column>
-      <el-table-column prop="id" label="ID" sortable align="center" width="120">
+      <el-table-column prop="id" label="ID" sortable align="center" width="60">
       </el-table-column>
-      <el-table-column prop="city" label="城市" align="center" width="120">
+      <el-table-column prop="title" label="标题" show-overflow-tooltip align="center" width="200">
       </el-table-column>
-      <el-table-column prop="maxsalary" label="最高薪资" sortable align="center" width="120">
+      <el-table-column prop="room" label="户型"  align="center" width="120">
       </el-table-column>
-      <el-table-column prop="minsalary" label="最低薪资" sortable align="center" width="120">
+      <el-table-column prop="area" label="面积" sortable align="center" width="120">
       </el-table-column>
-      <el-table-column prop="avgsalary" label="平均薪资" sortable align="center" width="120">
+      <el-table-column prop="floor" label="楼层" sortable align="center" width="120">
       </el-table-column>
-      <el-table-column prop="jobcount" label="职位数量" sortable align="center" width="120">
+      <el-table-column prop="username" label="中介" align="center" width="120">
       </el-table-column>
-      <el-table-column prop="create_date" label="创建时间"  align="center" width="160">
+      <el-table-column prop="address" label="地址" show-overflow-tooltip align="center" width="200">
       </el-table-column>
-      <el-table-column prop="update_date" label="更新时间"  align="center" width="160">
+      <el-table-column prop="region" label="区域" align="center" width="120">
+      </el-table-column>
+      <el-table-column prop="rentway" label="租赁方式" align="center" width="120">
+      </el-table-column>
+      <el-table-column prop="direction" label="朝向"  align="center" width="120">
+      </el-table-column>
+      <el-table-column prop="subway" label="地铁" align="center" width="150">
+      </el-table-column>
+      <el-table-column prop="price" label="价格" sortable align="center" width="120">
+      </el-table-column>
+      <el-table-column prop="create_date" label="创建时间" show-overflow-tooltip align="center" width="160">
+      </el-table-column>
+      <el-table-column prop="update_date" label="更新时间" show-overflow-tooltip align="center" width="160">
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="200" align="center">
         <template slot-scope="scope" v-if= "scope.row.id">
@@ -78,7 +76,7 @@
         @current-change="handleCurrentChange"
         background
         :current-page="pageIndex"
-        :page-sizes="[5,10,15,20]"
+        :page-sizes="[10,20,30,40,50]"
         :page-size="pageSize"
         :total="total"
         layout="total, sizes, prev, pager, next, jumper">
@@ -90,20 +88,38 @@
         <el-form-item label="序号:" prop="id">
           <el-input disabled v-model="editForm.id" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="城市:" prop="city">
-          <el-input v-model="editForm.city" style="width: 80%"></el-input>
+        <el-form-item label="标题:" prop="title">
+          <el-input v-model="editForm.title" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="最高薪资:" prop="maxsalary">
-          <el-input v-model="editForm.maxsalary" style="width: 80%"></el-input>
+        <el-form-item label="户型:" prop="room">
+          <el-input v-model="editForm.room" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="最低薪资:" prop="minsalary">
-          <el-input v-model="editForm.minsalary" style="width: 80%"></el-input>
+        <el-form-item label="面积:" prop="area">
+          <el-input v-model="editForm.area" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="平均薪资:" prop="avgsalary">
-          <el-input v-model="editForm.avgsalary" style="width: 80%"></el-input>
+        <el-form-item label="楼层:" prop="floor">
+          <el-input v-model="editForm.floor" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="职位数量:" prop="jobcount">
-          <el-input v-model.number="editForm.jobcount" style="width: 80%"></el-input>
+        <el-form-item label="中介:" prop="username">
+          <el-input v-model="editForm.username" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="地址:" prop="address">
+          <el-input v-model="editForm.address" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="区域:" prop="region">
+          <el-input v-model="editForm.region" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="租赁方式:" prop="rentway">
+          <el-input v-model="editForm.rentway" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="朝向:" prop="direction">
+          <el-input v-model="editForm.direction" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="地铁:" prop="subway">
+          <el-input v-model="editForm.subway" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="价格:" prop="price">
+          <el-input v-model="editForm.price" style="width: 80%"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -114,20 +130,38 @@
 
     <el-dialog title="添加" :visible.sync="addVisible">
       <el-form :model="addForm" :rules="Rules" ref="addForm" status-icon label-width="130px" label-position="right" style="margin: 0 auto;">
-        <el-form-item label="城市:" prop="city">
-          <el-input v-model="addForm.city" style="width: 80%"></el-input>
+        <el-form-item label="标题:" prop="title">
+          <el-input v-model="addForm.title" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="最高薪资:" prop="maxsalary">
-          <el-input v-model="addForm.maxsalary" style="width: 80%"></el-input>
+        <el-form-item label="户型:" prop="room">
+          <el-input v-model="addForm.room" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="最低薪资:" prop="minsalary">
-          <el-input v-model="addForm.minsalary" style="width: 80%"></el-input>
+        <el-form-item label="面积:" prop="area">
+          <el-input v-model="addForm.area" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="平均薪资:" prop="avgsalary">
-          <el-input v-model="addForm.avgsalary" style="width: 80%"></el-input>
+        <el-form-item label="楼层:" prop="floor">
+          <el-input v-model="addForm.floor" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="职位数量:" prop="jobcount">
-          <el-input v-model.number="addForm.jobcount" style="width: 80%"></el-input>
+        <el-form-item label="中介:" prop="username">
+          <el-input v-model="addForm.username" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="地址:" prop="address">
+          <el-input v-model="addForm.address" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="区域:" prop="region">
+          <el-input v-model="addForm.region" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="租赁方式:" prop="rentway">
+          <el-input v-model="addForm.rentway" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="朝向:" prop="direction">
+          <el-input v-model="addForm.direction" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="地铁:" prop="subway">
+          <el-input v-model="addForm.subway" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="价格:" prop="price">
+          <el-input v-model="addForm.price" style="width: 80%"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -143,7 +177,7 @@
   import api from "../../../api/api";
 
   export default {
-    name: "job",
+    name: "house_ajk",
     data() {
       let checkJobCount = (rule, value, callback) => {
         if (!value) {
@@ -165,76 +199,103 @@
       return {
         tableData1: [],
         pageIndex: 1,
-        pageSize: 5,
+        pageSize: 20,
         total: 0,
         currentId:'',
         loading: true,
         multipleSelection: [], // 当前页选中的行
 
         formSearch:{
-          city:'',
-          maxsalary:'',
-          minsalary: '',
-          // avgsalary:'',
-          // jobcount:'',
-          // startdate:null,
-          // enddate:null
+          // title:'',
+          // room:'',
+          // area: '',
+          // floor:'',
+          // username:'',
+          // address :'',
+          region:'',
+          // rentway:'',
+          // direction:'',
+          // subway:'',
+          // price:''
         },
         editVisible: false,
         editForm:{
           id:'',
-          city:'',
-          maxsalary:'',
-          minsalary: '',
-          avgsalary:'',
-          jobcount:''
+          title:'',
+          room:'',
+          area: '',
+          floor:'',
+          username:'',
+          address :'',
+          region:'',
+          rentway:'',
+          direction:'',
+          subway:'',
+          price:''
         },
         addVisible: false,
         addForm:{
-          city:'',
-          maxsalary:'',
-          minsalary: '',
-          avgsalary:'',
-          jobcount:''
+          title:'',
+          room:'',
+          area: '',
+          floor:'',
+          username:'',
+          address :'',
+          region:'',
+          rentway:'',
+          direction:'',
+          subway:'',
+          price:''
         },
         Rules:{
-          city:[
-            { required: true, message: '请输入城市', trigger: 'blur' }
+          title:[
+            { required: true, message: '请输入标题', trigger: 'blur' }
           ],
-          maxsalary:[
-            { required: true, message: '请输入最高薪资', trigger: 'blur' }
+          room:[
+            { required: true, message: '请输入户型', trigger: 'blur' }
           ],
-          minsalary:[
-            { required: true, message: '请输入最低薪资', trigger: 'blur' }
+          area:[
+            { required: true, message: '请输入面积', trigger: 'blur' }
           ],
-          avgsalary:[
-            { required: true, message: '请输入平均薪资', trigger: 'blur' }
+          floor:[
+            { required: true, message: '请输入楼层', trigger: 'blur' }
           ],
-          jobcount:[
-            { validator: checkJobCount, trigger: 'blur' }
+          address:[
+            { required: true, message: '请输入地址', trigger: 'blur' }
+          ],
+          region:[
+            { required: true, message: '请输入区域', trigger: 'blur' }
+          ],
+          rentway:[
+            { required: true, message: '请输入租赁方式', trigger: 'blur' }
+          ],
+          // direction:[
+          //   { required: true, message: '请输入朝向', trigger: 'blur' }
+          // ],
+          // subway:[
+          //   { required: true, message: '请输入地铁', trigger: 'blur' }
+          // ],
+          price:[
+            { required: true, message: '请输入价格', trigger: 'blur' }
           ]
         }
       }
     },
 
     created(){
-      this.getJob();
+      this.getHouse();
     },
 
     methods: {
-      getJob() {
-        // if(this.formSearch.createtime){
-        //   console.log('这里'+this.formSearch.createtime);
-        //   this.formSearch.startdate=this.formSearch.createtime[0];
-        //   this.formSearch.enddate=this.formSearch.createtime[1];
-        // }
+      getHouse() {
         let params = Object.assign({}, this.formSearch);
         let data = new URLSearchParams();
         for (let key in params) {
           data.append(key, params[key]);
         }
-        api.job_get(data)
+        api.house_get(data)
           .then((response) => {
+            // console.log(response.data[0]['address']);
             this.tableData1 = response.data;
             this.total = this.tableData1.length;
             this.loading = false;
@@ -249,13 +310,13 @@
       handleSizeChange(val) {
         if (this.pageSize !== val) {
           this.pageSize = val;
-          this.getJob();
+          this.getHouse();
         }
       },
       handleCurrentChange(val) {
         if (this.pageIndex !== val) {
           this.pageIndex = val;
-          this.getJob();
+          this.getHouse();
         }
       },
       onReset(){
@@ -274,12 +335,12 @@
           if (valid) {
             this.$confirm('确认提交吗？', '提示', {}).then(() => {
               let params = Object.assign({}, this.editForm);
-              api.job_put(this.currentId, params)
+              api.house_put(this.currentId, params)
                 .then((response) => {
                   if(response){
                     this.$message({message: '提交成功', type: 'success'});
                     this.editVisible = false;
-                    this.getJob();
+                    this.getHouse();
                   }
                   else {
                     this.$message({message: '执行失败，请重试',type: "error"});
@@ -311,13 +372,13 @@
                 method: 'post',
                 url: 'http://127.0.0.1:5000/jobAdd',
                 data: params
-            }).then((response) => {
+              }).then((response) => {
                 if(response){
                   this.$message({message: '提交成功', type: 'success'});
                   this.$refs.addForm.resetFields();
                   this.addVisible = false;
                   this.loading = false;
-                  this.getJob();
+                  this.getHouse();
                 }
                 else {
                   this.$message({message: '执行失败，请重试',type: "error"});
@@ -335,9 +396,9 @@
         this.$confirm('是否执行删除操作?', '提示',{
           type: 'warning'
         }).then(() => {
-          api.job_remove(row).then(res => {
+          api.house_remove(row).then(res => {
             this.$message.success('删除成功!');
-            this.getJob();
+            this.getHouse();
           }).catch((res) => {
             this.$message.error('删除失败!');
           });
@@ -348,9 +409,7 @@
       //批量删除
       removes(){
         let ids= this.multipleSelection.map(item => item.id);
-        console.log(ids);
-        // let params = {ids:ids};   // {ids:[1,2]}
-        // console.log(params);
+        console.log('ids: '+ids);
         if (ids.length == 0){
           this.$message({message: '请选择要删除的项',type: "warning"});
           return;
@@ -358,10 +417,10 @@
         this.$confirm('确认删除选中的记录吗？', '提示', {
           type: 'warning'
         }).then(() => {
-          api.job_removes(ids)
+          api.house_removes({ids:ids})
             .then((response) => {
               this.$message({message: '删除成功', type: 'success'});
-              this.getJob();
+              this.getHouse();
             }).catch((err)=>{
             this.$message({message: '执行失败，请重试',type: "error"});
             console.log(err)
@@ -370,9 +429,11 @@
           this.$message({type: 'info',message: '删除失败'});
         });
       },
+      handleClick(){
+        this.$router.push('http://www.baidu.com')
+      }
 
     }
-
   }
 </script>
 

@@ -9,7 +9,7 @@
                 <el-input v-model="ruleForm.username" placeholder="账号"></el-input>
               </el-form-item>
               <el-form-item prop="userpwd">
-                <el-input type="password" v-model="ruleForm.userpwd" placeholder="密码"></el-input>
+                <el-input v-model="ruleForm.userpwd" show-password placeholder="请输入密码"></el-input>
               </el-form-item>
               <el-form-item prop="validate">
                 <el-input v-model="ruleForm.validate" class="validate-code" placeholder="验证码" @keyup.enter.native="submitForm('ruleForm')"></el-input>
@@ -128,6 +128,10 @@
         goRegister () {
           this.$router.push('/register')
         },
+        //返回首页
+        goHomePage(){
+          this.$router.push('/homepage')
+        },
 
         //检验验证码
         checkCode () {
@@ -165,8 +169,8 @@
 
 <style scoped>
     .tabs{
-      width: 450px;
-      height: 480px;
+      width: 400px;
+      height: 450px;
       margin: 0 auto;
     }
     .el-form-item {
@@ -176,6 +180,8 @@
       /*position: relative;*/
       width:100%;
       height: 100%;
+      /*background: url(../../assets/img/bg.jpg) no-repeat center center;*/
+      /*background-size: 100% 100%;*/
     }
     .login-wrap .title{
       /*position: absolute;*/
@@ -217,6 +223,10 @@
     }
     .goRegister :hover{
       color: #409EFF;
+    }
+    .el-input__inner {
+      height: 40px;
+      line-height: 40px;
     }
 </style>
 

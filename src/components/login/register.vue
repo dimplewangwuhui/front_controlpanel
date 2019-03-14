@@ -7,10 +7,10 @@
           <el-input v-model="ruleForm.username" placeholder="账号"></el-input>
         </el-form-item>
         <el-form-item prop="userpwd">
-          <el-input type="password" v-model="ruleForm.userpwd" placeholder="密码"></el-input>
+          <el-input v-model="ruleForm.userpwd" show-password placeholder="密码"></el-input>
         </el-form-item>
         <el-form-item prop="reUserpwd">
-          <el-input type="password" v-model="ruleForm.reUserpwd" placeholder="再次输入密码"></el-input>
+          <el-input v-model="ruleForm.reUserpwd" show-password placeholder="确认密码"></el-input>
         </el-form-item>
         <el-form-item prop="validate">
           <el-input v-model="ruleForm.validate" class="validate-code" placeholder="验证码" @keyup.enter.native="submitForm('ruleForm')"></el-input>
@@ -24,8 +24,8 @@
         <el-form-item class="button">
           <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
         </el-form-item>
-        <el-form-item  style="margin-top: -25px; margin-left: 230px;">
-          <el-button class="goLogin" type="text" @click="goLogin">返回登录页</el-button>
+        <el-form-item  style="margin-top: -15px; margin-left: 230px;">
+          <el-button class="goLogin" type="text" @click="goLogin">立即登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -131,6 +131,10 @@
       goLogin () {
         this.$router.push('/login')
       },
+      //返回首页
+      goHomePage(){
+        this.$router.push('/homepage')
+      },
 
       checkCode () {
         let vcode = this.ruleForm.validate;  //用户输入的验证码
@@ -172,19 +176,23 @@
   }
   .register-wrap .title{
     /*position: absolute;*/
-    padding-top: 60px;
-    margin-bottom: 50px;
+    padding-top: 50px;
+    margin-bottom: 30px;
     font-size: 30px;
     text-align: center;
     color: #fff;
   }
   .register-wrap .register{
-    width: 300px;
+    width: 320px;
+    height: 370px;
     margin: 0 auto;
     padding: 40px;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
     background-color: #fff;
     box-shadow:0px 0px 20px #333333;
+  }
+  .ruleForm {
+    margin-top: 25px;
   }
   .register span {
     font-size: 5px;

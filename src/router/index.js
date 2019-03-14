@@ -12,6 +12,9 @@ import page404 from '@/components/errorPage/page404'
 
 import main from '@/components/common/main'
 import job from '@/components/main/rentInfo/job'
+import house from '@/components/main/rentInfo/house'
+import echarts from '@/components/main/echarts/echarts'
+
 import userInfo from '@/components/main/userInfo'
 
 
@@ -63,6 +66,16 @@ const router = new Router({
           path: '/job',
           name: '找工作',
           component: job,
+        },
+        {
+          path: '/house',
+          name: '找房子',
+          component: house,
+        },
+        {
+          path: '/echarts',
+          name: '可视化',
+          component: echarts,
         },
         {
           path: '/userInfo',

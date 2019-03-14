@@ -20,7 +20,7 @@
       <el-submenu index="2">
         <template slot="title"><i class="el-icon-menu"></i><span slot="title">导航二呀</span></template>
         <el-menu-item-group>
-          <el-menu-item index="aaa">aaa</el-menu-item>
+          <el-menu-item index="echarts">可视化</el-menu-item>
           <el-menu-item index="bbb">bbb</el-menu-item>
         </el-menu-item-group>
       </el-submenu>

@@ -59,7 +59,7 @@
 <style scoped>
   .header {
     width:100%;
-    background-color: #494090;
+    background-color: #421b9b;
     overflow: hidden;
     top: 0;
     left: 0;

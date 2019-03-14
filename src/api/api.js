@@ -73,27 +73,39 @@ export const oRemove = (url , params) => {
 };
 
 export default {
-  jobinfo_get() {
-    return oGet('http://127.0.0.1:5000/getxqinfo');
+  job_get(params) {
+    return oGet('http://127.0.0.1:5000/getxqinfo' + '?' + params);
   },
-
-  //host的方法==================================================================================
-  host_get () {
-    return oGet('');
-  },
-  host_post (params) {
+  job_post (params) {
     console.log('进到这里来了');
-    return oPost('http://127.0.0.1:5000/jobAdd' + '?' + params);
+    return oPost('http://127.0.0.1:5000/jobAdd', params);
   },
-  host_put (param,params) {
+  job_put (param,params) {
     return oPut('http://127.0.0.1:5000/jobUpdate/' + param, params);
   },
-  host_remove(row){
+  job_remove(row){
     let rowid = row.id;
     return oRemove('http://127.0.0.1:5000/jobDelete/'+ rowid);
   },
-  host_removes(params){
+  job_removes(param){
+    return oRemove('http://127.0.0.1:5000/jobMultiDelete/' + param);
+  },
+  //====================================================================================================================
+  house_get(params) {
+    return oGet('http://127.0.0.1:5000/gethouse' + '?' + params);
+  },
+  house_post (params) {
+    console.log('进到这里来了');
+    return oPost('http://127.0.0.1:5000/houseAdd', params);
+  },
+  house_put (param,params) {
+    return oPut('http://127.0.0.1:5000/houseUpdate/' + param, params);
+  },
+  house_remove(row){
+    let rowid = row.id;
+    return oRemove('http://127.0.0.1:5000/houseDelete/'+ rowid);
+  },
+  house_removes(params){
     return oRemove(''+params);
   },
-
 }
