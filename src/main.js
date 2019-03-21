@@ -14,7 +14,7 @@ import Vuex from 'vuex'
 import store from "./store";
 import qs from 'qs';
 import util from './common/util';
-
+import './assets/iconfont/iconfont.css'
 
 
 Vue.config.productionTip = false;

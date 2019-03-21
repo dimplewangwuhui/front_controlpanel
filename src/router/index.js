@@ -11,11 +11,21 @@ import page403 from '@/components/errorPage/page403'
 import page404 from '@/components/errorPage/page404'
 
 import main from '@/components/common/main'
-import job from '@/components/main/rentInfo/job'
-import house from '@/components/main/rentInfo/house'
-import echarts from '@/components/main/echarts/echarts'
+import job from '@/components/main/dataAcquisition/job'
+import house from '@/components/main/dataAcquisition/house'
 
-import userInfo from '@/components/main/userInfo'
+import echarts_price from '@/components/main/visualDisplay/echarts_price'
+import echarts_trend from '@/components/main/visualDisplay/echarts_trend'
+import echarts_count from '@/components/main/visualDisplay/echarts_count'
+import echarts_area from '@/components/main/visualDisplay/echarts_area'
+
+import wordCloud from '@/components/main/visualDisplay/wordCloud'
+
+import contact from '@/components/main/others/contact'
+import advise from '@/components/main/others/advise'
+
+import userManage from '@/components/main/user/userManage'
+import userInfo from '@/components/main/user/userInfo'
 
 
 Vue.use(Router);
@@ -73,14 +83,49 @@ const router = new Router({
           component: house,
         },
         {
-          path: '/echarts',
-          name: '可视化',
-          component: echarts,
+          path: '/echarts_price',
+          name: '租金比较',
+          component: echarts_price,
+        },
+        {
+          path: '/echarts_trend',
+          name: '租金走势',
+          component: echarts_trend,
+        },
+        {
+          path: '/echarts_count',
+          name: '租房数量',
+          component: echarts_count,
+        },
+        {
+          path: '/echarts_area',
+          name: '租房面积',
+          component: echarts_area,
+        },
+        {
+          path: '/wordCloud',
+          name: '词云展示',
+          component: wordCloud,
+        },
+        {
+          path: '/contact',
+          name: '联系我们',
+          component: contact,
+        },
+        {
+          path: '/advise',
+          name: '建议留言',
+          component: advise,
         },
         {
           path: '/userInfo',
           name: '用户信息',
           component: userInfo,
+        },
+        {
+          path: '/userManage',
+          name: '用户管理',
+          component: userManage,
         }]
     }
   ],

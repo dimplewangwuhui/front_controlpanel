@@ -24,7 +24,7 @@
         <el-form-item class="button">
           <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
         </el-form-item>
-        <el-form-item  style="margin-top: -15px; margin-left: 230px;">
+        <el-form-item  style="margin-top: -15px; margin-left: 263px;">
           <el-button class="goLogin" type="text" @click="goLogin">立即登录</el-button>
         </el-form-item>
       </el-form>

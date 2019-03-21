@@ -1,5 +1,5 @@
 <template>
-  <div class="main" style="margin: 0 auto">
+  <div class="main" style="margin: 10px auto">
     <el-form  :inline="true" ref="formSearch" :model="formSearch" class="demo-form">
       <el-form-item label="" prop="city">
         <el-input class="input-form" v-model="formSearch.city" placeholder="城市"></el-input>
@@ -25,6 +25,7 @@
       </el-form-item>
       <hr style="height:1px;border:none;border-top:1px dashed rgba(0, 0, 0, .05);" />
       <el-form-item label="操作">
+        <!--<i class="iconfont icon-iconfontzhizuobiaozhun47"></i>-->
         <el-button size="small" @click="add">添加</el-button>
         <el-button size="small" @click="removes">批量删除</el-button>
       </el-form-item>
@@ -37,7 +38,7 @@
       v-loading="loading"
       element-loading-text="拼命加载中..."
       :highlight-current-row="true"
-      :header-cell-style="{color: '#000', backgroundColor: '#F4F5F9'}"
+      :header-cell-style="{color: '#000', backgroundColor: '#DDE2EF'}"
       @selection-change="handleSelectionChange">
       <el-table-column fixed="left" type="selection" align="center" width="50">
       </el-table-column>
@@ -349,8 +350,6 @@
       removes(){
         let ids= this.multipleSelection.map(item => item.id);
         console.log(ids);
-        // let params = {ids:ids};   // {ids:[1,2]}
-        // console.log(params);
         if (ids.length == 0){
           this.$message({message: '请选择要删除的项',type: "warning"});
           return;
@@ -379,7 +378,8 @@
 <style>
   .demo-form{
     text-align: left;
-    background-color: #F4F5F9;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
     border-radius: 5px;
     padding: 10px 10px 0 10px;
     margin-bottom: 20px;
@@ -404,5 +404,9 @@
   }
   .el-date-editor .el-range-separator {
     margin-bottom: 8px;
+  }
+  .el-form-item__error {
+    top: 86%;
+    left: 50px;
   }
 </style>

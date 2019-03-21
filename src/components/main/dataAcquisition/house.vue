@@ -1,17 +1,59 @@
 <template>
-  <div class="main" style="margin: 0 auto">
+  <div class="main" style="margin: 10px auto">
     <el-form  :inline="true" ref="formSearch" :model="formSearch" class="demo-form">
+      <el-form-item label="" prop="site">
+        <el-select class="select-form" v-model="formSearch.site" clearable placeholder="请选择网站">
+          <el-option label="安居客" value="安居客"></el-option>
+          <el-option label="链家" value="链家"></el-option>
+          <el-option label="自如" value="自如"></el-option>
+          <el-option label="我爱我家" value="我爱我家"></el-option>
+          <el-option label="58同城" value="58同城"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="" prop="city">
-        <el-input class="input-form" v-model="formSearch.region" placeholder="区域"></el-input>
+        <el-select class="select-form" v-model="formSearch.city" clearable placeholder="请选择城市">
+          <el-option-group v-for="group in optionsAll" :key="group.label" :label="group.label">
+            <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-option-group>
+        </el-select>
       </el-form-item>
-      <el-form-item label="">
-        <el-button type="primary" size="small" @click="getHouse" style="height: 32px">查询</el-button>
-        <el-button type="warning" size="small" plain @click="onReset">重置</el-button>
+      <el-form-item label="" prop="region">
+        <el-cascader class="cascader-form" :options="regionOptions" :show-all-levels="false" placeholder="请选择区域"></el-cascader>
       </el-form-item>
+      <el-form-item label="" v-show="isMore==true">
+        <el-select class="select-form" v-model="formSearch.rentway" clearable placeholder="请选择类型">
+          <el-option v-for="item in rentwayOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="" v-show="isMore==true">
+        <el-select class="select-form" v-model="formSearch.room" clearable placeholder="请选择户型">
+          <el-option v-for="item in roomOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="" v-show="isMore==true">
+        <el-select class="select-form" v-model="formSearch.direction" clearable placeholder="请选择朝向">
+          <el-option v-for="item in directionOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="" v-show="isMore==true">
+        <el-select class="select-form" v-model="formSearch.price" clearable placeholder="请选择租金">
+          <el-option v-for="item in priceOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <!--<el-form-item label="近地铁" v-show="isMore==true">-->
+        <!--<el-switch v-model="formSearch.subway"></el-switch>-->
+      <!--</el-form-item>-->
+      <div>
+        <el-form-item label="">
+          <el-button type="primary" size="small" @click="isMore=!isMore">更多条件</el-button>
+          <el-button type="primary" size="small" @click="getHouse" style="height: 32px">查询</el-button>
+          <el-button type="warning" size="small" plain @click="onReset">重置</el-button>
+        </el-form-item>
+      </div>
       <hr style="height:1px;border:none;border-top:1px dashed rgba(0, 0, 0, .05);" />
       <el-form-item label="操作">
         <el-button size="small" @click="add">添加</el-button>
-        <el-button size="small" @click="multi_remove">批量删除</el-button>
+        <el-button size="small" @click="removes">批量删除</el-button>
       </el-form-item>
     </el-form>
 
@@ -23,11 +65,13 @@
       v-loading="loading"
       element-loading-text="拼命加载中..."
       :highlight-current-row="true"
-      :header-cell-style="{color: '#000', backgroundColor: '#F4F5F9'}"
+      :header-cell-style="{color: '#000', backgroundColor: '#DDE2EF'}"
       @selection-change="handleSelectionChange">
       <el-table-column fixed="left" type="selection" align="center" width="50">
       </el-table-column>
       <el-table-column prop="id" label="ID" sortable align="center" width="60">
+      </el-table-column>
+      <el-table-column prop="site" label="网站" align="center" width="120">
       </el-table-column>
       <el-table-column prop="title" label="标题" show-overflow-tooltip align="center" width="200">
       </el-table-column>
@@ -39,9 +83,11 @@
       </el-table-column>
       <el-table-column prop="username" label="中介" align="center" width="120">
       </el-table-column>
-      <el-table-column prop="address" label="地址" show-overflow-tooltip align="center" width="200">
+      <el-table-column prop="city" label="城市" align="center" width="120">
       </el-table-column>
       <el-table-column prop="region" label="区域" align="center" width="120">
+      </el-table-column>
+      <el-table-column prop="address" label="地址" show-overflow-tooltip align="center" width="200">
       </el-table-column>
       <el-table-column prop="rentway" label="租赁方式" align="center" width="120">
       </el-table-column>
@@ -49,7 +95,9 @@
       </el-table-column>
       <el-table-column prop="subway" label="地铁" align="center" width="150">
       </el-table-column>
-      <el-table-column prop="price" label="价格" sortable align="center" width="120">
+      <el-table-column prop="price" label="租金" sortable align="center" width="120">
+      </el-table-column>
+      <el-table-column prop="urlinfo" label="详情链接" show-overflow-tooltip align="center" width="160">
       </el-table-column>
       <el-table-column prop="create_date" label="创建时间" show-overflow-tooltip align="center" width="160">
       </el-table-column>
@@ -58,13 +106,13 @@
       <el-table-column fixed="right" label="操作" width="200" align="center">
         <template slot-scope="scope" v-if= "scope.row.id">
           <el-tooltip content="详情" placement="top">
-            <el-button @click="handleClick(scope.row)" type="primary" size="mini" icon="el-icon-more"></el-button>
+            <el-button type="primary" size="mini" icon="el-icon-more" @click="handleClick(scope.row)"></el-button>
           </el-tooltip>
           <el-tooltip content="编辑" placement="top">
-            <el-button type="primary" icon="el-icon-edit" size="mini" style="cursor: pointer;" @click="edit(scope.row,scope.$index)"></el-button>
+            <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit(scope.row,scope.$index)"></el-button>
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button type="danger" icon="el-icon-delete" size="mini"  style="cursor: pointer;" @click="remove(scope.row)"></el-button>
+            <el-button type="danger" icon="el-icon-delete" size="mini" @click="remove(scope.row)"></el-button>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -76,7 +124,7 @@
         @current-change="handleCurrentChange"
         background
         :current-page="pageIndex"
-        :page-sizes="[10,20,30,40,50]"
+        :page-sizes="[10,20,30,40,50,100]"
         :page-size="pageSize"
         :total="total"
         layout="total, sizes, prev, pager, next, jumper">
@@ -88,13 +136,16 @@
         <el-form-item label="序号:" prop="id">
           <el-input disabled v-model="editForm.id" style="width: 80%"></el-input>
         </el-form-item>
+        <el-form-item label="网站:" prop="site">
+          <el-input v-model="editForm.site" style="width: 80%"></el-input>
+        </el-form-item>
         <el-form-item label="标题:" prop="title">
           <el-input v-model="editForm.title" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="户型:" prop="room">
           <el-input v-model="editForm.room" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="面积:" prop="area">
+        <el-form-item label="面积(平米):" prop="area">
           <el-input v-model="editForm.area" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="楼层:" prop="floor">
@@ -103,11 +154,14 @@
         <el-form-item label="中介:" prop="username">
           <el-input v-model="editForm.username" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="地址:" prop="address">
-          <el-input v-model="editForm.address" style="width: 80%"></el-input>
+        <el-form-item label="城市:" prop="city">
+          <el-input v-model="editForm.city" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="区域:" prop="region">
           <el-input v-model="editForm.region" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="地址:" prop="address">
+          <el-input v-model="editForm.address" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="租赁方式:" prop="rentway">
           <el-input v-model="editForm.rentway" style="width: 80%"></el-input>
@@ -118,8 +172,11 @@
         <el-form-item label="地铁:" prop="subway">
           <el-input v-model="editForm.subway" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="价格:" prop="price">
-          <el-input v-model="editForm.price" style="width: 80%"></el-input>
+        <el-form-item label="租金(元/月):" prop="price">
+          <el-input v-model.number="editForm.price" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="详情链接:" prop="urlinfo">
+          <el-input v-model="editForm.urlinfo" style="width: 80%"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -130,13 +187,16 @@
 
     <el-dialog title="添加" :visible.sync="addVisible">
       <el-form :model="addForm" :rules="Rules" ref="addForm" status-icon label-width="130px" label-position="right" style="margin: 0 auto;">
+        <el-form-item label="网站:" prop="site">
+          <el-input v-model="addForm.site" style="width: 80%"></el-input>
+        </el-form-item>
         <el-form-item label="标题:" prop="title">
           <el-input v-model="addForm.title" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="户型:" prop="room">
           <el-input v-model="addForm.room" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="面积:" prop="area">
+        <el-form-item label="面积(平米):" prop="area">
           <el-input v-model="addForm.area" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="楼层:" prop="floor">
@@ -145,11 +205,14 @@
         <el-form-item label="中介:" prop="username">
           <el-input v-model="addForm.username" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="地址:" prop="address">
-          <el-input v-model="addForm.address" style="width: 80%"></el-input>
+        <el-form-item label="城市:" prop="city">
+          <el-input v-model="addForm.city" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="区域:" prop="region">
           <el-input v-model="addForm.region" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="地址:" prop="address">
+          <el-input v-model="addForm.address" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="租赁方式:" prop="rentway">
           <el-input v-model="addForm.rentway" style="width: 80%"></el-input>
@@ -160,8 +223,11 @@
         <el-form-item label="地铁:" prop="subway">
           <el-input v-model="addForm.subway" style="width: 80%"></el-input>
         </el-form-item>
-        <el-form-item label="价格:" prop="price">
-          <el-input v-model="addForm.price" style="width: 80%"></el-input>
+        <el-form-item label="租金(元/月):" prop="price">
+          <el-input v-model.number="addForm.price" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="详情链接:" prop="urlinfo">
+          <el-input v-model="addForm.urlinfo" style="width: 80%"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -179,9 +245,9 @@
   export default {
     name: "house_ajk",
     data() {
-      let checkJobCount = (rule, value, callback) => {
+      let checkPrice = (rule, value, callback) => {
         if (!value) {
-          return callback(new Error('请输入职位数量'));
+          return callback(new Error('请输入租金'));
         }
         setTimeout(() => {
           if (!Number.isInteger(value)) {     //Number.isInteger(value): 判断给定值是否是整数的 Boolean 值。
@@ -203,49 +269,206 @@
         total: 0,
         currentId:'',
         loading: true,
+        isMore: false,
         multipleSelection: [], // 当前页选中的行
 
+        optionsAll: [{
+          label: '热门城市',
+          options: [{value: '北京', label: '北京'},
+            {value: '上海', label: '上海'}]
+          },{
+          label: '其他城市',
+          options: [{value: '广州', label: '广州'},
+            {value: '深圳', label: '深圳'},
+            {value: '武汉', label: '武汉'},
+            {value: '太原', label: '太原'},
+            {value: '杭州', label: '杭州'}]
+        }],
+        regionOptions: [{
+          value: '北京',
+          label: '北京',
+          children: [{value: '东城区', label: '东城区'},
+            {value: '西城区', label: '西城区'},
+            {value: '朝阳区', label: '朝阳区'},
+            {value: '丰台区', label: '丰台区'},
+            {value: '海淀区', label: '海淀区'},
+            {value: '石景山区', label: '石景山区'},
+            {value: '顺义区', label: '顺义区'},
+            {value: '通州区', label: '通州区'},
+            {value: '大兴区', label: '大兴区'},
+            {value: '房山区', label: '房山区'},
+            {value: '门头沟区', label: '门头沟区'},
+            {value: '昌平区', label: '昌平区'},
+            {value: '平谷区', label: '平谷区'},
+            {value: '密云区', label: '密云区'},
+            {value: '怀柔区', label: '怀柔区'},
+            {value: '延庆区', label: '延庆区'}]
+        }, {
+          value: '上海',
+          label: '上海',
+          children: [{value: '黄浦区', label: '黄浦区'},
+            {value: '徐汇区', label: '徐汇区'},
+            {value: '长宁区', label: '长宁区'},
+            {value: '静安区', label: '静安区'},
+            {value: '普陀区', label: '普陀区'},
+            {value: '虹口区', label: '虹口区'},
+            {value: '杨浦区', label: '杨浦区'},
+            {value: '闵安区', label: '闵安区'},
+            {value: '宝山区', label: '宝山区'},
+            {value: '嘉定区', label: '嘉定区'},
+            {value: '浦东新区', label: '浦东新区'},
+            {value: '金山区', label: '金山区'},
+            {value: '松江区', label: '松江区'},
+            {value: '青浦区', label: '青浦区'},
+            {value: '奉贤区', label: '奉贤区'}]
+        }, {
+          value: '广州',
+          label: '广州',
+          children: [{value: '荔湾区', label: '荔湾区'},
+            {value: '越秀区', label: '越秀区'},
+            {value: '海珠区', label: '海珠区'},
+            {value: '天河区', label: '天河区'},
+            {value: '白云区', label: '白云区'},
+            {value: '黄埔区', label: '黄埔区'},
+            {value: '番禺区', label: '番禺区'},
+            {value: '花都区', label: '花都区'},
+            {value: '南沙区', label: '南沙区'},
+            {value: '从化区', label: '从化区'},
+            {value: '增城区', label: '增城区'}]
+        }, {
+          value: '深圳',
+          label: '深圳',
+          children: [{value: '罗湖区', label: '罗湖区'},
+            {value: '福田区', label: '福田区'},
+            {value: '南山区', label: '南山区'},
+            {value: '宝安区', label: '宝安区'},
+            {value: '龙岗区', label: '龙岗区'},
+            {value: '盐田区', label: '盐田区'}]
+        }, {
+          value: '武汉',
+          label: '武汉',
+          children: [{value: '江岸区', label: '江岸区'},
+            {value: '江汉区', label: '江汉区'},
+            {value: '硚口区', label: '硚口区'},
+            {value: '汉阳区', label: '汉阳区'},
+            {value: '武昌区', label: '武昌区'},
+            {value: '青山区', label: '青山区'},
+            {value: '洪山区', label: '洪山区'},
+            {value: '东西湖区', label: '东西湖区'},
+            {value: '汉南区', label: '汉南区'},
+            {value: '蔡甸区', label: '蔡甸区'},
+            {value: '江夏区', label: '江夏区'},
+            {value: '黄陂区', label: '黄陂区'},
+            {value: '新洲区', label: '新洲区'}]
+        }, {
+          value: '太原',
+          label: '太原',
+          children: [{value: '小店区', label: '小店区'},
+            {value: '迎泽区', label: '迎泽区'},
+            {value: '杏花岭区', label: '杏花岭区'},
+            {value: '尖草坪区', label: '尖草坪区'},
+            {value: '万柏林区', label: '万柏林区'},
+            {value: '晋源区', label: '晋源区'}]
+        }, {
+          value: '杭州',
+          label: '杭州',
+          children: [{value: '上城区', label: '上城区'},
+            {value: '下城区', label: '下城区'},
+            {value: '江干区', label: '江干区'},
+            {value: '拱墅区', label: '拱墅区'},
+            {value: '西湖区', label: '西湖区'},
+            {value: '滨江区', label: '滨江区'},
+            {value: '萧山区', label: '萧山区'},
+            {value: '余杭区', label: '余杭区'},
+            {value: '富阳区', label: '富阳区'}]
+        }],
+
+        rentwayOptions: [
+          {value: '整租', label: '整租'},
+          {value: '合租', label: '合租'}
+        ],
+        roomOptions: [
+          {value: '1室', label: '一室'},
+          {value: '2室', label: '二室'},
+          {value: '3室', label: '三室'},
+          {value: '4室', label: '四室'},
+          {value: '5室', label: '五室及以上'},
+        ],
+        directionOptions: [
+          {value: '朝东', label: '朝东'},
+          {value: '朝西', label: '朝西'},
+          {value: '朝南', label: '朝南'},
+          {value: '朝北', label: '朝北'},
+          {value: '东西', label: '东西'},
+          {value: '东南', label: '东南'},
+          {value: '东北', label: '东北'},
+          {value: '西南', label: '西南'},
+          {value: '西北', label: '西北'},
+          {value: '南北', label: '南北'},
+        ],
+        priceOptions: [
+          {value: '1000', label: '1000以下'},
+          {value: '1000-1500', label: '1000-1500'},
+          {value: '1500-2000', label: '1500-2000'},
+          {value: '2000-2500', label: '2000-2500'},
+          {value: '2500-3000', label: '2500-3000'},
+          {value: '3000-4000', label: '3000-4000'},
+          {value: '4000-5000', label: '4000-5000'},
+          {value: '5000-6000', label: '5000-6000'},
+          {value: '6000-8000', label: '6000-8000'},
+          {value: '8000-15000', label: '8000-15000'},
+          {value: '15000', label: '15000以上'},
+        ],
+
         formSearch:{
+          site:'',
+          city:'',
           // title:'',
-          // room:'',
+          room:'',
           // area: '',
           // floor:'',
           // username:'',
           // address :'',
           region:'',
-          // rentway:'',
-          // direction:'',
+          rentway:'',
+          direction:'',
           // subway:'',
-          // price:''
+          price:''
         },
         editVisible: false,
         editForm:{
           id:'',
+          site:'',
           title:'',
           room:'',
           area: '',
           floor:'',
           username:'',
-          address :'',
+          city:'',
           region:'',
+          address :'',
           rentway:'',
           direction:'',
           subway:'',
-          price:''
+          price:'',
+          urlinfo:''
         },
         addVisible: false,
         addForm:{
+          site:'',
           title:'',
           room:'',
           area: '',
           floor:'',
           username:'',
-          address :'',
+          city:'',
           region:'',
+          address :'',
           rentway:'',
           direction:'',
           subway:'',
-          price:''
+          price:'',
+          urlinfo:''
         },
         Rules:{
           title:[
@@ -276,7 +499,7 @@
           //   { required: true, message: '请输入地铁', trigger: 'blur' }
           // ],
           price:[
-            { required: true, message: '请输入价格', trigger: 'blur' }
+            { validator: checkPrice, trigger: 'blur' }
           ]
         }
       }
@@ -295,7 +518,6 @@
         }
         api.house_get(data)
           .then((response) => {
-            // console.log(response.data[0]['address']);
             this.tableData1 = response.data;
             this.total = this.tableData1.length;
             this.loading = false;
@@ -321,6 +543,9 @@
       },
       onReset(){
         this.$refs['formSearch'].resetFields();
+      },
+      handleClick(row){
+        window.open(row.urlinfo);  //window.open(url):打开新窗。。window.location.href = url:在本窗口打开
       },
 
       //编辑
@@ -370,7 +595,7 @@
               // }
               this.$axios({
                 method: 'post',
-                url: 'http://127.0.0.1:5000/jobAdd',
+                url: 'http://127.0.0.1:5000/houseAdd',
                 data: params
               }).then((response) => {
                 if(response){
@@ -409,7 +634,7 @@
       //批量删除
       removes(){
         let ids= this.multipleSelection.map(item => item.id);
-        console.log('ids: '+ids);
+        console.log(ids);
         if (ids.length == 0){
           this.$message({message: '请选择要删除的项',type: "warning"});
           return;
@@ -417,7 +642,7 @@
         this.$confirm('确认删除选中的记录吗？', '提示', {
           type: 'warning'
         }).then(() => {
-          api.house_removes({ids:ids})
+          api.house_removes(ids)
             .then((response) => {
               this.$message({message: '删除成功', type: 'success'});
               this.getHouse();
@@ -429,9 +654,6 @@
           this.$message({type: 'info',message: '删除失败'});
         });
       },
-      handleClick(){
-        this.$router.push('http://www.baidu.com')
-      }
 
     }
   }
@@ -440,7 +662,8 @@
 <style>
   .demo-form{
     text-align: left;
-    background-color: #F4F5F9;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
     border-radius: 5px;
     padding: 10px 10px 0 10px;
     margin-bottom: 20px;
@@ -449,9 +672,10 @@
   .el-form-item {
     margin-bottom: 10px;
   }
-  .input-form{
+  .input-form, .select-form, .cascader-form{
     width: 300px;
   }
+
   .el-input__inner{
     height: 32px;
     line-height: 32px;
@@ -465,5 +689,9 @@
   }
   .el-date-editor .el-range-separator {
     margin-bottom: 8px;
+  }
+  .el-form-item__error {
+    top: 86%;
+    left: 50px;
   }
 </style>

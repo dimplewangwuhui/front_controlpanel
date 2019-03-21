@@ -27,8 +27,8 @@
 
 <script>
   import bus from './bus'
-  import vHead from './Header.vue';
-  import vSidebar from './Sidebar.vue';
+  import vHead from './header.vue';
+  import vSidebar from './sidebar.vue';
     export default {
       name: "main",
       components: {
@@ -43,7 +43,7 @@
         bus.$on('isCollapse', msg => {
           this.collapse = msg;
         });
-        document.querySelector('body').setAttribute('style', 'background-color:#fff');
+        document.querySelector('body').setAttribute('style', 'background-color:#F4F5F9');
         // console.log(this.$route.matched)
       },
     }
@@ -68,7 +68,7 @@
     right: 0;
     bottom: 0;
     overflow-y: scroll;
-    background-color: #fff;
+    background-color: #F4F5F9;
   }
   .content_wrapper{
     display: flex;
@@ -80,7 +80,7 @@
     padding: 10px;
   }
   .content-collapse {
-    left: 65px;
+    left: 70px;
   }
 
 </style>

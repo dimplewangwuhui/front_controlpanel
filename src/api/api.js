@@ -87,8 +87,12 @@ export default {
     let rowid = row.id;
     return oRemove('http://127.0.0.1:5000/jobDelete/'+ rowid);
   },
-  job_removes(param){
-    return oRemove('http://127.0.0.1:5000/jobMultiDelete/' + param);
+  job_removes(params){
+    return oRemove('http://127.0.0.1:5000/jobMultiDelete/' + params);
+  },
+  //====================================================================================================================
+  user_put (params) {
+    return oPut('http://127.0.0.1:5000/userUpdate', params);
   },
   //====================================================================================================================
   house_get(params) {
@@ -106,6 +110,24 @@ export default {
     return oRemove('http://127.0.0.1:5000/houseDelete/'+ rowid);
   },
   house_removes(params){
-    return oRemove(''+params);
+    return oRemove('http://127.0.0.1:5000/houseMultiDelete/' + params);
+  },
+  // ===================================================================================================================
+  message_get() {
+    return oGet('http://127.0.0.1:5000/getMessage');
+  },
+  message_post (params) {
+    console.log('进到这里来了');
+    return oPost('http://127.0.0.1:5000/messageAdd', params);
+  },
+  message_put (param,params) {
+    return oPut('http://127.0.0.1:5000/messageUpdate/' + param, params);
+  },
+  message_remove(row){
+    let rowid = row.id;
+    return oRemove('http://127.0.0.1:5000/messageDelete/'+ rowid);
+  },
+  message_removes(params){
+    return oRemove('http://127.0.0.1:5000/messageMultiDelete/' + params);
   },
 }

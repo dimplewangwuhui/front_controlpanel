@@ -1,12 +1,16 @@
 <template>
   <div class="header">
-    <span class="head-left">
-      <!--<el-button type="text" @click="collapseChange" style="padding: 0">-->
-        <!--<img class="image" :src="imgurl" alt="" width="56px" height="56px">-->
-      <!--</el-button>-->
-      <span style="margin-left: 15px;">租房信息分析平台</span>
-    </span>
-    <span class="head-right">
+    <div class="head-left">
+      <a href="/main"><i class="iconfont icon-fangzi01-copy"></i></a>
+      <span style="margin-left: 5px;">租房信息分析平台</span>
+    </div>
+    <div class="head-right">
+      <el-tooltip effect="dark" :content="message?`新增${message}条留言`:`建议留言`" placement="bottom">
+        <el-badge is-dot class="item">
+          <i class="iconfont icon-jinggao" ></i>
+        </el-badge>
+      </el-tooltip>
+
       <span class="loginOut">
         <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link" style="color:white; padding: 0 15px;">
@@ -19,7 +23,7 @@
           </el-dropdown-menu>
         </el-dropdown>
       </span>
-      </span>
+      </div>
   </div>
 </template>
 
@@ -28,7 +32,8 @@
       name: "header",
       data(){
         return{
-          imgurl: require('../../assets/img/house.png')
+          message: 2,
+          imgurl: require('../../assets/img/房子.png')
         }
       },
       computed:{
@@ -59,7 +64,7 @@
 <style scoped>
   .header {
     width:100%;
-    background-color: #421b9b;
+    background-color: #494090;
     overflow: hidden;
     top: 0;
     left: 0;
@@ -77,12 +82,21 @@
     height: 56px;
     line-height: 56px;
   }
+  .head-left a {
+    color: white;
+  }
   .head-right {
     float: right;
     margin-right: 2%
   }
   .loginOut :hover{
     cursor: pointer;
-    background-color: #494077;
+    background-color: #3a0088;
+  }
+</style>
+<style>
+  .item .el-badge__content.is-fixed {
+    top: 18px;
+    left: 10px;
   }
 </style>

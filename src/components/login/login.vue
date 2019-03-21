@@ -29,7 +29,13 @@
             </el-form>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="人脸登录">人脸登录</el-tab-pane>
+        <el-tab-pane label="人脸登录">
+          <div class="face_login" style="width: 300px; margin: 20px auto;">
+            <video id="video" autoplay="" style="width: 100%; border: 1px dashed #409EFF; border-radius: 12px;"></video>
+            <el-button type="primary" style="width: 100%; height: 36px; margin-top: 20px">登录</el-button>
+            <el-button class="goRegister" type="text" @click="goRegister" style="margin-top: 5px; margin-left: 244px;">立即注册</el-button>
+          </div>
+        </el-tab-pane>
       </el-tabs>
     </div>
 </template>
