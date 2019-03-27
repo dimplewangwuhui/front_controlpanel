@@ -15,6 +15,10 @@ import store from "./store";
 import qs from 'qs';
 import util from './common/util';
 import './assets/iconfont/iconfont.css'
+import echarts from 'echarts'
+
+
+require('echarts-wordcloud');
 
 
 Vue.config.productionTip = false;
@@ -22,7 +26,7 @@ Vue.config.productionTip = false;
 window.axios = require('axios');
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Authorization'] = store.state.token;
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 20000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 Vue.component("SIdentify",SIdentify);
@@ -31,6 +35,7 @@ Vue.prototype.$axios = axios;
 Vue.prototype.$message = Message;
 Vue.prototype.$http = window.axios;
 Vue.prototype.$qs = qs;
+Vue.prototype.$echarts = echarts;
 
 
 Vue.use(ElementUI);

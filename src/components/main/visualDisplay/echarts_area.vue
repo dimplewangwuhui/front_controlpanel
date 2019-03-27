@@ -19,7 +19,7 @@
     },
     methods: {
       drawAreaChart(){
-        this.areaChart = echarts.init(document.getElementById('areaChart'))
+        this.areaChart = echarts.init(document.getElementById('areaChart'));
         this.areaChart.setOption({
           title: {
             text: "租房面积与租金关系散点图",
@@ -61,7 +61,10 @@
                 }]
               })
             }
-          })
+          }).catch(err => {
+          console.error(err);
+          this.$alert('这里请求超时，刷新重试！')
+        });
       }
     },
     mounted() {

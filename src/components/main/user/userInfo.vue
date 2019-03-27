@@ -1,12 +1,12 @@
 <template>
   <div class="userinfo_table">
-    <el-table :data="tableData" border tooltip-effect="light" :highlight-current-row="true"
-      :header-cell-style="{color: '#000', backgroundColor: '#F4F5F9'}"
-      style="width: 405px; margin: 0 auto">
-      <el-table-column prop="username" label="用户名" align="center" width="150">
-      </el-table-column>
-      <el-table-column prop="userpwd" label="密码" align="center" width="150">
-      </el-table-column>
+    <el-table :data="tableData"
+              border
+              tooltip-effect="light"
+              :highlight-current-row="true"
+              :header-cell-style="{color: '#000', backgroundColor: '#DDE2EF'}"
+              style="width: 255px; margin: 10px auto">
+      <el-table-column prop="username" label="用户名" align="center" width="150"></el-table-column>
       <el-table-column fixed="right" label="操作" align="center" width="100">
         <template slot-scope="scope">
           <el-tooltip content="编辑" placement="top">
@@ -16,16 +16,10 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog title="编辑" :visible.sync="editVisible">
+    <el-dialog title="编辑个人信息" :visible.sync="editVisible">
       <el-form :model="editForm" ref="editForm" rules="Rules" status-icon label-width="100px" label-position="right" style="margin: 0 auto">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="editForm.username" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="userpwd">
-          <el-input v-model="editForm.userpwd" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="reUserpwd">
-          <el-input v-model="editForm.reUserpwd" style="width: 80%"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog--footer">
@@ -41,41 +35,14 @@
     export default {
       name: "userInfo",
       data(){
-        let userpwd = (rule, value, callback) => {
-          if (value === '') {
-            callback(new Error('请输入密码'));
-          } else {
-            if (this.ruleForm.reUserpwd !== '') {
-              this.$refs.ruleForm.validateField('reUserpwd');
-            }
-            callback();
-          }
-        };
-        let reUserpwd = (rule, value, callback) => {
-          if (value === '') {
-            callback(new Error('请再次输入密码'));
-          } else if (value !== this.ruleForm.userpwd) {
-            callback(new Error('两次输入密码不一致!'));
-          } else {
-            callback();
-          }
-        };
         return{
           tableData: [],
           editVisible: false,
           editForm:{
             username:'',
-            userpwd:'',
-            reUserpwd:''
           },
           Rules:{
-            // username:[{ required: true, message: '请输入用户名', trigger: 'blur' }]
-            userpwd: [
-              { validator: userpwd, trigger: 'blur' }
-            ],
-            reUserpwd: [
-              { validator: reUserpwd, trigger: 'blur' }
-            ],
+            username:[{ required: true, message: '请输入用户名', trigger: 'blur' }],
           }
         }
       },

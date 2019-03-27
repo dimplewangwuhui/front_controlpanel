@@ -26,6 +26,8 @@ import advise from '@/components/main/others/advise'
 
 import userManage from '@/components/main/user/userManage'
 import userInfo from '@/components/main/user/userInfo'
+import updatePwd from '@/components/main/user/updatePwd'
+import updatePwd2login from '@/components/main/user/updatePwd2login'
 
 
 Vue.use(Router);
@@ -51,6 +53,11 @@ const router = new Router({
       path: '/register2login',
       name: 'register2login',
       component: register2login,
+    },
+    {
+      path: '/updatePwd2login',
+      name: 'updatePwd2login',
+      component: updatePwd2login,
     },
     {
       path: '/page400',
@@ -123,6 +130,11 @@ const router = new Router({
           component: userInfo,
         },
         {
+          path: '/updatePwd',
+          name: '修改密码',
+          component: updatePwd,
+        },
+        {
           path: '/userManage',
           name: '用户管理',
           component: userManage,
@@ -137,7 +149,7 @@ router.beforeEach((to, from, next) => {
   var token = sessionStorage.getItem('token');
   console.log("浏览器本地缓存的token: "+token);
   if(token === ''||token === null||token === 'undefined'){
-    if(to.path === '/' || to.path === '/login' || to.path === '/register' || to.path === '/register2login'){
+    if(to.path === '/' || to.path === '/login' || to.path === '/register' || to.path === '/register2login' || to.path === '/updatePwd2login'){
       next()
     }
     else {

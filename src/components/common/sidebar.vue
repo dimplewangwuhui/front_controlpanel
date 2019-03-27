@@ -31,10 +31,18 @@
           <el-menu-item index="wordCloud"><i class="iconfont icon-fsux_tubiao_ciyun"></i>词云展示</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-menu-item index="userManage">
-        <i class="iconfont icon-yonghu"></i>
-        <span slot="title">用户管理</span>
-      </el-menu-item>
+      <!--<el-menu-item index="userManage">-->
+        <!--<i class="iconfont icon-yonghu"></i>-->
+        <!--<span slot="title">用户管理</span>-->
+      <!--</el-menu-item>-->
+      <el-submenu index="3">
+        <template slot="title"><i class="iconfont icon-yonghu"></i>用户管理</template>
+        <el-menu-item-group>
+          <el-menu-item index="userInfo">个人信息</el-menu-item>
+          <el-menu-item index="updatePwd">修改密码</el-menu-item>
+          <el-menu-item index="userManage">用户管理</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
       <el-submenu index="4">
         <template slot="title"><i class="iconfont icon-qita"></i>其他</template>
         <el-menu-item-group>

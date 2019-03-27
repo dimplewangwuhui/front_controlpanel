@@ -4,13 +4,19 @@
     <div class="register">
       <el-form status-icon :model="ruleForm" :rules="rules" ref="ruleForm" class="ruleForm">
         <el-form-item prop="username">
-          <el-input v-model="ruleForm.username" placeholder="账号"></el-input>
+          <el-input class="form-input" v-model="ruleForm.username" placeholder="账号">
+            <template slot="prepend"><i class="iconfont icon-yonghu1"></i></template>
+          </el-input>
         </el-form-item>
         <el-form-item prop="userpwd">
-          <el-input v-model="ruleForm.userpwd" show-password placeholder="密码"></el-input>
+          <el-input class="form-input" v-model="ruleForm.userpwd" show-password placeholder="密码">
+            <template slot="prepend"><i class="iconfont icon-icon-"></i></template>
+          </el-input>
         </el-form-item>
         <el-form-item prop="reUserpwd">
-          <el-input v-model="ruleForm.reUserpwd" show-password placeholder="确认密码"></el-input>
+          <el-input class="form-input" v-model="ruleForm.reUserpwd" show-password placeholder="确认密码">
+            <template slot="prepend"><i class="iconfont icon-icon-"></i></template>
+          </el-input>
         </el-form-item>
         <el-form-item prop="validate">
           <el-input v-model="ruleForm.validate" class="validate-code" placeholder="验证码" @keyup.enter.native="submitForm('ruleForm')"></el-input>
@@ -73,10 +79,11 @@
             {required: true, message: '请输入账号', trigger:'blur'}
           ],
           userpwd: [
-            { validator: userpwd, trigger: 'blur' }
+            { validator: userpwd, trigger: 'blur' },
+            { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,16}$/, message: '密码为6-16位字符，且必须包含大写字母、小写字母和数字,不能包含特殊字符' }
           ],
           reUserpwd: [
-            { validator: reUserpwd, trigger: 'blur' }
+            { validator: reUserpwd, trigger: 'blur' },
           ],
           validate: [
             {required: true, message: '请输入验证码', trigger:'blur'},
@@ -105,6 +112,7 @@
               }).then(response => {
                 console.log(response);
                 if (response.data.code == 'success') {
+                  sessionStorage.clear();
                   this.$router.push('/register2login');
                   console.log('注册成功');
                 } else {
@@ -191,8 +199,11 @@
     background-color: #fff;
     box-shadow:0px 0px 20px #333333;
   }
+  .el-form-item {
+    margin-bottom: 30px;
+  }
   .ruleForm {
-    margin-top: 25px;
+    margin-top: 10px;
   }
   .register span {
     font-size: 5px;
@@ -218,5 +229,14 @@
   }
   .goLogin :hover{
     color: #409EFF;
+  }
+</style>
+
+<style>
+  .form-input {
+    height: 36px;
+  }
+  .el-input-group__append, .el-input-group__prepend {
+    padding: 0 0 0 10px;
   }
 </style>

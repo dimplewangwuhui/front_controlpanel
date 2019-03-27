@@ -6,10 +6,14 @@
           <div class="login">
             <el-form status-icon :model="ruleForm" :rules="rules" ref="ruleForm" class="ruleForm">
               <el-form-item prop="username">
-                <el-input v-model="ruleForm.username" placeholder="账号"></el-input>
+                <el-input class="form-input" v-model="ruleForm.username" placeholder="账号">
+                  <template slot="prepend"><i class="iconfont icon-yonghu1"></i></template>
+                </el-input>
               </el-form-item>
               <el-form-item prop="userpwd">
-                <el-input v-model="ruleForm.userpwd" show-password placeholder="请输入密码"></el-input>
+                <el-input class="form-input" v-model="ruleForm.userpwd" show-password placeholder="请输入密码">
+                  <template slot="prepend"><i class="iconfont icon-icon-"></i></template>
+                </el-input>
               </el-form-item>
               <el-form-item prop="validate">
                 <el-input v-model="ruleForm.validate" class="validate-code" placeholder="验证码" @keyup.enter.native="submitForm('ruleForm')"></el-input>
@@ -30,10 +34,32 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="人脸登录">
-          <div class="face_login" style="width: 300px; margin: 20px auto;">
-            <video id="video" autoplay="" style="width: 100%; border: 1px dashed #409EFF; border-radius: 12px;"></video>
-            <el-button type="primary" style="width: 100%; height: 36px; margin-top: 20px">登录</el-button>
-            <el-button class="goRegister" type="text" @click="goRegister" style="margin-top: 5px; margin-left: 244px;">立即注册</el-button>
+          <div class="face_login" style="margin: 15px auto;">
+            <div class="top">
+              <video id="video" autoplay="" style="width: 50%; border: 1px dashed #409EFF; border-radius: 12px; float: left"></video>
+              <canvas id="canvas" style="width:25%; height: 169.5px; border: 1px dashed #409EFF; border-radius: 12px; margin-left: 15px; float: left"></canvas>
+              <div id="result" style="width: 20%; height: 169.5px; border-radius: 12px; float: right; background-color: #409EFF; color: white;">
+                <ul style="list-style: none; padding: 0 20px; text-align: left; font-size: 0.9em;">
+                  <li id="age" style="border-bottom: 1px solid #4093e5; line-height:30px">年龄：32</li>
+                  <li id="gender" style="border-bottom: 1px solid #4093e5; line-height:30px">性别：男</li>
+                  <li id="expression" style="border-bottom: 1px solid #4093e5; line-height:30px">表情：微笑</li>
+                  <li id="glasses" style="border-bottom: 1px solid #4093e5; line-height:30px">眼镜：带眼镜</li>
+                  <li id="beauty" style="border-bottom: 1px solid #4093e5; line-height:30px">颜值：88</li>
+                </ul>
+              </div>
+            </div>
+            <div class="bottom">
+              <el-button type="primary" style="float: left">获取脸部特征</el-button>
+              <el-button type="primary">登录</el-button>
+              <el-button type="primary" @click="goRegister">立即注册</el-button>
+            </div>
+
+            <div style="margin: 0 auto">
+              <audio id="myaudio" controls style="margin-top: 10px; height: 80px">
+                您的浏览器不支持audio元素组件
+              </audio>
+            </div>
+
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -43,6 +69,8 @@
 <script>
     import { mapMutations } from 'vuex';
     import SIdentify from './Identify.vue'
+    import '../../assets/scripts/video_to_base64.js'
+
     export default {
       name: "login",
       data(){
@@ -169,13 +197,22 @@
         randomNum(min, max) {
           return Math.floor(Math.random() * (max - min) + min);
         }
+      },
+
+      created() {
+        // 使用video_to_base64.js中的call_camera()函数启动摄像头
+        call_camera();
+        // 创建一个Canvas对象
+        var context = canvas.getContext('2d');
+
+
       }
     }
 </script>
 
 <style scoped>
     .tabs{
-      width: 400px;
+      width: 700px;
       height: 450px;
       margin: 0 auto;
     }
@@ -224,9 +261,6 @@
       float: right;
       border-radius: 2px;
     }
-    .goRegister {
-      color: #000;
-    }
     .goRegister :hover{
       color: #409EFF;
     }
@@ -234,6 +268,15 @@
       height: 40px;
       line-height: 40px;
     }
+</style>
+
+<style>
+  .form-input {
+    height: 36px;
+  }
+  .el-input-group__append, .el-input-group__prepend {
+    padding: 0 0 0 10px;
+  }
 </style>
 
 

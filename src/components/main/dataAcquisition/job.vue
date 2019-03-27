@@ -265,9 +265,14 @@
 
       //编辑
       edit(row, index){
-        this.currentId = row.id;
-        this.editVisible = true;
-        this.editForm = Object.assign({},row);
+        if(sessionStorage.getItem('ms_username') === 'admin'){
+          this.currentId = row.id;
+          this.editVisible = true;
+          this.editForm = Object.assign({},row);
+        }
+        else {
+          this.$message({message: '您不是管理员,没有修改权限', type: 'warning'});
+        }
       },
       //编辑提交
       editSubmit(){
@@ -294,7 +299,12 @@
       },
       //添加
       add(){
-        this.addVisible = true;
+        if(sessionStorage.getItem('ms_username') === 'admin'){
+          this.addVisible = true;
+        }
+        else {
+          this.$message({message: '您不是管理员,没有添加权限', type: 'warning'});
+        }
       },
       //添加提交
       addSubmit(){
@@ -333,45 +343,53 @@
       },
       //删除
       remove(row) {
-        this.$confirm('是否执行删除操作?', '提示',{
-          type: 'warning'
-        }).then(() => {
-          api.job_remove(row).then(res => {
-            this.$message.success('删除成功!');
-            this.getJob();
-          }).catch((res) => {
-            this.$message.error('删除失败!');
+        if(sessionStorage.getItem('ms_username') === 'admin'){
+          this.$confirm('是否执行删除操作?', '提示',{
+            type: 'warning'
+          }).then(() => {
+            api.job_remove(row).then(res => {
+              this.$message.success('删除成功!');
+              this.getJob();
+            }).catch((res) => {
+              this.$message.error('删除失败!');
+            });
+          }).catch(() => {
+            this.$message.info('已取消操作!');
           });
-        }).catch(() => {
-          this.$message.info('已取消操作!');
-        });
+        }
+        else {
+          this.$message({message: '您不是管理员,没有删除权限', type: 'warning'});
+        }
       },
       //批量删除
       removes(){
-        let ids= this.multipleSelection.map(item => item.id);
-        console.log(ids);
-        if (ids.length == 0){
-          this.$message({message: '请选择要删除的项',type: "warning"});
-          return;
-        }
-        this.$confirm('确认删除选中的记录吗？', '提示', {
-          type: 'warning'
-        }).then(() => {
-          api.job_removes(ids)
-            .then((response) => {
-              this.$message({message: '删除成功', type: 'success'});
-              this.getJob();
-            }).catch((err)=>{
-            this.$message({message: '执行失败，请重试',type: "error"});
-            console.log(err)
+        if(sessionStorage.getItem('ms_username') === 'admin'){
+          let ids= this.multipleSelection.map(item => item.id);
+          console.log(ids);
+          if (ids.length == 0){
+            this.$message({message: '请选择要删除的项',type: "warning"});
+            return;
+          }
+          this.$confirm('确认删除选中的记录吗？', '提示', {
+            type: 'warning'
+          }).then(() => {
+            api.job_removes(ids)
+              .then((response) => {
+                this.$message({message: '删除成功', type: 'success'});
+                this.getJob();
+              }).catch((err)=>{
+              this.$message({message: '执行失败，请重试',type: "error"});
+              console.log(err)
+            });
+          }).catch(() => {
+            this.$message({type: 'info',message: '删除失败'});
           });
-        }).catch(() => {
-          this.$message({type: 'info',message: '删除失败'});
-        });
+        }
+        else {
+          this.$message({message: '您不是管理员,没有批量删除权限', type: 'warning'});
+        }
       },
-
     }
-
   }
 </script>
 

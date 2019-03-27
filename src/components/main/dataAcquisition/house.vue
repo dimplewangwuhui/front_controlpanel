@@ -18,7 +18,14 @@
         </el-select>
       </el-form-item>
       <el-form-item label="" prop="region">
-        <el-cascader class="cascader-form" :options="regionOptions" :show-all-levels="false" placeholder="请选择区域"></el-cascader>
+        <el-cascader
+          class="cascader-form"
+          ref="cascaderRegion"
+          clearable
+          :options="regionOptions"
+          :show-all-levels="false"
+          placeholder="请选择区域">
+        </el-cascader>
       </el-form-item>
       <el-form-item label="" v-show="isMore==true">
         <el-select class="select-form" v-model="formSearch.rentway" clearable placeholder="请选择类型">
@@ -36,13 +43,13 @@
         </el-select>
       </el-form-item>
       <el-form-item label="" v-show="isMore==true">
-        <el-select class="select-form" v-model="formSearch.price" clearable placeholder="请选择租金">
+        <el-select class="select-form" v-model="formSearch.price" disabled clearable placeholder="请选择租金">
           <el-option v-for="item in priceOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
-      <!--<el-form-item label="近地铁" v-show="isMore==true">-->
-        <!--<el-switch v-model="formSearch.subway"></el-switch>-->
-      <!--</el-form-item>-->
+      <el-form-item label="近地铁" v-show="isMore==true">
+        <el-switch v-model="formSearch.subway" disabled></el-switch>
+      </el-form-item>
       <div>
         <el-form-item label="">
           <el-button type="primary" size="small" @click="isMore=!isMore">更多条件</el-button>
@@ -285,8 +292,8 @@
             {value: '杭州', label: '杭州'}]
         }],
         regionOptions: [{
-          value: '北京',
           label: '北京',
+          value: '北京',
           children: [{value: '东城区', label: '东城区'},
             {value: '西城区', label: '西城区'},
             {value: '朝阳区', label: '朝阳区'},
@@ -304,8 +311,8 @@
             {value: '怀柔区', label: '怀柔区'},
             {value: '延庆区', label: '延庆区'}]
         }, {
-          value: '上海',
           label: '上海',
+          value: '上海',
           children: [{value: '黄浦区', label: '黄浦区'},
             {value: '徐汇区', label: '徐汇区'},
             {value: '长宁区', label: '长宁区'},
@@ -322,8 +329,8 @@
             {value: '青浦区', label: '青浦区'},
             {value: '奉贤区', label: '奉贤区'}]
         }, {
-          value: '广州',
           label: '广州',
+          value: '广州',
           children: [{value: '荔湾区', label: '荔湾区'},
             {value: '越秀区', label: '越秀区'},
             {value: '海珠区', label: '海珠区'},
@@ -336,8 +343,8 @@
             {value: '从化区', label: '从化区'},
             {value: '增城区', label: '增城区'}]
         }, {
-          value: '深圳',
           label: '深圳',
+          value: '深圳',
           children: [{value: '罗湖区', label: '罗湖区'},
             {value: '福田区', label: '福田区'},
             {value: '南山区', label: '南山区'},
@@ -345,8 +352,8 @@
             {value: '龙岗区', label: '龙岗区'},
             {value: '盐田区', label: '盐田区'}]
         }, {
-          value: '武汉',
           label: '武汉',
+          value: '武汉',
           children: [{value: '江岸区', label: '江岸区'},
             {value: '江汉区', label: '江汉区'},
             {value: '硚口区', label: '硚口区'},
@@ -361,8 +368,8 @@
             {value: '黄陂区', label: '黄陂区'},
             {value: '新洲区', label: '新洲区'}]
         }, {
-          value: '太原',
           label: '太原',
+          value: '太原',
           children: [{value: '小店区', label: '小店区'},
             {value: '迎泽区', label: '迎泽区'},
             {value: '杏花岭区', label: '杏花岭区'},
@@ -370,8 +377,8 @@
             {value: '万柏林区', label: '万柏林区'},
             {value: '晋源区', label: '晋源区'}]
         }, {
-          value: '杭州',
           label: '杭州',
+          value: '杭州',
           children: [{value: '上城区', label: '上城区'},
             {value: '下城区', label: '下城区'},
             {value: '江干区', label: '江干区'},
@@ -407,7 +414,7 @@
           {value: '南北', label: '南北'},
         ],
         priceOptions: [
-          {value: '1000', label: '1000以下'},
+          {value: '0-1000', label: '1000以下'},
           {value: '1000-1500', label: '1000-1500'},
           {value: '1500-2000', label: '1500-2000'},
           {value: '2000-2500', label: '2000-2500'},
@@ -417,23 +424,18 @@
           {value: '5000-6000', label: '5000-6000'},
           {value: '6000-8000', label: '6000-8000'},
           {value: '8000-15000', label: '8000-15000'},
-          {value: '15000', label: '15000以上'},
+          {value: '15000-1000000', label: '15000以上'},
         ],
 
         formSearch:{
           site:'',
           city:'',
-          // title:'',
           room:'',
-          // area: '',
-          // floor:'',
-          // username:'',
-          // address :'',
           region:'',
           rentway:'',
           direction:'',
-          // subway:'',
-          price:''
+          price:'',
+          subway:'',
         },
         editVisible: false,
         editForm:{
@@ -505,13 +507,20 @@
       }
     },
 
-    created(){
+    mounted(){
       this.getHouse();
     },
 
     methods: {
       getHouse() {
+        // console.log(typeof this.$refs['cascaderRegion'].currentValue[0]);  //undefined和string
+        if((typeof this.$refs['cascaderRegion'].currentValue[0]) === 'undefined'){
+          this.formSearch.region = '';
+        }else {
+          this.formSearch.region = this.$refs['cascaderRegion'].currentValue[1]
+        }
         let params = Object.assign({}, this.formSearch);
+        console.log(params);
         let data = new URLSearchParams();
         for (let key in params) {
           data.append(key, params[key]);
@@ -550,9 +559,14 @@
 
       //编辑
       edit(row, index){
-        this.currentId = row.id;
-        this.editVisible = true;
-        this.editForm = Object.assign({},row);
+        if(sessionStorage.getItem('ms_username') === 'admin'){
+          this.currentId = row.id;
+          this.editVisible = true;
+          this.editForm = Object.assign({},row);
+        }
+        else {
+          this.$message({message: '您不是管理员,没有修改权限', type: 'warning'});
+        }
       },
       //编辑提交
       editSubmit(){
@@ -579,7 +593,12 @@
       },
       //添加
       add(){
-        this.addVisible = true;
+        if(sessionStorage.getItem('ms_username') === 'admin'){
+          this.addVisible = true;
+        }
+        else {
+          this.$message({message: '您不是管理员,没有添加权限', type: 'warning'});
+        }
       },
       //添加提交
       addSubmit(){
@@ -618,41 +637,51 @@
       },
       //删除
       remove(row) {
-        this.$confirm('是否执行删除操作?', '提示',{
-          type: 'warning'
-        }).then(() => {
-          api.house_remove(row).then(res => {
-            this.$message.success('删除成功!');
-            this.getHouse();
-          }).catch((res) => {
-            this.$message.error('删除失败!');
+        if(sessionStorage.getItem('ms_username') === 'admin'){
+          this.$confirm('是否执行删除操作?', '提示',{
+            type: 'warning'
+          }).then(() => {
+            api.house_remove(row).then(res => {
+              this.$message.success('删除成功!');
+              this.getHouse();
+            }).catch((res) => {
+              this.$message.error('删除失败!');
+            });
+          }).catch(() => {
+            this.$message.info('已取消操作!');
           });
-        }).catch(() => {
-          this.$message.info('已取消操作!');
-        });
+        }
+        else {
+          this.$message({message: '您不是管理员,没有删除权限', type: 'warning'});
+        }
       },
       //批量删除
       removes(){
-        let ids= this.multipleSelection.map(item => item.id);
-        console.log(ids);
-        if (ids.length == 0){
-          this.$message({message: '请选择要删除的项',type: "warning"});
-          return;
-        }
-        this.$confirm('确认删除选中的记录吗？', '提示', {
-          type: 'warning'
-        }).then(() => {
-          api.house_removes(ids)
-            .then((response) => {
-              this.$message({message: '删除成功', type: 'success'});
-              this.getHouse();
-            }).catch((err)=>{
-            this.$message({message: '执行失败，请重试',type: "error"});
-            console.log(err)
+        if(sessionStorage.getItem('ms_username') === 'admin'){
+          let ids= this.multipleSelection.map(item => item.id);
+          console.log(ids);
+          if (ids.length == 0){
+            this.$message({message: '请选择要删除的项',type: "warning"});
+            return;
+          }
+          this.$confirm('确认删除选中的记录吗？', '提示', {
+            type: 'warning'
+          }).then(() => {
+            api.house_removes(ids)
+              .then((response) => {
+                this.$message({message: '删除成功', type: 'success'});
+                this.getHouse();
+              }).catch((err)=>{
+              this.$message({message: '执行失败，请重试',type: "error"});
+              console.log(err)
+            });
+          }).catch(() => {
+            this.$message({type: 'info',message: '删除失败'});
           });
-        }).catch(() => {
-          this.$message({type: 'info',message: '删除失败'});
-        });
+        }
+        else {
+          this.$message({message: '您不是管理员,没有批量删除权限', type: 'warning'});
+        }
       },
 
     }

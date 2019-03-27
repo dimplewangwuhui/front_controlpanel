@@ -5,7 +5,7 @@
         <el-input class="input-form" v-model="formSearch.username" placeholder="请输入昵称"></el-input>
       </el-form-item>
       <el-form-item label="" prop="message">
-        <el-input class="input-form" v-model="formSearch.message" placeholder="请输入所要查询的留言"></el-input>
+        <el-input class="input-form" v-model="formSearch.message" placeholder="请输入所要查询的留言(模糊查询)"></el-input>
       </el-form-item>
       <el-form-item label="">
         <el-button type="primary" size="small" @click="getMessage" style="height: 32px">查询</el-button>
@@ -70,7 +70,7 @@
           <el-input disabled v-model="editForm.id" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="昵称:" prop="username">
-          <el-input v-model="editForm.username" style="width: 80%"></el-input>
+          <el-input v-model="editForm.username" disabled style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="留言内容:" prop="message">
           <el-input v-model="editForm.message" style="width: 80%"></el-input>
@@ -85,7 +85,7 @@
     <el-dialog title="添加" :visible.sync="addVisible">
       <el-form :model="addForm" :rules="Rules" ref="addForm" status-icon label-width="130px" label-position="right" style="margin: 0 auto;">
         <el-form-item label="昵称:" prop="username">
-          <el-input v-model="addForm.username" style="width: 80%"></el-input>
+          <el-input v-model="addForm.username" disabled style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="留言内容:" prop="message">
           <el-input v-model="addForm.message" style="width: 80%"></el-input>
@@ -113,6 +113,7 @@
         total: 0,
         currentId:'',
         loading: true,
+        usermsg:[],
         multipleSelection: [], // 当前页选中的行
 
         formSearch:{
@@ -147,12 +148,12 @@
 
     methods: {
       getMessage() {
-        // let params = Object.assign({}, this.formSearch);
-        // let data = new URLSearchParams();
-        // for (let key in params) {
-        //   data.append(key, params[key]);
-        // }
-        api.message_get()
+        let params = Object.assign({}, this.formSearch);
+        let data = new URLSearchParams();
+        for (let key in params) {
+          data.append(key, params[key]);
+        }
+        api.message_get(data)
           .then((response) => {
             console.log(response.data);
             this.tableData1 = response.data;
@@ -165,6 +166,7 @@
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
+        console.log('选中的项:', this.multipleSelection);
       },
       handleSizeChange(val) {
         if (this.pageSize !== val) {
@@ -184,9 +186,14 @@
 
       //编辑
       edit(row, index){
-        this.currentId = row.id;
-        this.editVisible = true;
-        this.editForm = Object.assign({},row);
+        if(sessionStorage.getItem('ms_username') === row.username){
+          this.currentId = row.id;
+          this.editVisible = true;
+          this.editForm = Object.assign({},row);
+        }
+        else {
+          this.$message({message: '您不是管理员,没有修改他人留言的权限', type: 'warning'});
+        }
       },
       //编辑提交
       editSubmit(){
@@ -248,41 +255,51 @@
       },
       //删除
       remove(row) {
-        this.$confirm('是否执行删除操作?', '提示',{
-          type: 'warning'
-        }).then(() => {
-          api.message_remove(row).then(res => {
-            this.$message.success('删除成功!');
-            this.getMessage();
-          }).catch((res) => {
-            this.$message.error('删除失败!');
+        if(sessionStorage.getItem('ms_username') === row.username){
+          this.$confirm('是否执行删除操作?', '提示',{
+            type: 'warning'
+          }).then(() => {
+            api.message_remove(row).then(res => {
+              this.$message.success('删除成功!');
+              this.getMessage();
+            }).catch((res) => {
+              this.$message.error('删除失败!');
+            });
+          }).catch(() => {
+            this.$message.info('已取消操作!');
           });
-        }).catch(() => {
-          this.$message.info('已取消操作!');
-        });
+        }
+        else {
+          this.$message({message: '您不是管理员,没有删除他人留言的权限', type: 'warning'});
+        }
       },
       //批量删除
       removes(){
-        let ids= this.multipleSelection.map(item => item.id);
-        console.log(ids);
-        if (ids.length == 0){
-          this.$message({message: '请选择要删除的项',type: "warning"});
-          return;
-        }
-        this.$confirm('确认删除选中的记录吗？', '提示', {
-          type: 'warning'
-        }).then(() => {
-          api.message_removes(ids)
-            .then((response) => {
-              this.$message({message: '删除成功', type: 'success'});
-              this.getMessage();
-            }).catch((err)=>{
-            this.$message({message: '执行失败，请重试',type: "error"});
-            console.log(err)
+        if(sessionStorage.getItem('ms_username') === 'admin'){
+          let ids= this.multipleSelection.map(item => item.id);
+          console.log(ids);
+          if (ids.length == 0){
+            this.$message({message: '请选择要删除的项',type: "warning"});
+            return;
+          }
+          this.$confirm('确认删除选中的记录吗？', '提示', {
+            type: 'warning'
+          }).then(() => {
+            api.message_removes(ids)
+              .then((response) => {
+                this.$message({message: '删除成功', type: 'success'});
+                this.getMessage();
+              }).catch((err)=>{
+              this.$message({message: '执行失败，请重试',type: "error"});
+              console.log(err)
+            });
+          }).catch(() => {
+            this.$message({type: 'info',message: '删除失败'});
           });
-        }).catch(() => {
-          this.$message({type: 'info',message: '删除失败'});
-        });
+        }
+        else {
+          this.$message({message: '您不是管理员,没有批量删除权限', type: 'warning'});
+        }
       },
 
     }
@@ -319,6 +336,10 @@
   }
   .el-date-editor .el-range-separator {
     margin-bottom: 8px;
+  }
+  .el-form-item__error {
+    top: 86%;
+    left: 50px;
   }
   .el-form-item__error {
     top: 86%;

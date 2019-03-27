@@ -5,7 +5,7 @@
       <span style="margin-left: 5px;">租房信息分析平台</span>
     </div>
     <div class="head-right">
-      <el-tooltip effect="dark" :content="message?`新增${message}条留言`:`建议留言`" placement="bottom">
+      <el-tooltip class="message" effect="light" visible-arrow="false" :content="message?`新增${message}条留言`:`建议留言`" placement="bottom">
         <el-badge is-dot class="item">
           <i class="iconfont icon-jinggao" ></i>
         </el-badge>
@@ -19,6 +19,8 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="userInfo">个人信息</el-dropdown-item>
+            <el-dropdown-item command="updatePwd">修改密码</el-dropdown-item>
+            <el-dropdown-item command="homePage" divided>返回首页</el-dropdown-item>
             <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -44,9 +46,16 @@
       },
       methods:{
         handleCommand(command){
-          if(command == 'userInfo'){
+          if(command === 'userInfo'){
             this.$router.push('/userInfo');
-          }else if(command == 'loginOut'){
+          }
+          if(command === 'updatePwd'){
+            this.$router.push('/updatePwd');
+          }
+          if(command === 'homePage'){
+            this.$router.push('/')
+          }
+          else if(command === 'loginOut'){
             this.$confirm('确定退出吗？', '提示',{
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -92,6 +101,9 @@
   .loginOut :hover{
     cursor: pointer;
     background-color: #3a0088;
+  }
+  .message :hover{
+    cursor: pointer;
   }
 </style>
 <style>

@@ -2,7 +2,7 @@
   <section class="chart-container">
     <el-row>
       <el-col :span="24">
-        <el-select class="select-form" v-model="city" placeholder="请选择城市" style="float: left">
+        <el-select class="select-form" v-model="city" placeholder="请选择城市" @change="handleSelectChange" style="float: left">
           <el-option-group v-for="group in optionsAll" :key="group.label" :label="group.label">
             <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-option-group>
@@ -40,6 +40,10 @@
         }
       },
       methods: {
+        handleSelectChange(){
+          console.log(this.city);
+        },
+
         drawBjTrendChart(){
           this.bjTrendChart = echarts.init(document.getElementById('bjTrendChart'));
           this.$axios.get('http://127.0.0.1:5000/trend')
@@ -107,7 +111,10 @@
         },
 
         drawCharts(){
-          this.drawBjTrendChart()
+          console.log(this.city);
+          if(this.city === '北京'){
+            this.drawBjTrendChart()
+          }
         }
       },
       mounted() {
