@@ -21,7 +21,7 @@
               v-loading="loading"
               :highlight-current-row="true"
               :header-cell-style="{color: '#000', backgroundColor: '#DDE2EF'}"
-              style="width: 415px; margin: 0 auto"
+              style="width: 100%; margin: 0 auto"
               @selection-change="handleSelectionChange">
       <el-table-column fixed="left" type="selection" align="center" width="50">
       </el-table-column>
@@ -29,7 +29,11 @@
       </el-table-column>
       <el-table-column prop="username" label="用户名" align="center" width="150">
       </el-table-column>
-      <el-table-column fixed="right" label="操作" align="center" width="150">
+      <el-table-column prop="sex" label="性别" align="center" width="150"></el-table-column>
+      <el-table-column prop="age" label="年龄" align="center" width="150"></el-table-column>
+      <el-table-column prop="email" label="邮箱" align="center" width="160"></el-table-column>
+      <el-table-column prop="number" label="手机号" align="center" width="150"></el-table-column>
+      <el-table-column fixed="right" label="操作" align="center">
         <template slot-scope="scope">
           <el-tooltip content="编辑" placement="top">
             <el-button type="primary" icon="el-icon-edit" size="mini" style="cursor: pointer;" @click="edit(scope.row,scope.$index)"></el-button>
@@ -58,6 +62,18 @@
       <el-form :model="editForm" ref="editForm" rules="Rules" status-icon label-width="100px" label-position="right" style="margin: 0 auto">
         <el-form-item label="用户名:" prop="username">
           <el-input v-model="editForm.username" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" prop="sex">
+          <el-input v-model="editForm.sex" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="年龄" prop="age">
+          <el-input v-model="editForm.age" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="editForm.email" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="number">
+          <el-input v-model="editForm.number" style="width: 80%"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog--footer">
@@ -103,11 +119,16 @@
         editVisible: false,
         editForm:{
           username:'',
+          sex:'',
+          age:'',
+          email:'',
+          number:''
         },
         addVisible: false,
         addForm:{
           username: '',
-          userpwd: ''
+          userpwd: '',
+          number:''
         },
 
         Rules:{
@@ -118,6 +139,9 @@
             { required: true, message: '请输入密码', trigger: 'blur' },
             { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,16}$/, message: '密码为6-16位字符，且必须包含大写字母、小写字母和数字,不能包含特殊字符' }
           ],
+          number:[
+            { required: true, message: '请输入手机号', trigger: 'blur' }
+          ]
         }
       }
     },

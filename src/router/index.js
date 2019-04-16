@@ -5,6 +5,7 @@ import homePage from '@/components/common/homePage'
 import login from '@/components/login/login'
 import register from '@/components/login/register'
 import register2login from '@/components/login/register2login'
+import forgetPwd from '@/components/login/forgetPwd'
 
 import page400 from '@/components/errorPage/page400'
 import page403 from '@/components/errorPage/page403'
@@ -13,6 +14,7 @@ import page404 from '@/components/errorPage/page404'
 import main from '@/components/common/main'
 import job from '@/components/main/dataAcquisition/job'
 import house from '@/components/main/dataAcquisition/house'
+import agency from '@/components/main/dataAcquisition/agency'
 
 import echarts_price from '@/components/main/visualDisplay/echarts_price'
 import echarts_trend from '@/components/main/visualDisplay/echarts_trend'
@@ -29,6 +31,10 @@ import userInfo from '@/components/main/user/userInfo'
 import updatePwd from '@/components/main/user/updatePwd'
 import updatePwd2login from '@/components/main/user/updatePwd2login'
 
+import notice from '@/components/main/notice/notice'
+import moreNotice from '@/components/main/notice/moreNotice'
+
+
 
 Vue.use(Router);
 
@@ -43,6 +49,11 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: login,
+    },
+    {
+      path: '/forgetPwd',
+      name: 'forgetPwd',
+      component: forgetPwd,
     },
     {
       path: '/register',
@@ -88,6 +99,11 @@ const router = new Router({
           path: '/house',
           name: '找房子',
           component: house,
+        },
+        {
+          path: '/agency',
+          name: '找中介',
+          component: agency,
         },
         {
           path: '/echarts_price',
@@ -138,6 +154,16 @@ const router = new Router({
           path: '/userManage',
           name: '用户管理',
           component: userManage,
+        },
+        {
+          path: '/notice',
+          name: '平台公告',
+          component: notice,
+        },
+        {
+          path: '/moreNotice',
+          name: '更多公告',
+          component: moreNotice,
         }]
     }
   ],
@@ -149,7 +175,7 @@ router.beforeEach((to, from, next) => {
   var token = sessionStorage.getItem('token');
   console.log("浏览器本地缓存的token: "+token);
   if(token === ''||token === null||token === 'undefined'){
-    if(to.path === '/' || to.path === '/login' || to.path === '/register' || to.path === '/register2login' || to.path === '/updatePwd2login'){
+    if(to.path === '/' || to.path === '/login' || to.path === '/register' || to.path === '/register2login' || to.path === '/updatePwd2login' || to.path === '/forgetPwd'){
       next()
     }
     else {

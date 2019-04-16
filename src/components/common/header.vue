@@ -5,12 +5,19 @@
       <span style="margin-left: 5px;">租房信息分析平台</span>
     </div>
     <div class="head-right">
-      <el-tooltip class="message" effect="light" visible-arrow="false" :content="message?`新增${message}条留言`:`建议留言`" placement="bottom">
-        <el-badge is-dot class="item">
-          <i class="iconfont icon-jinggao" ></i>
-        </el-badge>
-      </el-tooltip>
+      <!--<el-tooltip class="message" effect="light" visible-arrow="false" :content="message?`新增${message}条留言`:`建议留言`" placement="bottom">-->
+        <!--<el-badge is-dot class="item">-->
+          <!--<i class="iconfont icon-jinggao" ></i>-->
+        <!--</el-badge>-->
+      <!--</el-tooltip>-->
 
+      <!--<span class="btn-fullscreen" @click="handleFullScreen">-->
+        <!--<el-tooltip effect="light" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom" style=" transform: rotate(45deg);">-->
+          <!--<i class="el-icon-rank"></i>-->
+        <!--</el-tooltip>-->
+      <!--</span>-->
+
+      <!--<img :src=imgurl>-->
       <span class="loginOut">
         <el-dropdown trigger="click" @command="handleCommand">
           <span class="el-dropdown-link" style="color:white; padding: 0 15px;">
@@ -35,7 +42,8 @@
       data(){
         return{
           message: 2,
-          imgurl: require('../../assets/img/房子.png')
+          fullscreen: false,
+          imgurl: require('../../assets/img/me.jpg')
         }
       },
       computed:{
@@ -45,6 +53,33 @@
         }
       },
       methods:{
+        // 全屏事件
+        handleFullScreen(){
+          let element = document.documentElement;
+          if (this.fullscreen) {
+            if (document.exitFullscreen) {
+              document.exitFullscreen();
+            } else if (document.webkitCancelFullScreen) {
+              document.webkitCancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+              document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+              document.msExitFullscreen();
+            }
+          } else {
+            if (element.requestFullscreen) {
+              element.requestFullscreen();
+            } else if (element.webkitRequestFullScreen) {
+              element.webkitRequestFullScreen();
+            } else if (element.mozRequestFullScreen) {
+              element.mozRequestFullScreen();
+            } else if (element.msRequestFullscreen) {
+              // IE11
+              element.msRequestFullscreen();
+            }
+          }
+          this.fullscreen = !this.fullscreen;
+        },
         handleCommand(command){
           if(command === 'userInfo'){
             this.$router.push('/userInfo');
@@ -98,6 +133,19 @@
     float: right;
     margin-right: 2%
   }
+  .head-right img {
+    width:40px;
+    height:40px;
+    border-radius: 50%;
+  }
+  .btn-fullscreen{
+    transform: rotate(45deg);
+    margin-right: 200px;
+    margin-left: 15px;
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+  }
   .loginOut :hover{
     cursor: pointer;
     background-color: #3a0088;
@@ -106,6 +154,7 @@
     cursor: pointer;
   }
 </style>
+
 <style>
   .item .el-badge__content.is-fixed {
     top: 18px;

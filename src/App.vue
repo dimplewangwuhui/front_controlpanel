@@ -1,13 +1,18 @@
 <template>
   <div id="app">
+    <scrollTop></scrollTop>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
   import '@/assets/app.css'
+  import scrollTop from './components/common/scrollTop.vue'
   export default {
-    name: 'App'
+    name: 'App',
+    components: {
+      scrollTop,
+    }
   }
 </script>
 

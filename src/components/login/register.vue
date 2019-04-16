@@ -1,40 +1,67 @@
 <template>
   <div class="register-wrap">
-    <div class="title">注册界面</div>
-    <div class="register">
-      <el-form status-icon :model="ruleForm" :rules="rules" ref="ruleForm" class="ruleForm">
-        <el-form-item prop="username">
-          <el-input class="form-input" v-model="ruleForm.username" placeholder="账号">
-            <template slot="prepend"><i class="iconfont icon-yonghu1"></i></template>
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="userpwd">
-          <el-input class="form-input" v-model="ruleForm.userpwd" show-password placeholder="密码">
-            <template slot="prepend"><i class="iconfont icon-icon-"></i></template>
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="reUserpwd">
-          <el-input class="form-input" v-model="ruleForm.reUserpwd" show-password placeholder="确认密码">
-            <template slot="prepend"><i class="iconfont icon-icon-"></i></template>
-          </el-input>
-        </el-form-item>
-        <el-form-item prop="validate">
-          <el-input v-model="ruleForm.validate" class="validate-code" placeholder="验证码" @keyup.enter.native="submitForm('ruleForm')"></el-input>
-          <div class="code" @click="refreshCode">
-            <s-identify :identify-code="identifyCode"></s-identify>
-          </div>
-        </el-form-item>
-        <div v-if="errorInfo">
-          <span>{{errInfo}}</span>
+    <div class="title">账户注册</div>
+    <el-tabs class="tabs" type="border-card"  @tab-click="handleTabChange">
+      <el-tab-pane class="tabpane" label="账号注册">
+        <div class="register">
+          <el-form status-icon :model="ruleForm" :rules="rules" ref="ruleForm" class="ruleForm">
+            <el-form-item prop="username">
+              <el-input class="form-input" v-model="ruleForm.username" placeholder="账号">
+                <template slot="prepend"><i class="iconfont icon-yonghu1"></i></template>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="userpwd">
+              <el-input class="form-input" v-model="ruleForm.userpwd" show-password placeholder="密码">
+                <template slot="prepend"><i class="iconfont icon-icon-"></i></template>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="reUserpwd">
+              <el-input class="form-input" v-model="ruleForm.reUserpwd" show-password placeholder="确认密码">
+                <template slot="prepend"><i class="iconfont icon-icon-"></i></template>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="number">
+              <el-input class="form-input" v-model="ruleForm.number" show-password placeholder="手机号">
+                <template slot="prepend"><i class="iconfont icon-icon-"></i></template>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="validate">
+              <el-input v-model="ruleForm.validate" class="validate-code" placeholder="验证码" @keyup.enter.native="submitForm('ruleForm')"></el-input>
+              <div class="code" @click="refreshCode">
+                <s-identify :identify-code="identifyCode"></s-identify>
+              </div>
+            </el-form-item>
+            <div v-if="errorInfo">
+              <span>{{errInfo}}</span>
+            </div>
+            <el-form-item class="button">
+              <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
+            </el-form-item>
+            <el-form-item  style="margin-top: -20px; margin-left: 198px;">
+              <el-button class="goLogin" type="text" @click="goLogin">已有账号?&nbsp;立即登录</el-button>
+            </el-form-item>
+          </el-form>
         </div>
-        <el-form-item class="button">
-          <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
-        </el-form-item>
-        <el-form-item  style="margin-top: -15px; margin-left: 263px;">
-          <el-button class="goLogin" type="text" @click="goLogin">立即登录</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
+      </el-tab-pane>
+      <el-tab-pane class="tabpane" label="人脸注册">
+        <div class="face_register" style="margin: 15px auto; width: 302px">
+          <div class="top" style="width: 100%; height: 220px">
+            <el-form status-icon :model="ruleForm" :rules="rules" ref="ruleForm" class="ruleForm">
+              <el-form-item prop="username">
+                <el-input class="form-input" v-model="ruleForm.username" placeholder="账号" style="width: 300px; margin-bottom: 5px">
+                  <template slot="prepend"><i class="iconfont icon-yonghu1"></i></template>
+                </el-input>
+              </el-form-item>
+            </el-form>
+            <video id="video" autoplay="" style="width: 300px;height: 200px; border: 1px dashed #409EFF; border-radius: 12px"></video>
+            <canvas id="canvas" style="width: 0; height: 0"></canvas>
+          </div>
+          <div class="bottom" style="margin-top: 80px">
+            <el-button class="buttton" type="primary" @click="faceRegister">注册</el-button>
+          </div>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 
 </template>
@@ -42,6 +69,8 @@
 <script>
   import { mapMutations } from 'vuex';
   import SIdentify from './Identify.vue'
+  import { call_camera } from '../../assets/scripts/video_to_base64.js'
+
   export default {
     name: "register",
     data(){
@@ -72,6 +101,7 @@
           username: '',
           userpwd: '',
           reUserpwd: '',
+          number:'',
           validate: ''
         },
         rules:{
@@ -85,6 +115,10 @@
           reUserpwd: [
             { validator: reUserpwd, trigger: 'blur' },
           ],
+          number: [
+            {required: true, message: '请输入手机号码', trigger:'blur'},
+            { pattern: /^1[34578]\d{9}$/, message: '请输入合法的手机号码' }
+          ],
           validate: [
             {required: true, message: '请输入验证码', trigger:'blur'},
           ]
@@ -97,6 +131,14 @@
       document.querySelector('body').setAttribute('style', 'background-color:#2d3a4b');
     },
     methods: {
+      handleTabChange: function (tab, event) {
+        let tabId = event.target.getAttribute('id');
+        console.log('当前tab:', tabId);  //获取到当前元素的id（0,1,2）
+        if(tabId === 'tab-1'){
+          call_camera();
+        }
+      },
+
       submitForm (formName) {
         let codestatus = this.checkCode();
         if (codestatus) {
@@ -108,6 +150,7 @@
                 data: {
                   'username': this.ruleForm.username,
                   'userpwd': this.ruleForm.userpwd,
+                  'number':this.ruleForm.number
                 }
               }).then(response => {
                 console.log(response);
@@ -172,6 +215,47 @@
       // 生成随机数
       randomNum(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
+      },
+
+      face_register(){
+        // 获取canva容器组件中的图片数据信息
+        let imageData = document.getElementById('canvas').toDataURL();
+        // 截取掉前22位头部信息数据（保留图片的Base64编码数据部分）
+        let imgData = imageData.substring(22);
+        // 将数据转换成json数据格式
+        let data = {'username': this.ruleForm.username, 'face_img':imgData};
+        this.$axios({
+          method: 'post',
+          url: 'http://127.0.0.1:5000/faceRegister',
+          data: data
+        }).then(response => {
+          console.log('=========================================', response.data);
+          if (response.data.code === 'success') {
+            sessionStorage.clear();
+            this.$router.push('/register2login');
+            console.log('注册成功');
+          } else {
+            this.$notify.error({
+              title: 'Error',
+              message: response.data.msg
+            });
+          }
+        }).catch(err => {
+          this.$notify.error({
+            title: 'Error',
+            message: '注册失败'
+          });
+          console.log('注册失败');
+          console.log(err);
+        })
+      },
+      // 人脸注册
+      faceRegister(){
+        let context = canvas.getContext('2d');
+        // 在canvas中生成静态人脸图片
+        context.drawImage(video,0,0,302,150);
+        // 调用上传数据的函数
+        this.face_register();
       }
     }
   }
@@ -183,27 +267,29 @@
     height: 100%;
   }
   .register-wrap .title{
-    /*position: absolute;*/
     padding-top: 50px;
     margin-bottom: 30px;
     font-size: 30px;
     text-align: center;
     color: #fff;
   }
+  .tabs{
+    width: 400px;
+    height: 500px;
+    margin: 0 auto;
+  }
   .register-wrap .register{
     width: 320px;
-    height: 370px;
+    height: 400px;
     margin: 0 auto;
-    padding: 40px;
     /*border-radius: 5px;*/
     background-color: #fff;
-    box-shadow:0px 0px 20px #333333;
   }
   .el-form-item {
-    margin-bottom: 30px;
+    margin-bottom: 25px;
   }
   .ruleForm {
-    margin-top: 10px;
+    margin-top: 20px;
   }
   .register span {
     font-size: 5px;
@@ -229,6 +315,10 @@
   }
   .goLogin :hover{
     color: #409EFF;
+  }
+  .bottom button{
+    width:300px;
+    height:36px;
   }
 </style>
 

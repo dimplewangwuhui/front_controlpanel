@@ -14,6 +14,7 @@
         <el-menu-item-group>
           <el-menu-item index="job">找工作</el-menu-item>
           <el-menu-item index="house">找房子</el-menu-item>
+          <el-menu-item index="agency">找中介</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
 
@@ -31,23 +32,38 @@
           <el-menu-item index="wordCloud"><i class="iconfont icon-fsux_tubiao_ciyun"></i>词云展示</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <!--<el-menu-item index="userManage">-->
-        <!--<i class="iconfont icon-yonghu"></i>-->
-        <!--<span slot="title">用户管理</span>-->
-      <!--</el-menu-item>-->
       <el-submenu index="3">
         <template slot="title"><i class="iconfont icon-yonghu"></i>用户管理</template>
         <el-menu-item-group>
           <el-menu-item index="userInfo">个人信息</el-menu-item>
           <el-menu-item index="updatePwd">修改密码</el-menu-item>
-          <el-menu-item index="userManage">用户管理</el-menu-item>
+          <el-menu-item index="userManage" v-if="show">用户管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="4">
-        <template slot="title"><i class="iconfont icon-qita"></i>其他</template>
+        <template slot="title"><i class="iconfont icon-liuyan"></i>留言管理</template>
+        <el-menu-item-group>
+          <el-menu-item index="advise">建议留言</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="5">
+        <template slot="title"><i class="iconfont icon-gonggao"></i>公告管理</template>
+        <el-menu-item-group>
+          <el-menu-item index="notice">查看公告</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <!--<el-menu-item index="advise">-->
+        <!--<i class="iconfont icon-liuyan"></i>-->
+        <!--<span slot="title">建议留言</span>-->
+      <!--</el-menu-item>-->
+      <!--<el-menu-item index="notice">-->
+        <!--<i class="iconfont icon-gonggao"></i>-->
+        <!--<span slot="title">查看公告</span>-->
+      <!--</el-menu-item>-->
+      <el-submenu index="6">
+        <template slot="title"><i class="iconfont icon-qita"></i>更多</template>
         <el-menu-item-group>
           <el-menu-item index="contact">联系我们</el-menu-item>
-          <el-menu-item index="advise">建议留言</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
 
@@ -62,13 +78,20 @@
       name: "sidebar",
       data() {
         return {
-          isCollapse: false
+          isCollapse: false,
+          show: false,  //admin时为true，否则为false，为true时显示导航栏（用户管理）
         };
       },
       methods: {
         collapse(){
           this.isCollapse = !this.isCollapse;
           bus.$emit('isCollapse', this.isCollapse);
+        }
+      },
+      mounted() {
+        let username = sessionStorage.getItem('ms_username');
+        if(username === 'admin'){
+          this.show = true
         }
       }
     }

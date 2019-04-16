@@ -109,7 +109,6 @@ export default {
     return oGet('http://127.0.0.1:5000/gethouse' + '?' + params);
   },
   house_post (params) {
-    console.log('进到这里来了');
     return oPost('http://127.0.0.1:5000/houseAdd', params);
   },
   house_put (param,params) {
@@ -121,6 +120,23 @@ export default {
   },
   house_removes(params){
     return oRemove('http://127.0.0.1:5000/houseMultiDelete/' + params);
+  },
+  // ===================================================================================================================
+  agency_get(params) {
+    return oGet('http://127.0.0.1:5000/getAgency' + '?' + params);
+  },
+  agency_post (params) {
+    return oPost('http://127.0.0.1:5000/agencyAdd', params);
+  },
+  agency_put (param,params) {
+    return oPut('http://127.0.0.1:5000/agencyUpdate/' + param, params);
+  },
+  agency_remove(row){
+    let rowid = row.id;
+    return oRemove('http://127.0.0.1:5000/agencyDelete/'+ rowid);
+  },
+  agency_removes(params){
+    return oRemove('http://127.0.0.1:5000/agencyMultiDelete/' + params);
   },
   // ===================================================================================================================
   message_get(params) {
@@ -139,5 +155,22 @@ export default {
   },
   message_removes(params){
     return oRemove('http://127.0.0.1:5000/messageMultiDelete/' + params);
+  },
+  // ==================================================================================================================
+  notice_get(params) {
+    return oGet('http://127.0.0.1:5000/getNotice' + '?' + params);
+  },
+  notice_post (params) {
+    return oPost('http://127.0.0.1:5000/noticeAdd', params);
+  },
+  notice_put (param,params) {
+    return oPut('http://127.0.0.1:5000/noticeUpdate/' + param, params);
+  },
+  notice_remove(row){
+    let rowid = row.id;
+    return oRemove('http://127.0.0.1:5000/noticeDelete/'+ rowid);
+  },
+  notice_removes(params){
+    return oRemove('http://127.0.0.1:5000/noticeMultiDelete/' + params);
   },
 }

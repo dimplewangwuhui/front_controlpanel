@@ -79,7 +79,7 @@
               }
             }).then(response => {
               console.log(response);
-              if (response.data.code == 'success') {
+              if (response.data.code === 'success') {
                 sessionStorage.clear();
                 this.$router.push('/updatePwd2login');
                 console.log('密码修改成功');

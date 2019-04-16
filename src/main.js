@@ -26,7 +26,7 @@ Vue.config.productionTip = false;
 window.axios = require('axios');
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Authorization'] = store.state.token;
-axios.defaults.timeout = 20000;
+axios.defaults.timeout = 60000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 Vue.component("SIdentify",SIdentify);

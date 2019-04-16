@@ -16,6 +16,7 @@
       <div class="content_wrapper">
         <div class="content" style="flex:1;">
           <div class="content_inner">
+            <scrollTop></scrollTop>
             <router-view></router-view>
           </div>
         </div>
@@ -29,10 +30,11 @@
   import bus from './bus'
   import vHead from './header.vue';
   import vSidebar from './sidebar.vue';
+  import scrollTop from './scrollTop.vue'
     export default {
       name: "main",
       components: {
-        vHead, vSidebar
+        vHead, vSidebar, scrollTop
       },
       data() {
         return {
