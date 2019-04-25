@@ -173,4 +173,29 @@ export default {
   notice_removes(params){
     return oRemove('http://127.0.0.1:5000/noticeMultiDelete/' + params);
   },
+  //===================================================================================================================
+  focusHouse_get(params) {
+    return oGet('http://127.0.0.1:5000/getfocusHouse' + '?' + params);
+  },
+  focusHouse_remove(row){
+    let rowid = row.id;
+    return oRemove('http://127.0.0.1:5000/focusHouseDelete/'+ rowid);
+  },
+  focusHouse_removes(params){
+    return oRemove('http://127.0.0.1:5000/focusHouseMultiDelete/' + params);
+  },
+  // ==================================================================================================================
+  userMessage_get(params) {
+    return oGet('http://127.0.0.1:5000/getUserMessage' + '?' + params);
+  },
+  userMessage_put (param,params) {
+    return oPut('http://127.0.0.1:5000/userMessageUpdate/' + param, params);
+  },
+  userMessage_remove(row){
+    let rowid = row.id;
+    return oRemove('http://127.0.0.1:5000/userMessageDelete/'+ rowid);
+  },
+  userMessage_removes(params){
+    return oRemove('http://127.0.0.1:5000/userMessageMultiDelete/' + params);
+  },
 }

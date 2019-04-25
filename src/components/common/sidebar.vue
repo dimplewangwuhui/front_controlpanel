@@ -19,7 +19,7 @@
       </el-submenu>
 
       <el-submenu index="2">
-        <template slot="title"><i class="iconfont icon-zhanshi"></i>可视化展示</template>
+        <template slot="title"><i class="iconfont icon-zhanshi"></i>数据展示</template>
         <el-menu-item-group>
           <!--<el-menu-item index="echarts">图表展示</el-menu-item>-->
           <el-submenu index="echarts">
@@ -28,28 +28,31 @@
             <el-menu-item index="echarts_trend">租金走势</el-menu-item>
             <el-menu-item index="echarts_count">租房数量</el-menu-item>
             <el-menu-item index="echarts_area">租房面积</el-menu-item>
+            <el-menu-item index="ranking">小区排名</el-menu-item>
           </el-submenu>
           <el-menu-item index="wordCloud"><i class="iconfont icon-fsux_tubiao_ciyun"></i>词云展示</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="3">
-        <template slot="title"><i class="iconfont icon-yonghu"></i>用户管理</template>
+        <template slot="title"><i class="iconfont icon-yonghu"></i>用户面板</template>
         <el-menu-item-group>
-          <el-menu-item index="userInfo">个人信息</el-menu-item>
+          <el-menu-item index="userInfo">个人主页</el-menu-item>
           <el-menu-item index="updatePwd">修改密码</el-menu-item>
           <el-menu-item index="userManage" v-if="show">用户管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="4">
-        <template slot="title"><i class="iconfont icon-liuyan"></i>留言管理</template>
+        <template slot="title"><i class="iconfont icon-liuyan"></i>留言面板</template>
         <el-menu-item-group>
-          <el-menu-item index="advise">建议留言</el-menu-item>
+          <el-menu-item index="advise">留言反馈</el-menu-item>
+          <el-menu-item index="adviseManage" v-if="show">留言管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="5">
-        <template slot="title"><i class="iconfont icon-gonggao"></i>公告管理</template>
+        <template slot="title"><i class="iconfont icon-gonggao"></i>公告面板</template>
         <el-menu-item-group>
           <el-menu-item index="notice">查看公告</el-menu-item>
+          <el-menu-item index="moreNotice" v-if="show">公告管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <!--<el-menu-item index="advise">-->
@@ -63,6 +66,8 @@
       <el-submenu index="6">
         <template slot="title"><i class="iconfont icon-qita"></i>更多</template>
         <el-menu-item-group>
+          <el-menu-item index="news">租房资讯</el-menu-item>
+          <el-menu-item index="baidu">百度一下</el-menu-item>
           <el-menu-item index="contact">联系我们</el-menu-item>
         </el-menu-item-group>
       </el-submenu>

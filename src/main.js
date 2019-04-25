@@ -16,7 +16,8 @@ import qs from 'qs';
 import util from './common/util';
 import './assets/iconfont/iconfont.css'
 import echarts from 'echarts'
-
+import china from '../node_modules/echarts/map/json/china.json'
+echarts.registerMap('china', china);
 
 require('echarts-wordcloud');
 

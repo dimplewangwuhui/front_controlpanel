@@ -20,20 +20,26 @@ import echarts_price from '@/components/main/visualDisplay/echarts_price'
 import echarts_trend from '@/components/main/visualDisplay/echarts_trend'
 import echarts_count from '@/components/main/visualDisplay/echarts_count'
 import echarts_area from '@/components/main/visualDisplay/echarts_area'
+import ranking from '@/components/main/visualDisplay/ranking'
 
 import wordCloud from '@/components/main/visualDisplay/wordCloud'
-
-import contact from '@/components/main/others/contact'
-import advise from '@/components/main/others/advise'
-
+//用户
 import userManage from '@/components/main/user/userManage'
 import userInfo from '@/components/main/user/userInfo'
 import updatePwd from '@/components/main/user/updatePwd'
 import updatePwd2login from '@/components/main/user/updatePwd2login'
-
+import moreFocus_house from '@/components/main/user/moreFocus_house'
+import moreAdvices from '@/components/main/user/moreAdvices'
+//留言
+import advise from '@/components/main/advise/advise'
+import adviseManage from '@/components/main/advise/adviseManage'
+//公告
 import notice from '@/components/main/notice/notice'
 import moreNotice from '@/components/main/notice/moreNotice'
-
+//其他
+import contact from '@/components/main/others/contact'
+import news from '@/components/main/others/news'
+import baidu from '@/components/main/others/baidu'
 
 
 Vue.use(Router);
@@ -126,9 +132,24 @@ const router = new Router({
           component: echarts_area,
         },
         {
+          path: '/ranking',
+          name: '小区排名',
+          component: ranking,
+        },
+        {
           path: '/wordCloud',
           name: '词云展示',
           component: wordCloud,
+        },
+        {
+          path: '/news',
+          name: '租房资讯',
+          component: news,
+        },
+        {
+          path: '/baidu',
+          name: '百度一下',
+          component: baidu,
         },
         {
           path: '/contact',
@@ -137,13 +158,28 @@ const router = new Router({
         },
         {
           path: '/advise',
-          name: '建议留言',
+          name: '留言反馈',
           component: advise,
+        },
+        {
+          path: '/adviseManage',
+          name: '留言管理',
+          component: adviseManage,
         },
         {
           path: '/userInfo',
           name: '用户信息',
           component: userInfo,
+        },
+        {
+          path: '/moreFocus_house',
+          name: '更多收藏',
+          component: moreFocus_house,
+        },
+        {
+          path: '/moreAdvices',
+          name: '更多留言',
+          component: moreAdvices
         },
         {
           path: '/updatePwd',

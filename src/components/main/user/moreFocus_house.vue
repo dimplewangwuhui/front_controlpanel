@@ -23,40 +23,39 @@
           placeholder="请选择区域">
         </el-cascader>
       </el-form-item>
-      <el-form-item label="" v-show="isMore===true">
+      <el-form-item label="" v-show="isMore==true">
         <el-select class="select-form" v-model="formSearch.rentway" clearable placeholder="请选择类型">
           <el-option v-for="item in rentwayOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="" v-show="isMore===true">
+      <el-form-item label="" v-show="isMore==true">
         <el-select class="select-form" v-model="formSearch.room" clearable placeholder="请选择户型">
           <el-option v-for="item in roomOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="" v-show="isMore===true">
+      <el-form-item label="" v-show="isMore==true">
         <el-select class="select-form" v-model="formSearch.direction" clearable placeholder="请选择朝向">
           <el-option v-for="item in directionOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="" v-show="isMore===true">
+      <el-form-item label="" v-show="isMore==true">
         <el-select class="select-form" v-model="formSearch.price" clearable placeholder="请选择租金">
           <el-option v-for="item in priceOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="近地铁" v-show="isMore===true">
+      <el-form-item label="近地铁" v-show="isMore==true">
         <el-switch v-model="formSearch.subway"></el-switch>
       </el-form-item>
       <div>
         <el-form-item label="">
           <el-button type="primary" size="small" @click="isMore=!isMore">更多条件</el-button>
-          <el-button type="primary" size="small" @click="getHouse" style="height: 32px">查询</el-button>
+          <el-button type="primary" size="small" @click="getfocusHouse" style="height: 32px">查询</el-button>
           <el-button type="warning" size="small" plain @click="onReset">重置</el-button>
         </el-form-item>
       </div>
       <hr style="height:1px;border:none;border-top:1px dashed rgba(0, 0, 0, .05);" />
       <el-form-item label="操作">
-        <el-button size="small" @click="add">添加</el-button>
-        <el-button size="small" @click="removes">批量删除</el-button>
+        <el-button size="small" @click="removes">批量取消关注</el-button>
       </el-form-item>
     </el-form>
 
@@ -102,22 +101,12 @@
       </el-table-column>
       <el-table-column prop="urlinfo" label="详情链接" show-overflow-tooltip align="center" width="160">
       </el-table-column>
-      <el-table-column prop="create_date" label="创建时间" show-overflow-tooltip align="center" width="160">
-      </el-table-column>
-      <el-table-column prop="update_date" label="更新时间" show-overflow-tooltip align="center" width="160">
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" width="250" align="center">
+      <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope" v-if= "scope.row.id">
           <el-tooltip content="详情" placement="top">
             <el-button type="primary" size="mini" icon="el-icon-more" @click="handleClick(scope.row)"></el-button>
           </el-tooltip>
-          <el-tooltip content="收藏" placement="top">
-            <el-button type="primary" size="mini" icon="el-icon-more" @click="focus(scope.row)"></el-button>
-          </el-tooltip>
-          <el-tooltip content="编辑" placement="top">
-            <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit(scope.row,scope.$index)"></el-button>
-          </el-tooltip>
-          <el-tooltip content="删除" placement="top">
+          <el-tooltip content="取消关注" placement="top">
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="remove(scope.row)"></el-button>
           </el-tooltip>
         </template>
@@ -136,112 +125,6 @@
         layout="total, sizes, prev, pager, next, jumper">
       </el-pagination>
     </div>
-
-    <el-dialog title="编辑" :visible.sync="editVisible">
-      <el-form :model="editForm" :rules="Rules" ref="editForm" status-icon label-width="130px" label-position="right" style="margin: 0 auto;">
-        <el-form-item label="序号:" prop="id">
-          <el-input disabled v-model="editForm.id" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="网站:" prop="site">
-          <el-input v-model="editForm.site" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="标题:" prop="title">
-          <el-input v-model="editForm.title" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="户型:" prop="room">
-          <el-input v-model="editForm.room" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="面积(平米):" prop="area">
-          <el-input v-model="editForm.area" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="楼层:" prop="floor">
-          <el-input v-model="editForm.floor" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="中介:" prop="username">
-          <el-input v-model="editForm.username" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="城市:" prop="city">
-          <el-input v-model="editForm.city" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="区域:" prop="region">
-          <el-input v-model="editForm.region" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="地址:" prop="address">
-          <el-input v-model="editForm.address" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="租赁方式:" prop="rentway">
-          <el-input v-model="editForm.rentway" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="朝向:" prop="direction">
-          <el-input v-model="editForm.direction" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="地铁:" prop="subway">
-          <el-input v-model="editForm.subway" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="租金(元/月):" prop="price">
-          <el-input v-model.number="editForm.price" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="详情链接:" prop="urlinfo">
-          <el-input v-model="editForm.urlinfo" style="width: 80%"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="editVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editSubmit">确 定</el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog title="添加" :visible.sync="addVisible">
-      <el-form :model="addForm" :rules="Rules" ref="addForm" status-icon label-width="130px" label-position="right" style="margin: 0 auto;">
-        <el-form-item label="网站:" prop="site">
-          <el-input v-model="addForm.site" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="标题:" prop="title">
-          <el-input v-model="addForm.title" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="户型:" prop="room">
-          <el-input v-model="addForm.room" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="面积(平米):" prop="area">
-          <el-input v-model="addForm.area" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="楼层:" prop="floor">
-          <el-input v-model="addForm.floor" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="中介:" prop="username">
-          <el-input v-model="addForm.username" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="城市:" prop="city">
-          <el-input v-model="addForm.city" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="区域:" prop="region">
-          <el-input v-model="addForm.region" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="地址:" prop="address">
-          <el-input v-model="addForm.address" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="租赁方式:" prop="rentway">
-          <el-input v-model="addForm.rentway" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="朝向:" prop="direction">
-          <el-input v-model="addForm.direction" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="地铁:" prop="subway">
-          <el-input v-model="addForm.subway" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="租金(元/月):" prop="price">
-          <el-input v-model.number="addForm.price" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="详情链接:" prop="urlinfo">
-          <el-input v-model="addForm.urlinfo" style="width: 80%"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="addVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addSubmit">确 定</el-button>
-      </div>
-    </el-dialog>
-
   </div>
 </template>
 
@@ -249,25 +132,8 @@
   import api from "../../../api/api";
 
   export default {
-    name: "house_ajk",
+    name: "moreFocus_house",
     data() {
-      let checkPrice = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请输入租金'));
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {     //Number.isInteger(value): 判断给定值是否是整数的 Boolean 值。
-            console.log(typeof value);
-            callback(new Error('请输入数字值'));
-          } else {
-            if (value < 0) {
-              callback(new Error('请输入大于0的值'));
-            } else {
-              callback();
-            }
-          }
-        }, 0);
-      };
       return {
         tableData1: [],
         pageIndex: 1,
@@ -282,7 +148,7 @@
           label: '热门城市',
           options: [{value: '北京', label: '北京'},
             {value: '上海', label: '上海'}]
-          },{
+        },{
           label: '其他城市',
           options: [{value: '广州', label: '广州'},
             {value: '深圳', label: '深圳'},
@@ -438,82 +304,15 @@
           price:'',
           subway: false,
         },
-        editVisible: false,
-        editForm:{
-          id:'',
-          site:'',
-          title:'',
-          room:'',
-          area: '',
-          floor:'',
-          username:'',
-          city:'',
-          region:'',
-          address :'',
-          rentway:'',
-          direction:'',
-          subway:'',
-          price:'',
-          urlinfo:''
-        },
-        addVisible: false,
-        addForm:{
-          site:'',
-          title:'',
-          room:'',
-          area: '',
-          floor:'',
-          username:'',
-          city:'',
-          region:'',
-          address :'',
-          rentway:'',
-          direction:'',
-          subway:'',
-          price:'',
-          urlinfo:''
-        },
-        Rules:{
-          title:[
-            { required: true, message: '请输入标题', trigger: 'blur' }
-          ],
-          room:[
-            { required: true, message: '请输入户型', trigger: 'blur' }
-          ],
-          area:[
-            { required: true, message: '请输入面积', trigger: 'blur' }
-          ],
-          floor:[
-            { required: true, message: '请输入楼层', trigger: 'blur' }
-          ],
-          address:[
-            { required: true, message: '请输入地址', trigger: 'blur' }
-          ],
-          region:[
-            { required: true, message: '请输入区域', trigger: 'blur' }
-          ],
-          rentway:[
-            { required: true, message: '请输入租赁方式', trigger: 'blur' }
-          ],
-          // direction:[
-          //   { required: true, message: '请输入朝向', trigger: 'blur' }
-          // ],
-          // subway:[
-          //   { required: true, message: '请输入地铁', trigger: 'blur' }
-          // ],
-          price:[
-            { validator: checkPrice, trigger: 'blur' }
-          ]
-        }
       }
     },
 
     mounted(){
-      this.getHouse();
+      this.getfocusHouse();
     },
 
     methods: {
-      getHouse() {
+      getfocusHouse() {
         // console.log(typeof this.$refs['cascaderRegion'].currentValue[0]);  //undefined和string
         if((typeof this.$refs['cascaderRegion'].currentValue[0]) === 'undefined'){
           this.formSearch.region = '';
@@ -521,12 +320,13 @@
           this.formSearch.region = this.$refs['cascaderRegion'].currentValue[1]
         }
         let params = Object.assign({}, this.formSearch);
+        params['focusName'] = sessionStorage.getItem("ms_username");
         console.log(params);
         let data = new URLSearchParams();
         for (let key in params) {
           data.append(key, params[key]);
         }
-        api.house_get(data)
+        api.focusHouse_get(data)
           .then((response) => {
             this.tableData1 = response.data;
             this.total = this.tableData1.length;
@@ -542,13 +342,13 @@
       handleSizeChange(val) {
         if (this.pageSize !== val) {
           this.pageSize = val;
-          this.getHouse();
+          this.getfocusHouse();
         }
       },
       handleCurrentChange(val) {
         if (this.pageIndex !== val) {
           this.pageIndex = val;
-          this.getHouse();
+          this.getfocusHouse();
         }
       },
       onReset(){
@@ -558,154 +358,44 @@
         window.open(row.urlinfo);  //window.open(url):打开新窗。。window.location.href = url:在本窗口打开
       },
 
-      //编辑
-      edit(row, index){
-        if(sessionStorage.getItem('ms_username') === 'admin'){
-          this.currentId = row.id;
-          this.editVisible = true;
-          this.editForm = Object.assign({},row);
-        }
-        else {
-          this.$message({message: '您不是管理员,没有修改权限', type: 'warning'});
-        }
-      },
-      //编辑提交
-      editSubmit(){
-        this.$refs.editForm.validate((valid) => {
-          if (valid) {
-            this.$confirm('确认提交吗？', '提示', {}).then(() => {
-              let params = Object.assign({}, this.editForm);
-              api.house_put(this.currentId, params)
-                .then((response) => {
-                  if(response){
-                    this.$message({message: '提交成功', type: 'success'});
-                    this.editVisible = false;
-                    this.getHouse();
-                  }
-                  else {
-                    this.$message({message: '执行失败，请重试',type: "error"});
-                  }
-                });
-            }).catch((err) => {
-              this.$message({message: '执行失败，请重试',type: "error"});
-            });
-          }
-        });
-      },
-      //添加
-      add(){
-        if(sessionStorage.getItem('ms_username') === 'admin'){
-          this.addVisible = true;
-        }
-        else {
-          this.$message({message: '您不是管理员,没有添加权限', type: 'warning'});
-        }
-      },
-      //添加提交
-      addSubmit(){
-        this.$refs.addForm.validate((valid) => {
-          if (valid) {
-            this.loading = true;
-            this.$confirm('确认提交吗？', '提示', {}).then(() => {
-              let params = Object.assign({}, this.addForm);
-              console.log(params);
-              // let data = new URLSearchParams();
-              // for (let key in params) {
-              //   data.append(key, params[key]);
-              // }
-              this.$axios({
-                method: 'post',
-                url: 'http://127.0.0.1:5000/houseAdd',
-                data: params
-              }).then((response) => {
-                if(response){
-                  this.$message({message: '提交成功', type: 'success'});
-                  this.$refs.addForm.resetFields();
-                  this.addVisible = false;
-                  this.loading = false;
-                  this.getHouse();
-                }
-                else {
-                  this.$message({message: '执行失败，请重试',type: "error"});
-                }
-              }).catch((err) => {
-                this.$message({message: '执行失败，请重试',type: "error"});
-                this.loading = false;
-              });
-            });
-          }
-        });
-      },
       //删除
       remove(row) {
-        if(sessionStorage.getItem('ms_username') === 'admin'){
-          this.$confirm('是否执行删除操作?', '提示',{
-            type: 'warning'
-          }).then(() => {
-            api.house_remove(row).then(res => {
-              this.$message.success('删除成功!');
-              this.getHouse();
-            }).catch((res) => {
-              this.$message.error('删除失败!');
-            });
-          }).catch(() => {
-            this.$message.info('已取消操作!');
+        this.$confirm('是否取消关注?', '提示',{
+          type: 'warning'
+        }).then(() => {
+          api.focusHouse_remove(row).then(res => {
+            this.$message.success('删除成功!');
+            this.getfocusHouse();
+          }).catch((res) => {
+            this.$message.error('删除失败!');
           });
-        }
-        else {
-          this.$message({message: '您不是管理员,没有删除权限', type: 'warning'});
-        }
+        }).catch(() => {
+          this.$message.info('已取消操作!');
+        });
       },
       //批量删除
       removes(){
-        if(sessionStorage.getItem('ms_username') === 'admin'){
-          let ids= this.multipleSelection.map(item => item.id);
-          console.log(ids);
-          if (ids.length === 0){
-            this.$message({message: '请选择要删除的项',type: "warning"});
-            return;
-          }
-          this.$confirm('确认删除选中的记录吗？', '提示', {
-            type: 'warning'
-          }).then(() => {
-            api.house_removes(ids)
-              .then((response) => {
-                this.$message({message: '删除成功', type: 'success'});
-                this.getHouse();
-              }).catch((err)=>{
-              this.$message({message: '执行失败，请重试',type: "error"});
-              console.log(err)
-            });
-          }).catch(() => {
-            this.$message({type: 'info',message: '删除失败'});
-          });
+        let ids= this.multipleSelection.map(item => item.id);
+        console.log(ids);
+        if (ids.length === 0){
+          this.$message({message: '请选择要删除的项',type: "warning"});
+          return;
         }
-        else {
-          this.$message({message: '您不是管理员,没有批量删除权限', type: 'warning'});
-        }
-      },
-      focus(row) {
-        this.$confirm('确认收藏吗？', '提示', {}).then(() => {
-          let params = Object.assign({}, row);
-          params['focusName'] = sessionStorage.getItem("ms_username");
-          console.log(params);
-          this.$axios({
-            method: 'post',
-            url: 'http://127.0.0.1:5000/focusHouse',
-            data: params
-          }).then((response) => {
-            if(response){
-              this.$message({message: '收藏成功', type: 'success'});
-            }
-            else {
-              this.$message({message: '收藏失败，请重试',type: "error"});
-            }
-          }).catch((err) => {
-            this.$message({message: '收藏失败，请重试',type: "error"});
-            this.loading = false;
+        this.$confirm('确认删除选中的记录吗？', '提示', {
+          type: 'warning'
+        }).then(() => {
+          api.focusHouse_removes(ids)
+            .then((response) => {
+              this.$message({message: '删除成功', type: 'success'});
+              this.getfocusHouse();
+            }).catch((err)=>{
+            this.$message({message: '执行失败，请重试',type: "error"});
+            console.log(err)
           });
+        }).catch(() => {
+          this.$message({type: 'info',message: '删除失败'});
         });
-      }
+      },
 
     }
   }
@@ -747,3 +437,4 @@
     left: 50px;
   }
 </style>
+

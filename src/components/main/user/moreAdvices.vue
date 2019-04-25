@@ -1,19 +1,20 @@
 <template>
   <div class="main" style="margin: 10px auto">
     <el-form  :inline="true" ref="formSearch" :model="formSearch" class="demo-form">
-      <el-form-item label="" prop="username">
-        <el-input class="input-form" v-model="formSearch.username" placeholder="请输入昵称"></el-input>
-      </el-form-item>
       <el-form-item label="" prop="message">
         <el-input class="input-form" v-model="formSearch.message" placeholder="请输入所要查询的留言(模糊查询)"></el-input>
       </el-form-item>
+      <el-form-item label="" prop="evaluation">
+        <el-select class="select-form" v-model="formSearch.evaluation" clearable placeholder="请选择评价等级">
+          <el-option v-for="item in evaluationOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="">
-        <el-button type="primary" size="small" @click="getMessage" style="height: 32px">查询</el-button>
+        <el-button type="primary" size="small" @click="getUserMessage" style="height: 32px">查询</el-button>
         <el-button type="warning" size="small" plain @click="onReset">重置</el-button>
       </el-form-item>
       <hr style="height:1px;border:none;border-top:1px dashed rgba(0, 0, 0, .05);" />
       <el-form-item label="操作">
-        <el-button size="small" @click="add">添加留言</el-button>
         <el-button size="small" @click="removes">批量删除</el-button>
       </el-form-item>
     </el-form>
@@ -84,24 +85,6 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="添加" :visible.sync="addVisible">
-      <el-form :model="addForm" :rules="Rules" ref="addForm" status-icon label-width="130px" label-position="right" style="margin: 0 auto;">
-        <el-form-item label="昵称:" prop="username">
-          <el-input v-model="addForm.username" disabled style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="留言内容:" prop="message">
-          <el-input v-model="addForm.message" style="width: 80%"></el-input>
-        </el-form-item>
-        <el-form-item label="评价:" prop="evaluation">
-          <el-rate v-model="addForm.evaluation"></el-rate>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="addVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addSubmit">确 定</el-button>
-      </div>
-    </el-dialog>
-
   </div>
 </template>
 
@@ -109,7 +92,7 @@
   import api from "../../../api/api";
 
   export default {
-    name: "advise",
+    name: "moreAdvices",
     data() {
       return {
         tableData1: [],
@@ -120,22 +103,24 @@
         loading: true,
         usermsg:[],
         multipleSelection: [], // 当前页选中的行
+        evaluationOptions: [
+          {value: '0', label: '未评价'},
+          {value: '1', label: '偏差'},
+          {value: '2', label: '一般'},
+          {value: '3', label: '良好'},
+          {value: '4', label: '优秀'},
+          {value: '5', label: '极好'},
+        ],
 
         formSearch:{
-          username:'',
-          message:''
+          message:'',
+          evaluation: ''
         },
         editVisible: false,
         editForm:{
           id:'',
           username:'',
           message:''
-        },
-        addVisible: false,
-        addForm:{
-          username: sessionStorage.getItem('ms_username'),
-          message:'',
-          evaluation:null
         },
         Rules:{
           username:[
@@ -149,17 +134,18 @@
     },
 
     created(){
-      this.getMessage();
+      this.getUserMessage();
     },
 
     methods: {
-      getMessage() {
+      getUserMessage() {
         let params = Object.assign({}, this.formSearch);
+        params['username'] = sessionStorage.getItem("ms_username");
         let data = new URLSearchParams();
         for (let key in params) {
           data.append(key, params[key]);
         }
-        api.message_get(data)
+        api.userMessage_get(data)
           .then((response) => {
             console.log(response.data);
             this.tableData1 = response.data;
@@ -177,13 +163,13 @@
       handleSizeChange(val) {
         if (this.pageSize !== val) {
           this.pageSize = val;
-          this.getMessage();
+          this.getUserMessage();
         }
       },
       handleCurrentChange(val) {
         if (this.pageIndex !== val) {
           this.pageIndex = val;
-          this.getMessage();
+          this.getUserMessage();
         }
       },
       onReset(){
@@ -192,14 +178,9 @@
 
       //编辑
       edit(row, index){
-        if(sessionStorage.getItem('ms_username') === row.username){
-          this.currentId = row.id;
-          this.editVisible = true;
-          this.editForm = Object.assign({},row);
-        }
-        else {
-          this.$message({message: '您不是管理员,没有修改他人留言的权限', type: 'warning'});
-        }
+        this.currentId = row.id;
+        this.editVisible = true;
+        this.editForm = Object.assign({},row);
       },
       //编辑提交
       editSubmit(){
@@ -212,7 +193,7 @@
                   if(response){
                     this.$message({message: '提交成功', type: 'success'});
                     this.editVisible = false;
-                    this.getMessage();
+                    this.getUserMessage();
                   }
                   else {
                     this.$message({message: '执行失败，请重试',type: "error"});
@@ -224,88 +205,43 @@
           }
         });
       },
-      //添加
-      add(){
-        this.addVisible = true;
-      },
-      //添加提交
-      addSubmit(){
-        this.$refs.addForm.validate((valid) => {
-          if (valid) {
-            this.loading = true;
-            this.$confirm('确认提交吗？', '提示', {}).then(() => {
-              let params = Object.assign({}, this.addForm);
-              console.log(params);
-              this.$axios({
-                method: 'post',
-                url: 'http://127.0.0.1:5000/messageAdd',
-                data: params
-              }).then((response) => {
-                if(response){
-                  this.$message({message: '提交成功', type: 'success'});
-                  this.$refs.addForm.resetFields();
-                  this.addVisible = false;
-                  this.loading = false;
-                  this.getMessage();
-                }
-                else {
-                  this.$message({message: '执行失败，请重试',type: "error"});
-                }
-              }).catch((err) => {
-                this.$message({message: '执行失败，请重试',type: "error"});
-                this.loading = false;
-              });
-            });
-          }
-        });
-      },
       //删除
       remove(row) {
-        if(sessionStorage.getItem('ms_username') === row.username){
-          this.$confirm('是否执行删除操作?', '提示',{
-            type: 'warning'
-          }).then(() => {
-            api.message_remove(row).then(res => {
-              this.$message.success('删除成功!');
-              this.getMessage();
-            }).catch((res) => {
-              this.$message.error('删除失败!');
-            });
-          }).catch(() => {
-            this.$message.info('已取消操作!');
+        this.$confirm('是否执行删除操作?', '提示',{
+          type: 'warning'
+        }).then(() => {
+          api.message_remove(row).then(res => {
+            this.$message.success('删除成功!');
+            this.getUserMessage();
+          }).catch((res) => {
+            this.$message.error('删除失败!');
           });
-        }
-        else {
-          this.$message({message: '您不是管理员,没有删除他人留言的权限', type: 'warning'});
-        }
+        }).catch(() => {
+          this.$message.info('已取消操作!');
+        });
       },
       //批量删除
       removes(){
-        if(sessionStorage.getItem('ms_username') === 'admin'){
-          let ids= this.multipleSelection.map(item => item.id);
-          console.log(ids);
-          if (ids.length == 0){
-            this.$message({message: '请选择要删除的项',type: "warning"});
-            return;
-          }
-          this.$confirm('确认删除选中的记录吗？', '提示', {
-            type: 'warning'
-          }).then(() => {
-            api.message_removes(ids)
-              .then((response) => {
-                this.$message({message: '删除成功', type: 'success'});
-                this.getMessage();
-              }).catch((err)=>{
-              this.$message({message: '执行失败，请重试',type: "error"});
-              console.log(err)
-            });
-          }).catch(() => {
-            this.$message({type: 'info',message: '删除失败'});
+        let ids= this.multipleSelection.map(item => item.id);
+        console.log(ids);
+        if (ids.length == 0){
+          this.$message({message: '请选择要删除的项',type: "warning"});
+          return;
+        }
+        this.$confirm('确认删除选中的记录吗？', '提示', {
+          type: 'warning'
+        }).then(() => {
+          api.message_removes(ids)
+            .then((response) => {
+              this.$message({message: '删除成功', type: 'success'});
+              this.getUserMessage();
+            }).catch((err)=>{
+            this.$message({message: '执行失败，请重试',type: "error"});
+            console.log(err)
           });
-        }
-        else {
-          this.$message({message: '您不是管理员,没有批量删除权限', type: 'warning'});
-        }
+        }).catch(() => {
+          this.$message({type: 'info',message: '删除失败'});
+        });
       },
 
     }
@@ -323,10 +259,10 @@
     margin-bottom: 20px;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
   }
-  .el-form-item {
-    margin-bottom: 10px;
-  }
-  .input-form{
+  /*.el-form-item {*/
+  /*margin-bottom: 10px;*/
+  /*}*/
+  .input-form, .select-form, .cascader-form{
     width: 300px;
   }
   .el-input__inner{
@@ -358,3 +294,4 @@
     text-align: left;
   }
 </style>
+
