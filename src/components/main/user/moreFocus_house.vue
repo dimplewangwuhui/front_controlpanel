@@ -55,7 +55,7 @@
       </div>
       <hr style="height:1px;border:none;border-top:1px dashed rgba(0, 0, 0, .05);" />
       <el-form-item label="操作">
-        <el-button size="small" @click="removes">批量取消关注</el-button>
+        <el-button size="small" @click="removes">批量取消收藏</el-button>
       </el-form-item>
     </el-form>
 
@@ -106,7 +106,7 @@
           <el-tooltip content="详情" placement="top">
             <el-button type="primary" size="mini" icon="el-icon-more" @click="handleClick(scope.row)"></el-button>
           </el-tooltip>
-          <el-tooltip content="取消关注" placement="top">
+          <el-tooltip content="取消收藏" placement="top">
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="remove(scope.row)"></el-button>
           </el-tooltip>
         </template>
@@ -360,7 +360,7 @@
 
       //删除
       remove(row) {
-        this.$confirm('是否取消关注?', '提示',{
+        this.$confirm('是否取消收藏?', '提示',{
           type: 'warning'
         }).then(() => {
           api.focusHouse_remove(row).then(res => {

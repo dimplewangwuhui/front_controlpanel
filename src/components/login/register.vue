@@ -106,7 +106,8 @@
         },
         rules:{
           username: [
-            {required: true, message: '请输入账号', trigger:'blur'}
+            {required: true, message: '请输入账号', trigger:'blur'},
+            { min: 5, max: 18, message: '长度在 5 到 18 个字符', trigger: 'blur' }
           ],
           userpwd: [
             { validator: userpwd, trigger: 'blur' },
@@ -154,7 +155,7 @@
                 }
               }).then(response => {
                 console.log(response);
-                if (response.data.code == 'success') {
+                if (response.data.code === 'success') {
                   sessionStorage.clear();
                   this.$router.push('/register2login');
                   console.log('注册成功');

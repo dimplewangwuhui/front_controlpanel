@@ -112,7 +112,7 @@
             <el-button type="primary" size="mini" icon="el-icon-more" @click="handleClick(scope.row)"></el-button>
           </el-tooltip>
           <el-tooltip content="收藏" placement="top">
-            <el-button type="primary" size="mini" icon="el-icon-more" @click="focus(scope.row)"></el-button>
+            <el-button type="primary" size="mini" @click="focus(scope.row)"><i class="iconfont icon-chakantieziguanzhu" style="padding-right: 0"></i></el-button>
           </el-tooltip>
           <el-tooltip content="编辑" placement="top">
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit(scope.row,scope.$index)"></el-button>

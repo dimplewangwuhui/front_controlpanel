@@ -12,8 +12,8 @@
       <el-submenu index="1">
         <template slot="title"><i class="iconfont icon-data"></i><span slot="title">数据采集</span></template>
         <el-menu-item-group>
-          <el-menu-item index="job">找工作</el-menu-item>
-          <el-menu-item index="house">找房子</el-menu-item>
+          <!--<el-menu-item index="job">找工作</el-menu-item>-->
+          <el-menu-item index="house">找房源</el-menu-item>
           <el-menu-item index="agency">找中介</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
@@ -69,6 +69,7 @@
           <el-menu-item index="news">租房资讯</el-menu-item>
           <el-menu-item index="baidu">百度一下</el-menu-item>
           <el-menu-item index="contact">联系我们</el-menu-item>
+          <!--<el-menu-item index="ComUpload">上传图片</el-menu-item>-->
         </el-menu-item-group>
       </el-submenu>
 

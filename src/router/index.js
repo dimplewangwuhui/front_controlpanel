@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import firstPage from '@/components/main/firstPage'
+
 import homePage from '@/components/common/homePage'
 import login from '@/components/login/login'
 import register from '@/components/login/register'
@@ -29,6 +31,7 @@ import userInfo from '@/components/main/user/userInfo'
 import updatePwd from '@/components/main/user/updatePwd'
 import updatePwd2login from '@/components/main/user/updatePwd2login'
 import moreFocus_house from '@/components/main/user/moreFocus_house'
+import moreFocus_agency from '@/components/main/user/moreFocus_agency'
 import moreAdvices from '@/components/main/user/moreAdvices'
 //留言
 import advise from '@/components/main/advise/advise'
@@ -40,6 +43,7 @@ import moreNotice from '@/components/main/notice/moreNotice'
 import contact from '@/components/main/others/contact'
 import news from '@/components/main/others/news'
 import baidu from '@/components/main/others/baidu'
+import ComUpload from '@/components/main/others/ComUpload'
 
 
 Vue.use(Router);
@@ -97,13 +101,18 @@ const router = new Router({
       component: main,
       children: [
         {
+          path: '/firstPage',
+          name: '首页',
+          component: firstPage,
+        },
+        {
           path: '/job',
           name: '找工作',
           component: job,
         },
         {
           path: '/house',
-          name: '找房子',
+          name: '找房源',
           component: house,
         },
         {
@@ -157,6 +166,11 @@ const router = new Router({
           component: contact,
         },
         {
+          path: '/ComUpload',
+          name: '上传图片',
+          component: ComUpload
+        },
+        {
           path: '/advise',
           name: '留言反馈',
           component: advise,
@@ -175,6 +189,11 @@ const router = new Router({
           path: '/moreFocus_house',
           name: '更多收藏',
           component: moreFocus_house,
+        },
+        {
+          path: '/moreFocus_agency',
+          name: '更多关注',
+          component: moreFocus_agency,
         },
         {
           path: '/moreAdvices',

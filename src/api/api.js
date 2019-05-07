@@ -198,4 +198,15 @@ export default {
   userMessage_removes(params){
     return oRemove('http://127.0.0.1:5000/userMessageMultiDelete/' + params);
   },
+  // ===================================================================================================================
+  focusAgency_get(params) {
+    return oGet('http://127.0.0.1:5000/getfocusAgency' + '?' + params);
+  },
+  focusAgency_remove(row){
+    let rowid = row.id;
+    return oRemove('http://127.0.0.1:5000/focusAgencyDelete/'+ rowid);
+  },
+  focusAgency_removes(params){
+    return oRemove('http://127.0.0.1:5000/focusAgencyMultiDelete/' + params);
+  },
 }

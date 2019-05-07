@@ -95,10 +95,13 @@
       </el-table-column>
       <el-table-column prop="update_date" label="更新时间" show-overflow-tooltip align="center" width="160">
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="200" align="center">
+      <el-table-column fixed="right" label="操作" width="250" align="center">
         <template slot-scope="scope" v-if= "scope.row.id">
           <el-tooltip content="详情" placement="top">
             <el-button type="primary" size="mini" icon="el-icon-more" @click="handleClick(scope.row)"></el-button>
+          </el-tooltip>
+          <el-tooltip content="关注" placement="top">
+            <el-button type="primary" size="mini" @click="focus(scope.row)"><i class="iconfont icon-guanzhu" style="padding-right: 0"></i></el-button>
           </el-tooltip>
           <el-tooltip content="编辑" placement="top">
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit(scope.row,scope.$index)"></el-button>
@@ -534,6 +537,28 @@
           this.$message({message: '您不是管理员,没有批量删除权限', type: 'warning'});
         }
       },
+      focus(row) {
+        this.$confirm('确认关注吗？', '提示', {}).then(() => {
+          let params = Object.assign({}, row);
+          params['focusName'] = sessionStorage.getItem("ms_username");
+          console.log(params);
+          this.$axios({
+            method: 'post',
+            url: 'http://127.0.0.1:5000/focusAgency',
+            data: params
+          }).then((response) => {
+            if(response){
+              this.$message({message: '关注成功', type: 'success'});
+            }
+            else {
+              this.$message({message: '关注失败，请重试',type: "error"});
+            }
+          }).catch((err) => {
+            this.$message({message: '关注失败，请重试',type: "error"});
+            this.loading = false;
+          });
+        });
+      }
 
     }
   }

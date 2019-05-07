@@ -99,7 +99,7 @@
         var userpwd = (rule, value, callback) => {
           if(!value){
             callback(new Error('请输入密码'));
-          }else if(value.length < 4){
+          }else if(value.length < 6){
             callback(new Error('密码不能小于4位'));
           }else {
             callback();
@@ -127,10 +127,12 @@
           },
           rules:{
             username: [
-              {required: true, message: '请输入账号', trigger:'blur'}
+              {required: true, message: '请输入账号', trigger:'blur'},
+              { min: 5, max: 18, message: '长度在 5 到 18 个字符', trigger: 'blur' }
             ],
             userpwd: [
-              {validator: userpwd, trigger: 'blur'}
+              {required: true, message: '请输入密码', trigger:'blur'},
+              { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }
             ],
             validate: [
               {required: true, message: '请输入验证码', trigger:'blur'},
@@ -182,12 +184,12 @@
                   }
                 }).then(response => {
                   console.log(response);
-                  if (response.data.code == 'success') {
+                  if (response.data.code === 'success') {
                     sessionStorage.setItem('ms_username', this.ruleForm.username);
                     this.userToken= response.data.token;
                     console.log('获取到的token:'+this.userToken);  //根据api接口获取token
                     this.set_token({ token: this.userToken });  //将token存储到store里
-                    this.$router.push('/main');
+                    this.$router.push('/firstPage');
                   } else {
                     this.$notify.error({
                       title: 'Error',
@@ -355,7 +357,7 @@
                     this.userToken= response.data.token;
                     console.log('获取到的token:'+this.userToken);  //根据api接口获取token
                     this.set_token({ token: this.userToken });  //将token存储到store里
-                    this.$router.push('/main');
+                    this.$router.push('/firstPage');
                   } else {
                     this.$notify.error({
                       title: 'Error',
@@ -449,7 +451,7 @@
               this.userToken= response.data.token;
               console.log('获取到的token:'+this.userToken);  //根据api接口获取token
               this.set_token({ token: this.userToken });  //将token存储到store里
-              this.$router.push('/main');
+              this.$router.push('/firstPage');
             } else {
               this.$notify.error({
                 title: 'Error',

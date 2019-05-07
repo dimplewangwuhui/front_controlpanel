@@ -1,37 +1,42 @@
 <template>
   <div class="header">
     <div class="head-left">
-      <a href="/main"><i class="iconfont icon-fangzi01-copy"></i></a>
+      <a href="/firstPage"><i class="iconfont icon-fangzi01-copy"></i></a>
       <span style="margin-left: 5px;">租房信息分析平台</span>
     </div>
     <div class="head-right">
-      <!--<el-tooltip class="message" effect="light" visible-arrow="false" :content="message?`新增${message}条留言`:`建议留言`" placement="bottom">-->
-        <!--<el-badge is-dot class="item">-->
-          <!--<i class="iconfont icon-jinggao" ></i>-->
-        <!--</el-badge>-->
-      <!--</el-tooltip>-->
 
-      <!--<span class="btn-fullscreen" @click="handleFullScreen">-->
-        <!--<el-tooltip effect="light" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom" style=" transform: rotate(45deg);">-->
-          <!--<i class="el-icon-rank"></i>-->
-        <!--</el-tooltip>-->
-      <!--</span>-->
 
-      <!--<img :src=imgurl>-->
-      <span class="loginOut">
-        <el-dropdown trigger="click" @command="handleCommand">
-          <span class="el-dropdown-link" style="color:white; padding: 0 15px;">
-            <span class="username">{{username}}</span>
-            <i class="el-icon-caret-bottom"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="userInfo">个人信息</el-dropdown-item>
-            <el-dropdown-item command="updatePwd">修改密码</el-dropdown-item>
-            <el-dropdown-item command="homePage" divided>返回首页</el-dropdown-item>
-            <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </span>
+
+      <div>
+        <div class="message">
+          <el-tooltip effect="light" visible-arrow="false" :content="message?`新增${message}条留言`:`建议留言`" placement="bottom">
+            <el-badge is-dot class="item">
+              <i class="iconfont icon-jinggao" ></i>
+            </el-badge>
+          </el-tooltip>
+        </div>
+        <div class="btn-fullscreen" @click="handleFullScreen">
+          <el-tooltip effect="light" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom" style=" transform: rotate(45deg);">
+            <i class="el-icon-rank"></i>
+          </el-tooltip>
+        </div>
+        <img class="headImg" :src=imgurl>
+        <div class="loginOut" style="float: right">
+          <el-dropdown trigger="click" @command="handleCommand">
+            <span class="el-dropdown-link" style="color:white; padding: 0 15px;">
+              <span class="username">{{username}}</span>
+              <i class="el-icon-caret-bottom"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="userInfo">个人信息</el-dropdown-item>
+              <el-dropdown-item command="updatePwd">修改密码</el-dropdown-item>
+              <el-dropdown-item command="homePage" divided>返回首页</el-dropdown-item>
+              <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+      </div>
       </div>
   </div>
 </template>
@@ -43,7 +48,7 @@
         return{
           message: 2,
           fullscreen: false,
-          imgurl: require('../../assets/img/me.jpg')
+          imgurl: require('../../assets/img/bg.jpg')
         }
       },
       computed:{
@@ -133,17 +138,28 @@
     float: right;
     margin-right: 2%
   }
-  .head-right img {
+  .headImg {
+    float:left;
     width:40px;
     height:40px;
     border-radius: 50%;
+    margin-top: 8px
   }
+
   .btn-fullscreen{
-    transform: rotate(45deg);
-    margin-right: 200px;
+    float: left;
+    -webkit-transform: rotate(0deg);
+    /*transform: rotate(45deg);*/
+    margin-right: 50px;
     margin-left: 15px;
     font-size: 24px;
     color: #fff;
+    cursor: pointer;
+  }
+  .message {
+    float: left;
+    margin-right: 25px;
+    font-size: 24px;
     cursor: pointer;
   }
   .loginOut :hover{

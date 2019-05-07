@@ -2,7 +2,8 @@
   <div class="advise">
     <el-form :model="Form" :rules="Rules" ref="Form">
       <el-form-item>
-        <el-input type="textarea" :rows="5"  v-model="form.message" placeholder="请输入留言内容......"></el-input>
+        <el-input type="textarea" :rows="5" maxlength="100"
+                  show-word-limit  v-model="form.message" placeholder="请输入留言内容......"></el-input>
       </el-form-item>
       <el-form-item label="亲，给本平台个好评吧"  style="margin-top: -15px;">
         <el-rate v-model="form.evaluation"></el-rate>
@@ -57,25 +58,30 @@
     methods: {
       //发表留言
       onsubmit() {
-        this.$confirm('确认发表留言吗？', '提示', {}).then(() => {
-          let params = Object.assign({}, this.form);
-          console.log(params);
-          this.$axios({
-            method: 'post',
-            url: 'http://127.0.0.1:5000/messageAdd',
-            data: params
-          }).then((response) => {
-            if(response){
-              this.$message({message: '提交成功', type: 'success'});
-              this.get5Message();
-            }
-            else {
+        if(this.form.message === ''){
+          this.$message.warning('留言内容不能为空')
+        }
+        else {
+          this.$confirm('确认发表留言吗？', '提示', {}).then(() => {
+            let params = Object.assign({}, this.form);
+            console.log(params);
+            this.$axios({
+              method: 'post',
+              url: 'http://127.0.0.1:5000/messageAdd',
+              data: params
+            }).then((response) => {
+              if(response){
+                this.$message({message: '提交成功', type: 'success'});
+                this.get5Message();
+              }
+              else {
+                this.$message({message: '执行失败，请重试',type: "error"});
+              }
+            }).catch((err) => {
               this.$message({message: '执行失败，请重试',type: "error"});
-            }
-          }).catch((err) => {
-            this.$message({message: '执行失败，请重试',type: "error"});
+            });
           });
-        });
+        }
       },
       get5Message() {
         this.$axios.get('http://127.0.0.1:5000/get5Message')

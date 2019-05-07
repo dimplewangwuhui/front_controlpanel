@@ -3,7 +3,16 @@
     <v-head></v-head>
     <v-sidebar></v-sidebar>
     <div class="content-box" :class="{'content-collapse':collapse}">
-
+      <!--<div style="float: right; ">-->
+        <!--<el-button @click="show = !show">Click Me</el-button>-->
+        <!--<el-collapse-transition>-->
+          <!--<div v-show="show">-->
+            <!--<div class="transition-box">-->
+              <!--el-collapse-transition-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</el-collapse-transition>-->
+      <!--</div>-->
       <div class="breadcrumb-container">
         <el-breadcrumb class="breadcrumb-inner" separator-class="el-icon-arrow-right">
           <!--<el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>-->
@@ -38,7 +47,8 @@
       },
       data() {
         return {
-          collapse: false
+          collapse: false,
+          show: true
         }
       },
       mounted() {
@@ -84,5 +94,13 @@
   .content-collapse {
     left: 70px;
   }
-
+  .transition-box {
+    width: 300px; height: 500px;
+    border-radius: 4px;
+    background-color: #409EFF;
+    text-align: center;
+    color: #fff;
+    padding: 40px 20px;
+    box-sizing: border-box;
+  }
 </style>
