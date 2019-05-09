@@ -196,7 +196,7 @@
           yAxis: this.yAxis,
           series: this.series
         });
-        this.$axios.get('http://127.0.0.1:5000/getAjkCityPrice')
+        this.$axios.get('http://10.131.5.212:5000/getAjkCityPrice')
           .then((response) => {
             if(response){
               console.log(response.data);
