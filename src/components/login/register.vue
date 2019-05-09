@@ -1,6 +1,9 @@
 <template>
   <div class="register-wrap">
-    <div class="title">账户注册</div>
+    <div class="registerTop">
+      <a href="/homePage" style="margin-left: 75px;color: #409EFF"><i class="iconfont icon-fangzi01-copy"></i></a>
+      <span style="margin-left: 5px;">租房信息分析平台</span>
+    </div>
     <el-tabs class="tabs" type="border-card"  @tab-click="handleTabChange">
       <el-tab-pane class="tabpane" label="账号注册">
         <div class="register">
@@ -22,7 +25,7 @@
             </el-form-item>
             <el-form-item prop="number">
               <el-input class="form-input" v-model="ruleForm.number" show-password placeholder="手机号">
-                <template slot="prepend"><i class="iconfont icon-icon-"></i></template>
+                <template slot="prepend"><i class="iconfont icon-shouji"></i></template>
               </el-input>
             </el-form-item>
             <el-form-item prop="validate">
@@ -129,7 +132,7 @@
     mounted() {
       this.identifyCode = "";
       this.makeCode(this.identifyCodes, 4);
-      document.querySelector('body').setAttribute('style', 'background-color:#2d3a4b');
+      // document.querySelector('body').setAttribute('style', 'background-color:#2d3a4b');
     },
     methods: {
       handleTabChange: function (tab, event) {
@@ -263,21 +266,32 @@
 </script>
 
 <style scoped>
+  .registerTop{
+    background-color: rgba(255, 255, 255);
+    height: 66px;
+    line-height: 66px;
+    width: 100%;
+    text-align: left;
+    font-size: 22px;
+    border-bottom: 1px solid #909399;
+  }
   .register-wrap{
     width:100%;
     height: 100%;
+    background: url(../../assets/img/0008020223417643_b.jpg) no-repeat center center;
+    background-size: 100%;
   }
-  .register-wrap .title{
-    padding-top: 50px;
-    margin-bottom: 30px;
-    font-size: 30px;
-    text-align: center;
-    color: #fff;
-  }
+  /*.register-wrap .title{*/
+    /*padding-top: 50px;*/
+    /*margin-bottom: 30px;*/
+    /*font-size: 30px;*/
+    /*text-align: center;*/
+    /*color: #fff;*/
+  /*}*/
   .tabs{
-    width: 400px;
+    width: 450px;
     height: 500px;
-    margin: 0 auto;
+    margin: 33px auto;
   }
   .register-wrap .register{
     width: 320px;

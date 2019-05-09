@@ -1,7 +1,7 @@
 <template>
   <div class="forgetPwd">
     <div class="top">
-      <a href="/main" style="margin-left: 75px; color: #409EFF"><i class="iconfont icon-fangzi01-copy"></i></a>
+      <a href="/homePage" style="margin-left: 75px; color: #409EFF"><i class="iconfont icon-fangzi01-copy"></i></a>
       <span style="margin-left: 5px;">租房信息分析平台</span>
     </div>
     <div class="bottom">

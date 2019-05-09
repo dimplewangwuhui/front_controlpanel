@@ -11,9 +11,10 @@
       <el-submenu index="1" style="margin-left: 100px">
         <template slot="title"><span slot="title">数据采集</span></template>
         <el-menu-item-group>
-          <el-menu-item index="job">找工作</el-menu-item>
+          <!--<el-menu-item index="job">找工作</el-menu-item>-->
           <el-menu-item index="house">找房子</el-menu-item>
           <el-menu-item index="agency">找中介</el-menu-item>
+          <el-menu-item index="image">找图片</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="2">

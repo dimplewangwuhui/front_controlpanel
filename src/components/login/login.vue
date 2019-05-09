@@ -1,6 +1,9 @@
 <template>
     <div class="login-wrap">
-      <div class="title">账户登录</div>
+      <div class="loginTop">
+        <a href="/homePage" style="margin-left: 75px;color: #409EFF"><i class="iconfont icon-fangzi01-copy"></i></a>
+        <span style="margin-left: 5px;">租房信息分析平台</span>
+      </div>
       <el-tabs class="tabs" type="border-card" @tab-click="handleTabChange">
         <el-tab-pane class="tabpane" label="账号登录">
           <div class="login">
@@ -116,6 +119,7 @@
           isSend:true,
           phone_code:'',
           phone_validate_code:'获取验证码',
+
           ruleForm: {
             username: '',
             userpwd: '',
@@ -152,7 +156,7 @@
       mounted() {
         this.identifyCode = "";
         this.makeCode(this.identifyCodes, 4);
-        document.querySelector('body').setAttribute('style', 'background-color:#2d3a4b');
+        // document.querySelector('body').setAttribute('style', 'background-color:#2d3a4b');
       },
       methods:{
         handleTabChange: function (tab, event) {
@@ -489,29 +493,31 @@
 </script>
 
 <style scoped>
+    .loginTop{
+      background-color: #fff;
+      height: 66px;
+      line-height: 66px;
+      width: 100%;
+      text-align: left;
+      font-size: 22px;
+      border-bottom: 1px solid #909399;
+      /*opacity: 0.75;*/
+    }
     .tabs{
       width: 400px;
       height: 450px;
-      margin: 0 auto;
+      margin: 58px auto;
     }
     .el-form-item {
       margin-bottom: 30px;
     }
     .login-wrap{
-      /*position: relative;*/
       width:100%;
       height: 100%;
-      /*background: url(../../assets/img/bg.jpg) no-repeat center center;*/
-      /*background-size: 100% 100%;*/
+      background: url(../../assets/img/center.jpg) no-repeat center center;
+      background-size: 100% 100%;
     }
-    .login-wrap .title{
-      /*position: absolute;*/
-      padding-top: 50px;
-      margin-bottom: 30px;
-      font-size: 30px;
-      text-align: center;
-      color: #fff;
-    }
+
     .login-wrap .login{
       width: 300px;
       margin: 60px auto;

@@ -43,6 +43,9 @@
           <el-option v-for="item in priceOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="有电梯" v-show="isMore===true">
+        <el-switch v-model="formSearch.lift"></el-switch>
+      </el-form-item>
       <el-form-item label="近地铁" v-show="isMore==true">
         <el-switch v-model="formSearch.subway"></el-switch>
       </el-form-item>
@@ -95,9 +98,13 @@
       </el-table-column>
       <el-table-column prop="direction" label="朝向"  align="center" width="120">
       </el-table-column>
+      <el-table-column prop="lift" label="电梯" align="center" width="150">
+      </el-table-column>
       <el-table-column prop="subway" label="地铁" align="center" width="150">
       </el-table-column>
       <el-table-column prop="price" label="租金" sortable align="center" width="120">
+      </el-table-column>
+      <el-table-column prop="imgURL" label="图片链接" align="center" width="150">
       </el-table-column>
       <el-table-column prop="urlinfo" label="详情链接" show-overflow-tooltip align="center" width="160">
       </el-table-column>
@@ -302,6 +309,7 @@
           rentway:'',
           direction:'',
           price:'',
+          lift: false,
           subway: false,
         },
       }

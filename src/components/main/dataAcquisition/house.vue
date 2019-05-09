@@ -43,6 +43,9 @@
           <el-option v-for="item in priceOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="有电梯" v-show="isMore===true">
+        <el-switch v-model="formSearch.lift"></el-switch>
+      </el-form-item>
       <el-form-item label="近地铁" v-show="isMore===true">
         <el-switch v-model="formSearch.subway"></el-switch>
       </el-form-item>
@@ -96,9 +99,13 @@
       </el-table-column>
       <el-table-column prop="direction" label="朝向"  align="center" width="120">
       </el-table-column>
+      <el-table-column prop="lift" label="电梯" align="center" width="150">
+      </el-table-column>
       <el-table-column prop="subway" label="地铁" align="center" width="150">
       </el-table-column>
       <el-table-column prop="price" label="租金" sortable align="center" width="120">
+      </el-table-column>
+      <el-table-column prop="imgURL" label="图片链接" align="center" width="150">
       </el-table-column>
       <el-table-column prop="urlinfo" label="详情链接" show-overflow-tooltip align="center" width="160">
       </el-table-column>
@@ -175,11 +182,17 @@
         <el-form-item label="朝向:" prop="direction">
           <el-input v-model="editForm.direction" style="width: 80%"></el-input>
         </el-form-item>
+        <el-form-item label="电梯:" prop="lift">
+          <el-input v-model="editForm.lift" style="width: 80%"></el-input>
+        </el-form-item>
         <el-form-item label="地铁:" prop="subway">
           <el-input v-model="editForm.subway" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="租金(元/月):" prop="price">
           <el-input v-model.number="editForm.price" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="图片链接:" prop="imgURL">
+          <el-input v-model="editForm.imgURL" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="详情链接:" prop="urlinfo">
           <el-input v-model="editForm.urlinfo" style="width: 80%"></el-input>
@@ -226,11 +239,17 @@
         <el-form-item label="朝向:" prop="direction">
           <el-input v-model="addForm.direction" style="width: 80%"></el-input>
         </el-form-item>
+        <el-form-item label="电梯:" prop="direction">
+          <el-input v-model="addForm.lift" style="width: 80%"></el-input>
+        </el-form-item>
         <el-form-item label="地铁:" prop="subway">
           <el-input v-model="addForm.subway" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="租金(元/月):" prop="price">
           <el-input v-model.number="addForm.price" style="width: 80%"></el-input>
+        </el-form-item>
+        <el-form-item label="图片链接:" prop="direction">
+          <el-input v-model="addForm.imgURL" style="width: 80%"></el-input>
         </el-form-item>
         <el-form-item label="详情链接:" prop="urlinfo">
           <el-input v-model="addForm.urlinfo" style="width: 80%"></el-input>
@@ -436,6 +455,7 @@
           rentway:'',
           direction:'',
           price:'',
+          lift: false,
           subway: false,
         },
         editVisible: false,
@@ -452,8 +472,10 @@
           address :'',
           rentway:'',
           direction:'',
+          lift: '',
           subway:'',
           price:'',
+          imgURL: '',
           urlinfo:''
         },
         addVisible: false,
@@ -469,8 +491,10 @@
           address :'',
           rentway:'',
           direction:'',
+          lift:'',
           subway:'',
           price:'',
+          imgURL:'',
           urlinfo:''
         },
         Rules:{
@@ -495,12 +519,15 @@
           rentway:[
             { required: true, message: '请输入租赁方式', trigger: 'blur' }
           ],
-          // direction:[
-          //   { required: true, message: '请输入朝向', trigger: 'blur' }
-          // ],
-          // subway:[
-          //   { required: true, message: '请输入地铁', trigger: 'blur' }
-          // ],
+          direction:[
+            { required: true, message: '请输入朝向', trigger: 'blur' }
+          ],
+          lift:[
+            { required: true, message: '请输入电梯', trigger: 'blur' }
+          ],
+          subway:[
+            { required: true, message: '请输入地铁', trigger: 'blur' }
+          ],
           price:[
             { validator: checkPrice, trigger: 'blur' }
           ]

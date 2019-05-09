@@ -98,7 +98,9 @@
       <el-upload
         class="uploadHead"
         drag
-        action="http://127.0.0.1:5000/uploadHead"
+        action=""
+        :multiple="false"
+        :limit="1"
         :show-file-list="false"
         :before-upload="beforeAvatarUpload"
         :on-success="handleAvatarSuccess">
@@ -146,6 +148,7 @@
 
 <script>
   import api from '../../../api/api'
+  import bus from '../../common/bus.js'
 
     export default {
       name: "userInfo",
@@ -187,12 +190,29 @@
         this.get5UserMessage();
         this.getFocus_house();
         this.getFocus_agency();
-        // this.uploadHead()
+        this.getHeadImg()
       },
       methods: {
-        handleAvatarSuccess(res, files) {
-          console.log('如果成功调用这个函数');
-          this.headURL = URL.createObjectURL(files.raw);
+        // handleAvatarSuccess(res, files) {
+        //   console.log('如果成功调用这个函数');
+        //   this.headURL = URL.createObjectURL(files.raw);
+        // },
+        getHeadImg() {
+          let data = {'username': sessionStorage.getItem("ms_username")};
+          this.$axios({
+            method: 'post',
+            url: 'http://127.0.0.1:5000/getHeadImg',
+            data: data
+          }).then(response => {
+              if(response.data.code === 'success'){
+                console.log('获取头像成功');
+                this.headURL = response.data.data;
+              }else {
+                this.headURL = require("../../../assets/img/bg.jpg")
+              }
+            }).catch((err) => {
+              console.log(err);
+          })
         },
         beforeAvatarUpload(files) {
           var _this = this;
@@ -239,8 +259,8 @@
               var ext = image.src.substring(image.src.lastIndexOf(".")+1).toLowerCase();//图片格式
               console.log('---------------------', ext);
               var base64 = canvas.toDataURL("image/"+ext, quality );
-              console.log('---------------------', base64);
-              let data = {'username': sessionStorage.getItem("ms_username"), 'head_img': base64, 'blob':ext};
+              // console.log('---------------------', base64);
+              let data = {'username': sessionStorage.getItem("ms_username"), 'blobURL':ext};
               // 回调函数返回base64的值
               _this.imgArray.unshift('');
               _this.imgArray.splice(0, 1, base64);//替换数组数据的方法，此处不能使用：this.imgArr[index] = url;
@@ -255,22 +275,20 @@
                   console.log(response.data);
                   if(response.data.code === 'success'){
                     console.log(response.data);
-                    _this.$message.success('头像上传成功');
                   }
                   else {
                     console.log(response.data);
-                    _this.$message.error('头像上传失败');
+                    _this.$message.error(response.data.msg);
                   }
                 }).catch(err => {
                   console.log(err);
-                  _this.$message.error('头像上传失败')
+                  _this.$message.error('头像选择失败')
                 })
               }
             };
           }
         },
         changeHead() {
-          console.log('这里');
           this.dialogFormVisible = false;
           let data = {'username': sessionStorage.getItem("ms_username")};
           this.$axios({
@@ -280,10 +298,12 @@
           }).then((response) => {
             if(response){
               this.headURL = response.data.data;
-              console.log(response.data);
+              this.$message.success(response.data.msg);
+              this.getHeadImg();
             }
           }).catch(err => {
             console.log(err);
+            this.$message.error(response.data.msg);
           })
         },
 

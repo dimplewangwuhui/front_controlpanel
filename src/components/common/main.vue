@@ -3,16 +3,15 @@
     <v-head></v-head>
     <v-sidebar></v-sidebar>
     <div class="content-box" :class="{'content-collapse':collapse}">
-      <!--<div style="float: right; ">-->
-        <!--<el-button @click="show = !show">Click Me</el-button>-->
-        <!--<el-collapse-transition>-->
-          <!--<div v-show="show">-->
-            <!--<div class="transition-box">-->
-              <!--el-collapse-transition-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</el-collapse-transition>-->
-      <!--</div>-->
+      <div>
+        <el-collapse-transition>
+          <div v-show="show">
+            <div class="transition-box">
+              el-collapse-transition
+            </div>
+          </div>
+        </el-collapse-transition>
+      </div>
       <div class="breadcrumb-container">
         <el-breadcrumb class="breadcrumb-inner" separator-class="el-icon-arrow-right">
           <!--<el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>-->
@@ -48,16 +47,25 @@
       data() {
         return {
           collapse: false,
-          show: true
+          show: false,
         }
       },
       mounted() {
         bus.$on('isCollapse', msg => {
           this.collapse = msg;
         });
+        bus.$on('isShow', msg => {
+          this.show = msg;
+        });
         document.querySelector('body').setAttribute('style', 'background-color:#F4F5F9');
         // console.log(this.$route.matched)
       },
+      // methods: {
+      //   getShow (msg) {
+      //     console.log('=============', msg);
+      //     this.show = msg
+      //   }
+      // }
     }
 </script>
 
@@ -95,6 +103,7 @@
     left: 70px;
   }
   .transition-box {
+    float: right;
     width: 300px; height: 500px;
     border-radius: 4px;
     background-color: #409EFF;

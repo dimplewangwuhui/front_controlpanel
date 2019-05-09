@@ -17,6 +17,7 @@ import main from '@/components/common/main'
 import job from '@/components/main/dataAcquisition/job'
 import house from '@/components/main/dataAcquisition/house'
 import agency from '@/components/main/dataAcquisition/agency'
+import image from '@/components/main/dataAcquisition/image'
 
 import echarts_price from '@/components/main/visualDisplay/echarts_price'
 import echarts_trend from '@/components/main/visualDisplay/echarts_trend'
@@ -119,6 +120,11 @@ const router = new Router({
           path: '/agency',
           name: '找中介',
           component: agency,
+        },
+        {
+          path: '/image',
+          name: '找图片',
+          component: image,
         },
         {
           path: '/echarts_price',

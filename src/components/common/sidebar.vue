@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar ">
     <div class="collapsebar"><a @click="collapse"><i class="iconfont icon-sort"></i></a></div>
     <el-menu class="el-menu-vertical-demo"
              unique-opened
@@ -15,6 +15,7 @@
           <!--<el-menu-item index="job">找工作</el-menu-item>-->
           <el-menu-item index="house">找房源</el-menu-item>
           <el-menu-item index="agency">找中介</el-menu-item>
+          <el-menu-item index="image">找图片</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
 
@@ -86,6 +87,7 @@
         return {
           isCollapse: false,
           show: false,  //admin时为true，否则为false，为true时显示导航栏（用户管理）
+          sidebaeBgColor: '#494090 !important',
         };
       },
       methods: {
