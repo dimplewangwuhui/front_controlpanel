@@ -190,7 +190,7 @@
         this.get5UserMessage();
         this.getFocus_house();
         this.getFocus_agency();
-        this.getHeadImg()
+        this.getHeadImg();
       },
       methods: {
         // handleAvatarSuccess(res, files) {

@@ -61,6 +61,16 @@
               {value: '杭州', label: '杭州'},
               {value: '太原', label: '太原'}]
           }],
+          toolbox: {
+            left: 100,
+            feature: {
+              dataZoom: {
+                yAxisIndex: 'none'
+              },
+              restore: {},
+              saveAsImage: {}
+            }
+          },
         }
       },
       methods: {
@@ -72,7 +82,7 @@
                 console.log('北京租金走势:',response.data);
                 this.bjTrendChart.setOption({
                   title: {
-                    text: '北京市3月份房租租金走势',
+                    text: '北京市3月份-5月份房租租金走势',
                     subtext: '数据来源: 安居客',
                     x: 'center',
                     sublink: 'https://bj.anjuke.com'
@@ -80,6 +90,7 @@
                   tooltip: {
                     trigger: 'axis'
                   },
+                  toolbox: this.toolbox,
                   xAxis: {
                     data: response.data.map(function (item) {
                       if(item[2] === '北京'){
@@ -96,7 +107,8 @@
                     }
                   }],
                   dataZoom: [{
-                    startValue: '2019-03-01'
+                    startValue: '2019-03-01',
+                    endValue: '2019-04-01'
                   }, {
                     type: 'inside'
                   }],
@@ -142,7 +154,7 @@
                 console.log('上海租金走势:',response.data);
                 this.shTrendChart.setOption({
                   title: {
-                    text: '上海市3月份房租租金走势',
+                    text: '上海市3月份-5月份房租租金走势',
                     subtext: '数据来源: 安居客',
                     x: 'center',
                     sublink: 'https://sh.anjuke.com'
@@ -150,12 +162,13 @@
                   tooltip: {
                     trigger: 'axis'
                   },
+                  toolbox: this.toolbox,
                   xAxis: {
                     data: response.data.map(function (item) {
                       if(item[2] === '上海'){
                         return item[1];
                       }
-                    })
+                    }),
                   },
                   yAxis: [{
                     splitLine: {
@@ -166,7 +179,8 @@
                     }
                   }],
                   dataZoom: [{
-                    startValue: '2019-03-01'
+                    startValue: '2019-03-01',
+                    endValue: '2019-04-01'
                   }, {
                     type: 'inside'
                   }],
@@ -209,7 +223,7 @@
           this.$axios.get('http://127.0.0.1:5000/trend')
             .then((response) => {
               if(response){
-                console.log('上海租金走势:',response.data);
+                console.log('广州租金走势:',response.data);
                 this.gzTrendChart.setOption({
                   title: {
                     text: '广州市3月份房租租金走势',
@@ -220,6 +234,7 @@
                   tooltip: {
                     trigger: 'axis'
                   },
+                  toolbox: this.toolbox,
                   xAxis: {
                     data: response.data.map(function (item) {
                       if(item[2] === '广州'){
@@ -236,7 +251,8 @@
                     }
                   }],
                   dataZoom: [{
-                    startValue: '2019-03-01'
+                    startValue: '2019-03-01',
+                    endValue: '2019-04-01'
                   }, {
                     type: 'inside'
                   }],
@@ -279,7 +295,7 @@
           this.$axios.get('http://127.0.0.1:5000/trend')
             .then((response) => {
               if(response){
-                console.log('上深圳租金走势:',response.data);
+                console.log('深圳租金走势:',response.data);
                 this.szTrendChart.setOption({
                   title: {
                     text: '深圳市3月份房租租金走势',
@@ -290,6 +306,7 @@
                   tooltip: {
                     trigger: 'axis'
                   },
+                  toolbox: this.toolbox,
                   xAxis: {
                     data: response.data.map(function (item) {
                       if(item[2] === '深圳'){
@@ -306,7 +323,8 @@
                     }
                   }],
                   dataZoom: [{
-                    startValue: '2019-03-01'
+                    startValue: '2019-03-17',
+                    endValue: '2019-04-01'
                   }, {
                     type: 'inside'
                   }],
@@ -352,7 +370,7 @@
                 console.log('武汉租金走势:',response.data);
                 this.whTrendChart.setOption({
                   title: {
-                    text: '上海市3月份房租租金走势',
+                    text: '武汉市3月份房租租金走势',
                     subtext: '数据来源: 安居客',
                     x: 'center',
                     sublink: 'https://wh.anjuke.com'
@@ -360,6 +378,7 @@
                   tooltip: {
                     trigger: 'axis'
                   },
+                  toolbox: this.toolbox,
                   xAxis: {
                     data: response.data.map(function (item) {
                       if(item[2] === '武汉'){
@@ -376,7 +395,8 @@
                     }
                   }],
                   dataZoom: [{
-                    startValue: '2019-03-01'
+                    startValue: '2019-03-01',
+                    endValue: '2019-04-01'
                   }, {
                     type: 'inside'
                   }],
@@ -430,6 +450,7 @@
                   tooltip: {
                     trigger: 'axis'
                   },
+                  toolbox: this.toolbox,
                   xAxis: {
                     data: response.data.map(function (item) {
                       if(item[2] === '杭州'){
@@ -446,7 +467,8 @@
                     }
                   }],
                   dataZoom: [{
-                    startValue: '2019-03-01'
+                    startValue: '2019-03-01',
+                    endValue: '2019-04-01'
                   }, {
                     type: 'inside'
                   }],
@@ -500,6 +522,7 @@
                   tooltip: {
                     trigger: 'axis'
                   },
+                  toolbox: this.toolbox,
                   xAxis: {
                     data: response.data.map(function (item) {
                       if(item[2] === '太原'){
@@ -516,7 +539,8 @@
                     }
                   }],
                   dataZoom: [{
-                    startValue: '2019-03-01'
+                    startValue: '2019-03-01',
+                    endValue: '2019-04-01'
                   }, {
                     type: 'inside'
                   }],
@@ -575,7 +599,7 @@
         }
       },
       mounted() {
-        this.drawCharts()
+        this.drawCharts();
       }
     }
 </script>

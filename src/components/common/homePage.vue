@@ -70,15 +70,98 @@
 
     <el-carousel :interval="2000" arrow="hover" height="100%" class="carousel">
       <el-carousel-item>
+        <div style="float: left; width: 700px; height: 600px;">
+          <el-row style="">
+            <el-col :span="6">
+              <div style="width: 100px; height: 100px; background-color: #fff; margin-left: 30px">
+                <img :src=logo style="width: 50px; height: 50px; padding-top: 25px">
+              </div>
+            </el-col>
+            <el-col :span="18">
+              <div style="font-size: 25px; margin-top: 120px; margin-left: -150px">基于人工智能的</div>
+              <div style="font-size: 50px; margin-top: 15px; margin-left: -150px">租房信息分析平台</div>
+              <div style="font-size: 18px; margin-top: 30px; margin-left: -150px">分析安居客大量房源数据</div>
+              <div style="font-size: 18px; margin-top: 10px; margin-left: -150px">提供清晰直观的图表展示，良好的界面设计，简易的功能操作</div>
+              <div style="font-size: 18px; margin-top: 10px; margin-left: -150px">提供专业化、标准化服务，满足各类用户所需</div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <div style="margin: 0 auto">
+                <i class="el-icon-help" style="font-size: 250px; color: #fff; margin-top: 80px"></i>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
         <div id="mapChart" style="width: 600px; height: 600px; float: right; margin-top: -20px; margin-right: 50px"></div>
       </el-carousel-item>
+
       <el-carousel-item>
-        <div id="allChart" style="width: 600px; height: 300px; float: right; margin-top: 130px; margin-right: 50px"></div>
+        <div style="float: left; width: 700px; height: 600px;">
+          <el-row style="">
+            <el-col :span="6">
+              <div style="width: 100px; height: 100px; background-color: #fff; margin-left: 30px">
+                <img :src=logo style="width: 50px; height: 50px; padding-top: 25px">
+              </div>
+            </el-col>
+            <el-col :span="18">
+              <div style="font-size: 25px; margin-top: 120px; margin-left: -150px">基于人工智能的</div>
+              <div style="font-size: 50px; margin-top: 15px; margin-left: -150px">租房信息分析平台</div>
+              <div style="font-size: 18px; margin-top: 30px; margin-left: -150px">分析安居客大量房源数据</div>
+              <div style="font-size: 18px; margin-top: 10px; margin-left: -150px">提供清晰直观的图表展示，良好的界面设计，简易的功能操作</div>
+              <div style="font-size: 18px; margin-top: 10px; margin-left: -150px">提供专业化、标准化服务，满足各类用户所需</div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <div style="margin: 0 auto">
+                <i class="el-icon-help" style="font-size: 250px; color: #fff; margin-top: 80px"></i>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div id="bjCountChart" style="width: 500px; height: 500px; margin-left: 800px; padding-top: 80px"></div>
       </el-carousel-item>
 
-      <!--<el-carousel-item>-->
-        <!--<div id="mapChart3" style="width: 500px; height: 500px; margin-left: 800px; padding-top: 80px"></div>-->
-      <!--</el-carousel-item>-->
+      <el-carousel-item>
+        <div style="float: left; width: 700px; height: 600px;">
+          <el-row style="">
+            <el-col :span="6">
+              <div style="width: 100px; height: 100px; background-color: #fff; margin-left: 30px">
+                <img :src=logo style="width: 50px; height: 50px; padding-top: 25px">
+              </div>
+            </el-col>
+            <el-col :span="18">
+              <div style="font-size: 25px; margin-top: 120px; margin-left: -150px">基于人工智能的</div>
+              <div style="font-size: 50px; margin-top: 15px; margin-left: -150px">租房信息分析平台</div>
+              <div style="font-size: 18px; margin-top: 30px; margin-left: -150px">分析安居客大量房源数据</div>
+              <div style="font-size: 18px; margin-top: 10px; margin-left: -150px">提供清晰直观的图表展示，良好的界面设计，简易的功能操作</div>
+              <div style="font-size: 18px; margin-top: 10px; margin-left: -150px">提供专业化、标准化服务，满足各类用户所需</div>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <div style="margin: 0 auto">
+                <i class="el-icon-help" style="font-size: 250px; color: #fff; margin-top: 80px"></i>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div style=" float: right; margin-top: 0px; margin-right: 50px">
+          <div style="margin: 0 auto">
+            <i class="el-icon-help" style="font-size: 250px; color: #fff; margin-top: -125px"></i>
+          </div>
+          <div class="bottom-right" style="font-size: 20px; text-align: center">
+            <div class="bottom-content">If you have any questions, you can add my WeChat to contact me.</div>
+            <div class="bottom-content">I will try my best to answer them for you.</div>
+            <div class="bottom-content">仓库地址:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/dimplewangwuhui/front_controlpanel" target="_blank">front_controlpanel</a></div>
+            <div class="bottom-content">联系作者:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dimple老王</div>
+            <div class="bottom-content">联系微信:</div>
+            <div style="margin-top: -30px; margin-left: -80px"><img :src="wechatURL" style="width: 150px; height: 150px"></div>
+          </div>
+        </div>
+      </el-carousel-item>
+
     </el-carousel>
   </div>
 
@@ -96,13 +179,15 @@
       return {
         logins: '登录',
         show: 'false',
+        logo: require('../../assets/img/房子.png'),
         allChart: null,
         mapChart: null,
-        mapChart3: null,
+        bjCountChart: null,
         imagesbox: {
           idView1: require("../../assets/img/timg.jpg"),
           idView2: require("../../assets/img/sky.jpg"),
         },
+        wechatURL: require('../../assets/img/wechat.jpg'),
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -169,50 +254,6 @@
         this.$router.push('/register')
       },
 
-      drawAllChart() {
-        this.allChart = echarts.init(document.getElementById('allChart'));
-        this.allChart.setOption({
-          //标题
-          title: {
-            text: '安居客各城市平均租金比较',
-            subtext: '数据来源：安居客',
-            sublink: 'https://beijing.anjuke.com/',
-            x: 'center'
-          },
-          //提示框，鼠标悬浮交互时的信息提示
-          tooltip: this.tooltip,
-          toolbox: this.toolbox,
-          legend: this.legend,
-          grid: { left: '16%'},
-          xAxis: [
-            {
-              type: 'category',
-              data: ['上海', '北京', '太原',  '广州', '杭州', '武汉', '深圳'],
-              axisPointer: {
-                type: 'shadow'
-              },
-            }
-          ],
-          yAxis: this.yAxis,
-          series: this.series
-        });
-        this.$axios.get('http://10.131.5.212:5000/getAjkCityPrice')
-          .then((response) => {
-            if(response){
-              console.log(response.data);
-              this.allChart.setOption({
-                series: [
-                  { name:'最低租金', type:'bar', data: response.data[0]['ajkCityMinPrice'] },
-                  { name:'最高租金', type:'bar', data: response.data[0]['ajkCityMaxPrice'] },
-                  { name:'平均租金', type:'line', data: response.data[0]['ajkCityAvgPrice'] }],
-              });
-            }
-          }).catch(err => {
-          console.error(err);
-          this.$alert('请求超时，刷新重试！')
-        });
-      },
-
       drawMapChart(){
         // 基于准备好的dom，初始化echarts实例
         var myChartContainer = document.getElementById('mapChart');
@@ -266,21 +307,117 @@
                 }
               },
               data:[
-                {name: '北京',value: randomData() },
-                {name: '上海',value: randomData() },
-                {name: '广州',value: randomData() },
-                {name: '广东',value: randomData() },
-                {name: '湖北',value: randomData() },
-                {name: '浙江',value: randomData() },
-                {name: '山西',value: randomData() },
-
+                {name: '北京',value: 2317.54 },
+                {name: '上海',value: 1927.33 },
+                {name: '广州',value: 1626.96 },
+                {name: '广东',value: 1646.33 },
+                {name: '湖北',value: 963.58 },
+                {name: '浙江',value: 1746.99 },
+                {name: '山西',value: 1089.52 },
+                {name: '河北',value:''},
+                {name: '辽宁',value:''},
+                {name: '吉林',value:''},
+                {name: '黑龙江',value:''},
+                {name: '江苏',value:''},
+                {name: '安徽',value:''},
+                {name: '福建',value:''},
+                {name: '江西',value:''},
+                {name: '山东',value:''},
+                {name: '河南',value:''},
+                {name: '湖南',value:''},
+                {name: '海南',value:''},
+                {name: '四川',value:''},
+                {name: '贵州',value:''},
+                {name: '云南',value:''},
+                {name: '陕西',value:''},
+                {name: '甘肃',value:''},
+                {name: '青海',value:''},
+                {name: '台湾',value:''},
+                {name: '重庆',value:''},
+                {name: '天津',value:''},
+                {name: '广西',value:''},
+                {name: '宁夏',value:''},
+                {name: '西藏',value:''},
+                {name: '内蒙古',value:''},
+                {name: '香港',value:''},
+                {name: '澳门',value:''},
               ]
             }
           ]
         };
         mapChart.setOption(optionMap);
-      }
+      },
+
+      drawBjCountCharts(){
+        this.bjCountChart = echarts.init(document.getElementById('bjCountChart'));
+        this.bjCountChart.setOption({
+          title : {
+            text: '北京市租房数量比较',
+            subtext: '数据来源:安居客',
+            sublink: 'https://beijing.anjuke.com',
+            x:'center',
+          },
+          legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['海淀区','大兴区','通州区','昌平区','朝阳区','西城区','密云区','门头沟区','东城区','房山区','石景山区','延庆区','丰台区','顺义区','北京周边区'],
+            padding: [20,20,0,0]
+          },
+          tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          series : [
+            {
+              type: 'pie',
+              radius : '75%',
+              center: ['65%', '60%'],
+              data:[],
+              itemStyle: {
+                emphasis: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+              }
+            }
+          ]
+        });
+        this.$axios.get('http://127.0.0.1:5000/count')
+          .then((response) => {
+            if(response){
+              console.log('=================', response.data);
+              this.bjCountChart.setOption({
+                series: [{
+                  name: '北京市',
+                  type: 'pie',
+                  data:[
+                    { name:'延庆区', value: response.data[0]['beijing'][0] },
+                    { name:'石景山区', value: response.data[0]['beijing'][1] },
+                    { name:'昌平区', value: response.data[0]['beijing'][2] },
+                    { name:'西城区', value: response.data[0]['beijing'][3] },
+                    { name:'顺义区', value: response.data[0]['beijing'][4] },
+                    { name:'东城区', value: response.data[0]['beijing'][5] },
+                    { name:'门头沟区', value: response.data[0]['beijing'][6] },
+                    { name:'通州区', value: response.data[0]['beijing'][7] },
+                    { name:'朝阳区', value: response.data[0]['beijing'][8] },
+                    { name:'密云区', value: response.data[0]['beijing'][9] },
+                    { name:'丰台区', value: response.data[0]['beijing'][10] },
+                    { name:'北京周边区', value: response.data[0]['beijing'][11] },
+                    { name:'大兴区', value: response.data[0]['beijing'][12] },
+                    { name:'海淀区', value: response.data[0]['beijing'][13] },
+                    { name:'房山区', value: response.data[0]['beijing'][14] },
+                  ]
+                }],
+              });
+            }
+          }).catch(err => {
+          console.error(err);
+          this.$alert('请求超时，刷新重试！')
+        });
+      },
     },
+
     mounted() {
       let username = sessionStorage.getItem('ms_username');
       if (username) {
@@ -292,9 +429,8 @@
         }
       }
 
-
-      this.drawAllChart();
       this.drawMapChart();
+      this.drawBjCountCharts();
     }
   }
 </script>
@@ -312,6 +448,12 @@
   }
   .goRegister :hover{
     color: #409EFF;
+  }
+  .bottom-content {
+    margin-top: 20px;
+    margin-left: 75px;
+    font-size: 18px;
+    text-align: left;
   }
 </style>
 

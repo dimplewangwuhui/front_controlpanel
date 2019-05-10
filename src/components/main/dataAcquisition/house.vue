@@ -101,11 +101,11 @@
       </el-table-column>
       <el-table-column prop="lift" label="电梯" align="center" width="150">
       </el-table-column>
-      <el-table-column prop="subway" label="地铁" align="center" width="150">
+      <el-table-column prop="subway" label="地铁" show-overflow-tooltip align="center" width="150">
       </el-table-column>
       <el-table-column prop="price" label="租金" sortable align="center" width="120">
       </el-table-column>
-      <el-table-column prop="imgURL" label="图片链接" align="center" width="150">
+      <el-table-column prop="imgURL" label="图片链接" show-overflow-tooltip align="center" width="150">
       </el-table-column>
       <el-table-column prop="urlinfo" label="详情链接" show-overflow-tooltip align="center" width="160">
       </el-table-column>
@@ -119,7 +119,7 @@
             <el-button type="primary" size="mini" icon="el-icon-more" @click="handleClick(scope.row)"></el-button>
           </el-tooltip>
           <el-tooltip content="收藏" placement="top">
-            <el-button type="primary" size="mini" @click="focus(scope.row)"><i class="iconfont icon-chakantieziguanzhu" style="padding-right: 0"></i></el-button>
+            <el-button type="success" size="mini" @click="focus(scope.row)"><i class="iconfont icon-chakantieziguanzhu" style="padding-right: 0"></i></el-button>
           </el-tooltip>
           <el-tooltip content="编辑" placement="top">
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit(scope.row,scope.$index)"></el-button>
@@ -721,11 +721,14 @@
             url: 'http://127.0.0.1:5000/focusHouse',
             data: params
           }).then((response) => {
-            if(response){
-              this.$message({message: '收藏成功', type: 'success'});
+            if(response.data.code === 'success'){
+              this.$message.success(response.data.msg);
+            }
+            else if(response.data.code === 'exist') {
+              this.$message.warning(response.data.msg);
             }
             else {
-              this.$message({message: '收藏失败，请重试',type: "error"});
+              this.$message.error(response.data.msg);
             }
           }).catch((err) => {
             this.$message({message: '收藏失败，请重试',type: "error"});

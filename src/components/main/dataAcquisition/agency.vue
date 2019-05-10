@@ -101,7 +101,7 @@
             <el-button type="primary" size="mini" icon="el-icon-more" @click="handleClick(scope.row)"></el-button>
           </el-tooltip>
           <el-tooltip content="关注" placement="top">
-            <el-button type="primary" size="mini" @click="focus(scope.row)"><i class="iconfont icon-guanzhu" style="padding-right: 0"></i></el-button>
+            <el-button type="success" size="mini" @click="focus(scope.row)"><i class="iconfont icon-guanzhu" style="padding-right: 0"></i></el-button>
           </el-tooltip>
           <el-tooltip content="编辑" placement="top">
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit(scope.row,scope.$index)"></el-button>
@@ -547,11 +547,14 @@
             url: 'http://127.0.0.1:5000/focusAgency',
             data: params
           }).then((response) => {
-            if(response){
-              this.$message({message: '关注成功', type: 'success'});
+            if(response.data.code === 'success'){
+              this.$message.success(response.data.msg);
+            }
+            else if(response.data.code === 'exist') {
+              this.$message.warning(response.data.msg);
             }
             else {
-              this.$message({message: '关注失败，请重试',type: "error"});
+              this.$message.error(response.data.msg);
             }
           }).catch((err) => {
             this.$message({message: '关注失败，请重试',type: "error"});

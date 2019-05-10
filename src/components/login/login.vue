@@ -178,7 +178,7 @@
               if (valid) {
                 this.$axios({
                   method: 'post',
-                  url: 'http://10.131.5.212:5000/loginValidate',
+                  url: 'http://127.0.0.1:5000/loginValidate',
                   data: {
                     'username': this.ruleForm.username,
                     'userpwd': this.ruleForm.userpwd,

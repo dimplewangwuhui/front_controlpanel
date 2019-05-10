@@ -1,7 +1,7 @@
 <template>
   <div class="image"  v-loading="loading"  element-loading-text="图片加载中......">
     <a :href= item.urlinfo target="_blank" v-for="(item, index) in imageList">
-      <img :src= item.imgURL>
+      <img :src= item.imgURL :title= item.imgURL alt="图片加载失败">
     </a>
   </div>
 </template>
@@ -17,7 +17,7 @@
     },
     methods: {
       getImgURL() {
-        this.$axios.get('http://10.131.5.212:5000/getImgURL')
+        this.$axios.get('http://127.0.0.1:5000/getImgURL')
           .then(response => {
             if(response.data.code === 'success'){
               this.imageList = response.data.data;
@@ -26,6 +26,7 @@
               console.log('图片获取失败')
             }
           }).catch((err) => {
+            this.$message.error('图片加载失败');
             console.log(err);
         })
       }

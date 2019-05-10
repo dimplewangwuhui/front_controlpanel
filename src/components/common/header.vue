@@ -25,7 +25,7 @@
             <i class="el-icon-rank"></i>
           </el-tooltip>
         </div>
-        <img class="headImg" :src=headURL>
+        <img class="headImg" :src=headURL @click="dialogFormVisible = true">
         <div class="loginOut" style="float: right">
           <el-dropdown trigger="click" @command="handleCommand">
             <span class="el-dropdown-link" style="color:white; padding: 0 15px;">
@@ -42,6 +42,32 @@
         </div>
       </div>
     </div>
+
+    <el-dialog title="更改头像" :visible.sync="dialogFormVisible">
+      <el-upload
+        class="uploadHead"
+        drag
+        action=""
+        :multiple="false"
+        :limit="1"
+        :show-file-list="false"
+        :before-upload="beforeAvatarUpload"
+        :on-success="handleAvatarSuccess">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">只能上传jpg文件，且不超过150KB</div>
+      </el-upload>
+      <!--<input type="file" accept="image/*" @change="changeImg($event)">-->
+      <div class="img_box" v-for="(item,index) in imgArray" :key="index" style="margin-top: 20px">
+        <div class="img_show_box">
+          <img :src="item" alt="">
+        </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="changeHead">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -57,6 +83,8 @@
           show: false,
           headerColor: '#409EFF',
           headerBgColor: '#494090',
+          dialogFormVisible: false,
+          imgArray:[],
         }
       },
       computed:{
@@ -144,10 +172,101 @@
             console.log(err);
           })
         },
+        beforeAvatarUpload(files) {
+          var _this = this;
+          const isJPG = files.type === 'image/jpeg';
+          const isLt2M = files.size / 1024 /1024 < 0.15;
+          if (!isJPG) {
+            _this.$message.error('上传头像图片只能是 JPG 格式!');
+            return false;
+          }
+          if (!isLt2M) {
+            _this.$message.error('上传头像图片大小不能超过 150KB!');
+            return false;
+          }
+          var image = new Image();
+          if(files){
+            console.log('=============', files);
+            image.src = window.URL.createObjectURL(files);
+            image.onload = function(){
+              // 默认按比例压缩
+              let w = image.width,
+                h = image.height,
+                scale = w / h;
+              w = 100;
+              h = w / scale;
+              // 默认图片质量为0.7，quality值越小，所绘制出的图像越模糊
+              var quality = 0.7;
 
+              //生成canvas
+              var canvas = document.createElement('canvas');
+              // 创建属性节点
+              var anw = document.createAttribute("width");
+              anw.nodeValue = w;
+              console.log('***********', anw.nodeValue);
+              var anh = document.createAttribute("height");
+              anh.nodeValue = h;
+              console.log('***********', anh.nodeValue);
+              canvas.setAttributeNode(anw);
+              canvas.setAttributeNode(anh);
+              console.log('。。。。。。。。。。。。。', canvas);   // <canvas width="200" height=""></canvas>
+
+              var ctx = canvas.getContext('2d');
+              ctx.drawImage(image, 0, 0, w, h);
+              console.log('---------------------', image.src);
+              var ext = image.src.substring(image.src.lastIndexOf(".")+1).toLowerCase();//图片格式
+              console.log('---------------------', ext);
+              var base64 = canvas.toDataURL("image/"+ext, quality );
+              // console.log('---------------------', base64);
+              let data = {'username': sessionStorage.getItem("ms_username"), 'blobURL':ext};
+              // 回调函数返回base64的值
+              _this.imgArray.unshift('');
+              _this.imgArray.splice(0, 1, base64);//替换数组数据的方法，此处不能使用：this.imgArr[index] = url;
+              console.log('++++++++++++++', _this.imgArray.length);
+              if(image.complete){
+                console.log('图片加载完成');
+                _this.$axios({
+                  method: 'post',
+                  url: 'http://127.0.0.1:5000/uploadHead',
+                  data: data
+                }).then((response) => {
+                  console.log(response.data);
+                  if(response.data.code === 'success'){
+                    console.log(response.data);
+                  }
+                  else {
+                    console.log(response.data);
+                    _this.$message.error(response.data.msg);
+                  }
+                }).catch(err => {
+                  console.log(err);
+                  _this.$message.error('头像选择失败')
+                })
+              }
+            };
+          }
+        },
+        changeHead() {
+          this.dialogFormVisible = false;
+          let data = {'username': sessionStorage.getItem("ms_username")};
+          this.$axios({
+            method: 'post',
+            url: 'http://127.0.0.1:5000/changeHead',
+            data: data
+          }).then((response) => {
+            if(response){
+              this.headURL = response.data.data;
+              this.$message.success(response.data.msg);
+              this.getHeadImg();
+            }
+          }).catch(err => {
+            console.log(err);
+            this.$message.error(response.data.msg);
+          })
+        },
       },
       mounted() {
-        this.getHeadImg();;
+        this.getHeadImg();
       }
     }
 </script>

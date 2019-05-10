@@ -42,6 +42,13 @@
         whChart: null,
         hzChart: null,
         tyChart: null,
+        bjRegionData: [],
+        shRegionData: [],
+        gzRegionData: [],
+        szRegionData: [],
+        whRegionData: [],
+        hzRegionData: [],
+        tyRegionData: [],
 
         tooltip: {
           trigger: 'axis',
@@ -81,6 +88,12 @@
             // }
           },
           { name:'平均租金', type:'line', data:[] }
+        ],
+        xAxis: [
+          {
+            type: 'category',
+            data: [],
+          }
         ],
         yAxis: [
           {
@@ -126,7 +139,7 @@
           // 系列列表,每个系列通过 type 决定自己的图表类型
           series: this.series
         });
-        this.$axios.get('http://127.0.0.1:5000/getAjkCityPrice')
+        this.$axios.get('http://127.0.0.1:5000/getAjkAllRegionPrice')
           .then((response) => {
             if(response){
               console.log(response.data);
@@ -156,27 +169,29 @@
           toolbox: this.toolbox,
           legend: this.legend,
           grid: { left: '16%'},
-          xAxis: [
-            {
-              type: 'category',
-              data: ['海淀区','大兴区','通州区','昌平区','朝阳区','西城区','密云区','门头沟区','东城区','房山区','石景山区','延庆区','丰台区','顺义区','北京周边区'],
-              axisPointer: {
-                type: 'shadow'
-              },
-              axisLabel: {
-                interval: 0,
-                rotate: 45  //横坐标倾斜显示
-              }
-            }
-          ],
+          xAxis: this.xAxis,
           yAxis: this.yAxis,
           series: this.series,
         });
         this.$axios.get('http://127.0.0.1:5000/getAjkAllRegionPrice')
           .then((response) => {
             if(response){
+              this.bjRegionData = response.data[0]['bjRegion'];
               console.log(response.data);
               this.bjChart.setOption({
+                xAxis: [
+                  {
+                    type: 'category',
+                    data: this.bjRegionData,
+                    axisPointer: {
+                      type: 'shadow'
+                    },
+                    axisLabel: {
+                      interval: 0,
+                      rotate: 45  //横坐标倾斜显示
+                    }
+                  }
+                ],
                 series: [
                   { name:'最低租金', type:'bar', data: response.data[0]['bjMinPrice'] },
                   { name:'最高租金', type:'bar', data: response.data[0]['bjMaxPrice'] },
@@ -202,27 +217,29 @@
           toolbox: this.toolbox,
           legend: this.legend,
           grid: { left: '16%'},
-          xAxis: [
-            {
-              type: 'category',
-              data: ['徐汇区','宝山区','虹口区','长宁区','金山区','上海周边区','普陀区','浦东区','黄浦区','嘉定区','奉贤区','静安区','杨浦区','松江区','闵行区','青浦区'],
-              axisPointer: {
-                type: 'shadow'
-              },
-              axisLabel: {
-                interval: 0,
-                rotate: 45  //横坐标倾斜显示
-              }
-            }
-          ],
+          xAxis: this.xAxis,
           yAxis: this.yAxis,
           series: this.series,
         });
         this.$axios.get('http://127.0.0.1:5000/getAjkAllRegionPrice')
           .then((response) => {
             if(response){
-              console.log(response.data);
+              console.log('上海租金数据:', response.data);
+              this.shRegionData = response.data[0]['shRegion'];
               this.shChart.setOption({
+                xAxis: [
+                  {
+                    type: 'category',
+                    data: this.shRegionData,
+                    axisPointer: {
+                      type: 'shadow'
+                    },
+                    axisLabel: {
+                      interval: 0,
+                      rotate: 45  //横坐标倾斜显示
+                    }
+                  }
+                ],
                 series: [
                   { name:'最低租金', type:'bar', data: response.data[0]['shMinPrice'] },
                   { name:'最高租金', type:'bar', data: response.data[0]['shMaxPrice'] },
@@ -248,27 +265,29 @@
           toolbox: this.toolbox,
           legend: this.legend,
           grid: { left: '16%'},
-          xAxis: [
-            {
-              type: 'category',
-              data: ['番禺区','白云区','荔湾区','黄埔区','广州周边区','从化区','越秀区','增城区','南沙区','花都区','天河区','海珠区'],
-              axisPointer: {
-                type: 'shadow'
-              },
-              axisLabel: {
-                interval: 0,
-                rotate: 45  //横坐标倾斜显示
-              }
-            }
-          ],
+          xAxis: this.xAxis,
           yAxis: this.yAxis,
           series: this.series,
         });
         this.$axios.get('http://127.0.0.1:5000/getAjkAllRegionPrice')
           .then((response) => {
             if(response){
+              this.gzRegionData = response.data[0]['gzRegion'];
               console.log(response.data);
               this.gzChart.setOption({
+                xAxis: [
+                  {
+                    type: 'category',
+                    data: this.gzRegionData,
+                    axisPointer: {
+                      type: 'shadow'
+                    },
+                    axisLabel: {
+                      interval: 0,
+                      rotate: 45  //横坐标倾斜显示
+                    }
+                  }
+                ],
                 series: [
                   { name:'最低租金', type:'bar', data: response.data[0]['gzMinPrice'] },
                   { name:'最高租金', type:'bar', data: response.data[0]['gzMaxPrice'] },
@@ -294,27 +313,29 @@
           toolbox: this.toolbox,
           legend: this.legend,
           grid: { left: '16%'},
-          xAxis: [
-            {
-              type: 'category',
-              data: ['光明区','福田区','坪山区','宝安区','深圳周边区','罗湖区','龙华区','盐田区','龙岗区','南山区'],
-              axisPointer: {
-                type: 'shadow'
-              },
-              axisLabel: {
-                interval: 0,
-                rotate: 45  //横坐标倾斜显示
-              }
-            }
-          ],
+          xAxis: this.xAxis,
           yAxis: this.yAxis,
           series: this.series,
         });
         this.$axios.get('http://127.0.0.1:5000/getAjkAllRegionPrice')
           .then((response) => {
             if(response){
+              this.szRegionData = response.data[0]['szRegion'];
               console.log(response.data);
               this.szChart.setOption({
+                xAxis: [
+                  {
+                    type: 'category',
+                    data: this.szRegionData,
+                    axisPointer: {
+                      type: 'shadow'
+                    },
+                    axisLabel: {
+                      interval: 0,
+                      rotate: 45  //横坐标倾斜显示
+                    }
+                  }
+                ],
                 series: [
                   { name:'最低租金', type:'bar', data: response.data[0]['szMinPrice'] },
                   { name:'最高租金', type:'bar', data: response.data[0]['szMaxPrice'] },
@@ -340,27 +361,29 @@
           toolbox: this.toolbox,
           legend: this.legend,
           grid: { left: '16%'},
-          xAxis: [
-            {
-              type: 'category',
-              data: ['蔡甸区','江岸区','东西湖区','汉阳区','江汉区','武昌区','洪山区','黄陂区','江夏区','青山区','新洲区','硚口区'],
-              axisPointer: {
-                type: 'shadow'
-              },
-              axisLabel: {
-                interval: 0,
-                rotate: 45  //横坐标倾斜显示
-              }
-            }
-          ],
+          xAxis: this.xAxis,
           yAxis: this.yAxis,
           series: this.series,
         });
         this.$axios.get('http://127.0.0.1:5000/getAjkAllRegionPrice')
           .then((response) => {
             if(response){
+              this.whRegionData = response.data[0]['whRegion'];
               console.log(response.data);
               this.whChart.setOption({
+                xAxis: [
+                  {
+                    type: 'category',
+                    data: this.whRegionData,
+                    axisPointer: {
+                      type: 'shadow'
+                    },
+                    axisLabel: {
+                      interval: 0,
+                      rotate: 45  //横坐标倾斜显示
+                    }
+                  }
+                ],
                 series: [
                   { name:'最低租金', type:'bar', data: response.data[0]['whMinPrice'] },
                   { name:'最高租金', type:'bar', data: response.data[0]['whMaxPrice'] },
@@ -386,27 +409,29 @@
           toolbox: this.toolbox,
           legend: this.legend,
           grid: { left: '16%'},
-          xAxis: [
-            {
-              type: 'category',
-              data: ['西湖区','滨江区','杭州周边区','江干区','萧山区','余杭区','下城区','拱墅区','上城区'],
-              axisPointer: {
-                type: 'shadow'
-              },
-              axisLabel: {
-                interval: 0,
-                rotate: 45  //横坐标倾斜显示
-              }
-            }
-          ],
+          xAxis: this.xAxis,
           yAxis: this.yAxis,
           series: this.series,
         });
         this.$axios.get('http://127.0.0.1:5000/getAjkAllRegionPrice')
           .then((response) => {
             if(response){
+              this.hzRegionData = response.data[0]['hzRegion'];
               console.log(response.data);
               this.hzChart.setOption({
+                xAxis: [
+                  {
+                    type: 'category',
+                    data: this.hzRegionData,
+                    axisPointer: {
+                      type: 'shadow'
+                    },
+                    axisLabel: {
+                      interval: 0,
+                      rotate: 45  //横坐标倾斜显示
+                    }
+                  }
+                ],
                 series: [
                   { name:'最低租金', type:'bar', data: response.data[0]['hzMinPrice'] },
                   { name:'最高租金', type:'bar', data: response.data[0]['hzMaxPrice'] },
@@ -432,27 +457,29 @@
           toolbox: this.toolbox,
           legend: this.legend,
           grid: { left: '16%'},
-          xAxis: [
-            {
-              type: 'category',
-              data: ['杏花岭区','太原周边区','古交区','晋源区','尖草坪区','清徐区','迎泽区','小店区','万柏林区'],
-              axisPointer: {
-                type: 'shadow'
-              },
-              axisLabel: {
-                interval: 0,
-                rotate: 45  //横坐标倾斜显示
-              }
-            }
-          ],
+          xAxis: this.xAxis,
           yAxis: this.yAxis,
           series: this.series,
         });
         this.$axios.get('http://127.0.0.1:5000/getAjkAllRegionPrice')
           .then((response) => {
             if(response){
+              this.tyRegionData = response.data[0]['tyRegion'];
               console.log(response.data);
               this.tyChart.setOption({
+                xAxis: [
+                  {
+                    type: 'category',
+                    data: this.tyRegionData,
+                    axisPointer: {
+                      type: 'shadow'
+                    },
+                    axisLabel: {
+                      interval: 0,
+                      rotate: 45  //横坐标倾斜显示
+                    }
+                  }
+                ],
                 series: [
                   { name:'最低租金', type:'bar', data: response.data[0]['tyMinPrice'] },
                   { name:'最高租金', type:'bar', data: response.data[0]['tyMaxPrice'] },
