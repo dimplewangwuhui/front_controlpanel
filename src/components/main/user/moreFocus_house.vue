@@ -371,11 +371,19 @@
         this.$confirm('是否取消收藏?', '提示',{
           type: 'warning'
         }).then(() => {
+          this.loading = true;
           api.focusHouse_remove(row).then(res => {
-            this.$message.success('删除成功!');
-            this.getfocusHouse();
+            if(res.code === 'success'){
+              this.$message.success(res.msg);
+              this.loading = false;
+              this.getfocusHouse();
+            }else {
+              this.$message.error(res.msg);
+              this.loading = false;
+            }
           }).catch((res) => {
             this.$message.error('删除失败!');
+            this.loading = false
           });
         }).catch(() => {
           this.$message.info('已取消操作!');
@@ -392,16 +400,24 @@
         this.$confirm('确认删除选中的记录吗？', '提示', {
           type: 'warning'
         }).then(() => {
+          this.loading = true;
           api.focusHouse_removes(ids)
             .then((response) => {
-              this.$message({message: '删除成功', type: 'success'});
-              this.getfocusHouse();
+              if(response.code === 'success'){
+                this.$message.success(response.msg);
+                this.loading = false;
+                this.getfocusHouse();
+              }else {
+                this.$message.error(response.msg);
+                this.loading = false;
+              }
             }).catch((err)=>{
             this.$message({message: '执行失败，请重试',type: "error"});
+            this.loading = false;
             console.log(err)
           });
         }).catch(() => {
-          this.$message({type: 'info',message: '删除失败'});
+          this.$message({type: 'info',message: '已取消操作!'});
         });
       },
 

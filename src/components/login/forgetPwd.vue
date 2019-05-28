@@ -13,8 +13,8 @@
           </el-button>
         </div>
         <div class="footer">
-          <el-steps :active="active">
-            <el-step title="验证账号"></el-step>
+          <el-steps :active="active" finish-status="success" style="text-align: left;">
+            <el-step title="手机验证"></el-step>
             <el-step title="重置密码"></el-step>
             <el-step title="完成"></el-step>
           </el-steps>
@@ -34,7 +34,7 @@
             </el-form>
           </div>
           <div class="resetPwd" v-if="active === 1">
-            <el-form :model="form" ref="form" :rules="Rules" status-icon class="updatePwd-form" style="margin-top: 40px;">
+            <el-form :model="form" ref="form" :rules="Rules" class="updatePwd-form" style="margin-top: 40px;">
               <el-form-item prop="newUserPwd">
                 <el-input v-model="form.newUserPwd" show-password placeholder="请输入新密码">
                   <template slot="prepend"><i class="iconfont icon-icon-"></i></template>
@@ -51,8 +51,10 @@
             </el-form>
           </div>
           <div class="finish" v-if="active === 2">
-            <span style="font-size: 30px; color: #409EFF">恭喜您，新密码设置成功，点击按钮去登录吧</span>
-            <el-button @click="goLogin" style="margin-top: 20px">前往登录页</el-button>
+            <div style="font-size: 20px;margin-top: 20px">
+              <span class="sucicon"><i class="el-icon-success"></i></span>
+              恭喜您，新密码设置成功!</div>
+            <el-button type="primary" @click="goLogin" style="margin-top: 20px">前往登录页</el-button>
           </div>
           <el-button style="margin-top: 20px;" @click="prev" v-if="active === 1 || active === 2">上一步</el-button>
           <el-button style="margin-top: 20px;" @click="next" v-if="active === 0 || active === 1">下一步</el-button>
@@ -148,7 +150,8 @@
                   if (this.phoneRuleForm.number !== ''){
                     for(let number of response.data.numbers){
                       if (this.phoneRuleForm.number === number){
-                        this.active++
+                        this.active = Number(this.active) + 1;
+                        console.log('==================',this.active);
                       }
                     }
                   }
@@ -159,27 +162,32 @@
             this.$message.error('验证码不正确!')
           }
         }
-        else if (this.active === 1){
+        if(this.active === 1){
           console.log('************************');
-          this.$axios({
-            method: 'put',
-            url: 'http://127.0.0.1:5000/forgetPwd',
-            data: {
-              'number':this.ruleForm.number,
-              'newUserPwd': this.form.newUserPwd,
-              'reNewUserPwd': this.form.reNewUserPwd,
+          this.$refs.form.validate((valid) => {
+            if (valid) {
+              this.$axios({
+                method: 'put',
+                url: 'http://127.0.0.1:5000/forgetPwd',
+                data: {
+                  'number':this.phoneRuleForm.number,
+                  'newUserPwd': this.form.newUserPwd,
+                  'reNewUserPwd': this.form.reNewUserPwd,
+                }
+              }).then(response => {
+                console.log(response.data);
+                if (response.data.code === 'success') {
+                  this.active++;
+                  console.log('==================',this.active);
+                } else {
+                  this.$message.error(response.data.msg);
+                }
+              }).catch(err => {
+                this.$message.error('密码设置失败');
+                console.log('密码设置失败');
+                console.log(err);
+              })
             }
-          }).then(response => {
-            console.log(response.data);
-            if (response.data.code === 'success') {
-              this.active++
-            } else {
-              this.$message.error(response.data.msg);
-            }
-          }).catch(err => {
-            this.$message.error('密码设置失败');
-            console.log('密码设置失败');
-            console.log(err);
           })
         }
       },
@@ -248,19 +256,34 @@
       },
       //发送短信模板
       send_note(tel,code){
-        const text='验证码：'+code+'，您正在使用手机号进行登陆，该验证码仅用于身份验证，在五分钟之内有效，请勿泄露给其他人使用。'; //短信内容模板，已经在sms平台绑定此内容，所以会比普通的更快到达用户手机。
-        let param = new URLSearchParams();
-        param.append('Uid','运城老王');
-        param.append('Key', 'd41d8cd98f00b204e981');
-        param.append('smsMob',tel);
-        param.append('smsText',text);
+        // const text='验证码：'+code+'，您正在使用手机号进行登陆，该验证码仅用于身份验证，在五分钟之内有效，请勿泄露给其他人使用。'; //短信内容模板，已经在sms平台绑定此内容，所以会比普通的更快到达用户手机。
+        // let param = new URLSearchParams();
+        // param.append('Uid','运城老王');
+        // param.append('Key', 'd41d8cd98f00b204e981');
+        // param.append('smsMob',tel);
+        // param.append('smsText',text);
+        let param = {
+          "sid":"d0403809897d8a09b0cb77e2eaa30bcb",
+          "token":"97cbcd80d6ed7d3ba90ab972a9cb7e43",
+          "appid":"d4599eca5f6c4cb7941ec11d600cf838",
+          "templateid":"469825",
+          "param": code,
+          "mobile": tel,
+          "uid":""
+        };
         this.$http.post(this.url,param,{
           headers:{
-            'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'
+            'Content-Type':'application/json'
           },
         }).then(function (response) {
-          console.log(response)}
-        )
+          if(response.body.code === '100005'){
+            this.$notify.error({
+              title: 'Error',
+              message: response.body.msg
+            });
+          }
+          console.log(response);
+        })
       },
     }
   }
@@ -302,5 +325,10 @@
   .el-step__title.is-process {
     font-weight: 500;
     color: #303133;
+  }
+  .sucicon {
+    font-size: 30px;
+    color: green;
+    margin-right: 20px
   }
 </style>

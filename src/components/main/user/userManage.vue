@@ -15,7 +15,7 @@
       </el-form-item>
     </el-form>
 
-    <el-table :data="tableData"
+    <el-table :data="tableData.slice((pageIndex - 1) * pageSize, pageIndex * pageSize)"
               border
               tooltip-effect="light"
               v-loading="loading"
@@ -266,14 +266,23 @@
           this.$confirm('是否执行删除操作?', '提示',{
             type: 'warning'
           }).then(() => {
+            this.loading = true;
             api.users_remove(row).then(res => {
-              this.$message.success('删除成功!');
-              this.getUsers();
+              if(res.code === 'success'){
+                this.$message.success(res.msg);
+                this.loading = false;
+                this.getUsers();
+              }else {
+                this.$message.error(res.msg);
+                this.loading = false;
+              }
             }).catch((res) => {
               this.$message.error('删除失败!');
+              this.loading = false;
             });
           }).catch(() => {
             this.$message.info('已取消操作!');
+            this.loading = false;
           });
         }
         else {
@@ -285,23 +294,32 @@
         if(sessionStorage.getItem('ms_username') === 'admin'){
           let ids= this.multipleSelection.map(item => item.id);
           console.log(ids);
-          if (ids.length == 0){
+          if (ids.length === 0){
             this.$message({message: '请选择要删除的项',type: "warning"});
             return;
           }
           this.$confirm('确认删除选中的记录吗？', '提示', {
             type: 'warning'
           }).then(() => {
+            this.loading = true;
             api.users_removes(ids)
               .then((response) => {
-                this.$message({message: '删除成功', type: 'success'});
-                this.getUsers();
+                if(response.code === 'success'){
+                  this.$message.success(response.msg);
+                  this.loading = false;
+                  this.getUsers();
+                }else {
+                  this.$message.error(response.msg);
+                  this.loading = false
+                }
               }).catch((err)=>{
               this.$message({message: '执行失败，请重试',type: "error"});
+              this.loading = false;
               console.log(err)
             });
           }).catch(() => {
             this.$message({type: 'info',message: '删除失败'});
+            this.loading = false
           });
         }
         else {

@@ -153,6 +153,22 @@
     export default {
       name: "userInfo",
       data(){
+        var checkAge = (rule, value, callback) => {
+          if(value === ''){
+            callback()
+          }else {
+            let age = Number(value);
+            if (!Number.isInteger(age)) {
+              callback(new Error('请输入数字值'));
+            } else {
+              if (age < 1) {
+                callback(new Error('年龄必须大于等于1岁'));
+              } else {
+                callback();
+              }
+            }
+          }
+        };
         return{
           headURL: require("../../../assets/img/bg.jpg"),
           dialogFormVisible: false,
@@ -176,6 +192,9 @@
           Rules:{
             username:[
               { required: true, message: '请输入用户名', trigger: 'blur' }
+            ],
+            age:[
+              { validator: checkAge, trigger: 'blur' }
             ],
             number:[
               { required: true, message: '请输入手机号', trigger: 'blur' },
@@ -217,13 +236,13 @@
         beforeAvatarUpload(files) {
           var _this = this;
           const isJPG = files.type === 'image/jpeg';
-          const isLt2M = files.size / 1024 /1024 < 0.15;
+          const isLt2M = files.size / 1024 /1024 < 0.20;
           if (!isJPG) {
             _this.$message.error('上传头像图片只能是 JPG 格式!');
             return false;
           }
           if (!isLt2M) {
-            _this.$message.error('上传头像图片大小不能超过 150KB!');
+            _this.$message.error('上传头像图片大小不能超过 200KB!');
             return false;
           }
           var image = new Image();
@@ -366,7 +385,6 @@
             url: 'http://127.0.0.1:5000/get5UserMessage',
             data: {'username': sessionStorage.getItem("ms_username")}
           }).then((response) => {
-            console.log(response.data);
             this.messages = response.data.data;
           }).catch(err => {
             console.error(err);

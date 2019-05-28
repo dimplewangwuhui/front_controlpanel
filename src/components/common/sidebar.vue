@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar ">
     <div class="collapsebar"><a @click="collapse"><i class="iconfont icon-sort"></i></a></div>
-    <el-menu class="el-menu-vertical-demo"
+    <el-menu id="menuClass" class="el-menu-vertical-demo"
              unique-opened
              router
              text-color="#333"
@@ -35,6 +35,14 @@
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="3">
+        <template slot="title"><i class="iconfont icon-yijianfankui"></i>新闻资讯</template>
+        <el-menu-item-group>
+          <el-menu-item index="news">楼讯主页</el-menu-item>
+          <el-menu-item index="news_report">热点新闻</el-menu-item>
+          <el-menu-item index="news_subject">特色专题</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="4">
         <template slot="title"><i class="iconfont icon-yonghu"></i>用户面板</template>
         <el-menu-item-group>
           <el-menu-item index="userInfo">个人主页</el-menu-item>
@@ -42,14 +50,14 @@
           <el-menu-item index="userManage" v-if="show">用户管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="4">
+      <el-submenu index="5">
         <template slot="title"><i class="iconfont icon-liuyan"></i>留言面板</template>
         <el-menu-item-group>
           <el-menu-item index="advise">留言反馈</el-menu-item>
           <el-menu-item index="adviseManage" v-if="show">留言管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="5">
+      <el-submenu index="6">
         <template slot="title"><i class="iconfont icon-gonggao"></i>公告面板</template>
         <el-menu-item-group>
           <el-menu-item index="notice">查看公告</el-menu-item>
@@ -64,10 +72,9 @@
         <!--<i class="iconfont icon-gonggao"></i>-->
         <!--<span slot="title">查看公告</span>-->
       <!--</el-menu-item>-->
-      <el-submenu index="6">
+      <el-submenu index="7">
         <template slot="title"><i class="iconfont icon-qita"></i>更多</template>
         <el-menu-item-group>
-          <el-menu-item index="news">租房资讯</el-menu-item>
           <el-menu-item index="baidu">百度一下</el-menu-item>
           <el-menu-item index="contact">联系我们</el-menu-item>
           <!--<el-menu-item index="ComUpload">上传图片</el-menu-item>-->

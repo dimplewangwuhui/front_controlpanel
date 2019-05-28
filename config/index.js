@@ -12,7 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       "/apis": {
-        target: "http://utf8.api.smschinese.cn",
+        // target: "http://utf8.api.smschinese.cn",
+        target: "https://open.ucpaas.com/ol/sms/sendsms",
         changeOrigin: true,
         pathRewrite: {
           '^/apis': ''
@@ -28,7 +29,7 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
+
     /**
      * Source Maps
      */

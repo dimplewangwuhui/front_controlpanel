@@ -337,26 +337,11 @@
           store:[
             { required: true, message: '请输入门店名称', trigger: 'blur' }
           ],
-          card:[
-            { required: true, message: '请输入身份信息卡号', trigger: 'blur' }
-          ],
           code:[
             { required: true, message: '请输入公司执照编码', trigger: 'blur' }
           ],
           number:[
             { required: true, message: '请输入电话号码', trigger: 'blur' }
-          ],
-          years:[
-            { required: true, message: '请输入服务年限', trigger: 'blur' }
-          ],
-          plate:[
-            { required: true, message: '请输入主营板块', trigger: 'blur' }
-          ],
-          main_village:[
-            { required: true, message: '请输入主营小区', trigger: 'blur' }
-          ],
-          introduction:[
-            { required: true, message: '请输入个人简介', trigger: 'blur' }
           ],
         }
       }
@@ -495,11 +480,19 @@
           this.$confirm('是否执行删除操作?', '提示',{
             type: 'warning'
           }).then(() => {
+            this.loading = true;
             api.agency_remove(row).then(res => {
-              this.$message.success('删除成功!');
-              this.getAgency();
+              if(res.code === 'success'){
+                this.$message.success('删除成功!');
+                this.loading = false;
+                this.getAgency();
+              }else {
+                this.$message.error('删除失败!');
+                thia.loading = false;
+              }
             }).catch((res) => {
               this.$message.error('删除失败!');
+              this.loading = false;
             });
           }).catch(() => {
             this.$message.info('已取消操作!');
@@ -514,23 +507,31 @@
         if(sessionStorage.getItem('ms_username') === 'admin'){
           let ids= this.multipleSelection.map(item => item.id);
           console.log(ids);
-          if (ids.length == 0){
+          if (ids.length === 0){
             this.$message({message: '请选择要删除的项',type: "warning"});
             return;
           }
           this.$confirm('确认删除选中的记录吗？', '提示', {
             type: 'warning'
           }).then(() => {
+            this.loading = true
             api.agency_removes(ids)
               .then((response) => {
-                this.$message({message: '删除成功', type: 'success'});
-                this.getAgency();
+                if(response.code === 'success'){
+                  this.$message({message: '删除成功', type: 'success'});
+                  this.loading = false;
+                  this.getAgency();
+                }else {
+                  thi.$message.error('删除失败!');
+                  this.loading = false
+                }
               }).catch((err)=>{
               this.$message({message: '执行失败，请重试',type: "error"});
+              this.loading = false;
               console.log(err)
             });
           }).catch(() => {
-            this.$message({type: 'info',message: '删除失败'});
+            this.$message({type: 'info',message: '已取消操作'});
           });
         }
         else {

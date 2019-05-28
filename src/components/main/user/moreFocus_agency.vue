@@ -215,11 +215,19 @@
         this.$confirm('是否取消关注?', '提示',{
           type: 'warning'
         }).then(() => {
+          this.loading = true;
           api.focusAgency_remove(row).then(res => {
-            this.$message.success('删除成功!');
-            this.getFocusAgency();
+            if(res.code === 'success'){
+              this.$message.success('删除成功!');
+              this.loading = false;
+              this.getFocusAgency();
+            }else {
+              thi.$message.error('删除失败!');
+              this.loading = false;
+            }
           }).catch((res) => {
             this.$message.error('删除失败!');
+            this.loading = false
           });
         }).catch(() => {
           this.$message.info('已取消操作!');
@@ -235,12 +243,20 @@
         this.$confirm('确认删除选中的记录吗？', '提示', {
           type: 'warning'
         }).then(() => {
+          this.loading = true;
           api.focusAgency_removes(ids)
             .then((response) => {
-              this.$message({message: '删除成功', type: 'success'});
-              this.getFocusAgency();
+              if(response.code === 'success'){
+                this.$message({message: '删除成功', type: 'success'});
+                this.loading = false;
+                this.getFocusAgency();
+              }else {
+                this.$message.error('删除失败!');
+                this.loading = false;
+              }
             }).catch((err)=>{
             this.$message({message: '执行失败，请重试',type: "error"});
+            this.loading = false;
             console.log(err)
           });
         }).catch(() => {

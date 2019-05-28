@@ -18,14 +18,17 @@ import job from '@/components/main/dataAcquisition/job'
 import house from '@/components/main/dataAcquisition/house'
 import agency from '@/components/main/dataAcquisition/agency'
 import image from '@/components/main/dataAcquisition/image'
-
+//图表展示
 import echarts_price from '@/components/main/visualDisplay/echarts_price'
 import echarts_trend from '@/components/main/visualDisplay/echarts_trend'
 import echarts_count from '@/components/main/visualDisplay/echarts_count'
 import echarts_area from '@/components/main/visualDisplay/echarts_area'
 import ranking from '@/components/main/visualDisplay/ranking'
-
 import wordCloud from '@/components/main/visualDisplay/wordCloud'
+//新闻资讯
+import news from '@/components/main/news/news'
+import news_report from '@/components/main/news/news_report'
+import news_subject from '@/components/main/news/news_subject'
 //用户
 import userManage from '@/components/main/user/userManage'
 import userInfo from '@/components/main/user/userInfo'
@@ -42,7 +45,6 @@ import notice from '@/components/main/notice/notice'
 import moreNotice from '@/components/main/notice/moreNotice'
 //其他
 import contact from '@/components/main/others/contact'
-import news from '@/components/main/others/news'
 import baidu from '@/components/main/others/baidu'
 import ComUpload from '@/components/main/others/ComUpload'
 
@@ -158,8 +160,18 @@ const router = new Router({
         },
         {
           path: '/news',
-          name: '租房资讯',
+          name: '楼讯主页',
           component: news,
+        },
+        {
+          path: '/news_report',
+          name: '热点新闻',
+          component: news_report,
+        },
+        {
+          path: '/news_subject',
+          name: '特色专题',
+          component: news_subject,
         },
         {
           path: '/baidu',

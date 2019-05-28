@@ -299,19 +299,19 @@
 
         optionsAll: [{
           label: '热门城市',
-          options: [{value: '北京', label: '北京'},
-            {value: '上海', label: '上海'}]
+          options: [{value: '北京市', label: '北京市'},
+            {value: '上海市', label: '上海市'}]
           },{
           label: '其他城市',
-          options: [{value: '广州', label: '广州'},
-            {value: '深圳', label: '深圳'},
-            {value: '武汉', label: '武汉'},
-            {value: '太原', label: '太原'},
-            {value: '杭州', label: '杭州'}]
+          options: [{value: '广州市', label: '广州市'},
+            {value: '深圳市', label: '深圳市'},
+            {value: '武汉市', label: '武汉市'},
+            {value: '太原市', label: '太原市'},
+            {value: '杭州市', label: '杭州市'}]
         }],
         regionOptions: [{
-          label: '北京',
-          value: '北京',
+          label: '北京市',
+          value: '北京市',
           children: [{value: '东城区', label: '东城区'},
             {value: '西城区', label: '西城区'},
             {value: '朝阳区', label: '朝阳区'},
@@ -329,8 +329,8 @@
             {value: '怀柔区', label: '怀柔区'},
             {value: '延庆区', label: '延庆区'}]
         }, {
-          label: '上海',
-          value: '上海',
+          label: '上海市',
+          value: '上海市',
           children: [{value: '黄浦区', label: '黄浦区'},
             {value: '徐汇区', label: '徐汇区'},
             {value: '长宁区', label: '长宁区'},
@@ -347,8 +347,8 @@
             {value: '青浦区', label: '青浦区'},
             {value: '奉贤区', label: '奉贤区'}]
         }, {
-          label: '广州',
-          value: '广州',
+          label: '广州市',
+          value: '广州市',
           children: [{value: '荔湾区', label: '荔湾区'},
             {value: '越秀区', label: '越秀区'},
             {value: '海珠区', label: '海珠区'},
@@ -361,8 +361,8 @@
             {value: '从化区', label: '从化区'},
             {value: '增城区', label: '增城区'}]
         }, {
-          label: '深圳',
-          value: '深圳',
+          label: '深圳市',
+          value: '深圳市',
           children: [{value: '罗湖区', label: '罗湖区'},
             {value: '福田区', label: '福田区'},
             {value: '南山区', label: '南山区'},
@@ -370,8 +370,8 @@
             {value: '龙岗区', label: '龙岗区'},
             {value: '盐田区', label: '盐田区'}]
         }, {
-          label: '武汉',
-          value: '武汉',
+          label: '武汉市',
+          value: '武汉市',
           children: [{value: '江岸区', label: '江岸区'},
             {value: '江汉区', label: '江汉区'},
             {value: '硚口区', label: '硚口区'},
@@ -386,8 +386,8 @@
             {value: '黄陂区', label: '黄陂区'},
             {value: '新洲区', label: '新洲区'}]
         }, {
-          label: '太原',
-          value: '太原',
+          label: '太原市',
+          value: '太原市',
           children: [{value: '小店区', label: '小店区'},
             {value: '迎泽区', label: '迎泽区'},
             {value: '杏花岭区', label: '杏花岭区'},
@@ -395,8 +395,8 @@
             {value: '万柏林区', label: '万柏林区'},
             {value: '晋源区', label: '晋源区'}]
         }, {
-          label: '杭州',
-          value: '杭州',
+          label: '杭州市',
+          value: '杭州市',
           children: [{value: '上城区', label: '上城区'},
             {value: '下城区', label: '下城区'},
             {value: '江干区', label: '江干区'},
@@ -669,11 +669,19 @@
           this.$confirm('是否执行删除操作?', '提示',{
             type: 'warning'
           }).then(() => {
+            this.loading = true
             api.house_remove(row).then(res => {
-              this.$message.success('删除成功!');
-              this.getHouse();
+              if(res.code === 'success'){
+                this.$message.success('删除成功!');
+                this.loading = false;
+                this.getHouse();
+              }else {
+                this.$message.error('删除失败!');
+                this.loading = false;
+              }
             }).catch((res) => {
               this.$message.error('删除失败!');
+              this.loading = false;
             });
           }).catch(() => {
             this.$message.info('已取消操作!');
@@ -695,16 +703,24 @@
           this.$confirm('确认删除选中的记录吗？', '提示', {
             type: 'warning'
           }).then(() => {
+            this.loading = true;
             api.house_removes(ids)
               .then((response) => {
-                this.$message({message: '删除成功', type: 'success'});
-                this.getHouse();
+                if(response.code === 'success'){
+                  this.$message({message: '删除成功!', type: 'success'});
+                  this.loading = false;
+                  this.getHouse();
+                }else {
+                  this.$message.error('删除失败!');
+                  this.loading = false;
+                }
               }).catch((err)=>{
-              this.$message({message: '执行失败，请重试',type: "error"});
+              this.$message({message: '执行失败，请重试!',type: "error"});
+              this.loading = false;
               console.log(err)
             });
           }).catch(() => {
-            this.$message({type: 'info',message: '删除失败'});
+            this.$message({type: 'info',message: '已取消操作!'});
           });
         }
         else {

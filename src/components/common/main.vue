@@ -58,7 +58,7 @@
           this.show = msg;
         });
         document.querySelector('body').setAttribute('style', 'background-color:#F4F5F9');
-        // console.log(this.$route.matched)
+        console.log(this.$route.matched)
       },
       // methods: {
       //   getShow (msg) {

@@ -5,8 +5,10 @@
 </template>
 
 <script>
+  import RouterLink from "vant/packages/mixins/router-link";
   export default {
     name: "baidu",
+    components: {RouterLink},
     data () {
       return {
 

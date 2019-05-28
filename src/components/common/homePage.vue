@@ -26,11 +26,20 @@
             <el-menu-item index="echarts_trend">租金走势</el-menu-item>
             <el-menu-item index="echarts_count">租房数量</el-menu-item>
             <el-menu-item index="echarts_area">租房面积</el-menu-item>
+            <el-menu-item index="ranking">小区排名</el-menu-item>
           </el-submenu>
           <el-menu-item index="wordCloud">词云展示</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="3">
+        <template slot="title">新闻资讯</template>
+        <el-menu-item-group>
+          <el-menu-item index="news">楼讯主页</el-menu-item>
+          <el-menu-item index="news_report">热点新闻</el-menu-item>
+          <el-menu-item index="news_subject">特色专题</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="4">
         <template slot="title">用户管理</template>
         <el-menu-item-group>
           <el-menu-item index="userInfo">个人信息</el-menu-item>
@@ -38,24 +47,23 @@
           <el-menu-item index="userManage" v-if="show">用户管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="4">
+      <el-submenu index="5">
         <template slot="title">留言管理</template>
         <el-menu-item-group>
           <el-menu-item index="advise">留言反馈</el-menu-item>
           <el-menu-item index="adviseManage" v-if="show">留言管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="5">
+      <el-submenu index="6">
         <template slot="title">公告管理</template>
         <el-menu-item-group>
           <el-menu-item index="notice">查看公告</el-menu-item>
           <el-menu-item index="moreNotice" v-if="show">公告管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="6">
+      <el-submenu index="7">
         <template slot="title">更多</template>
         <el-menu-item-group>
-          <el-menu-item index="news">租房资讯</el-menu-item>
           <el-menu-item index="baidu">百度一下</el-menu-item>
           <el-menu-item index="contact">联系我们</el-menu-item>
         </el-menu-item-group>
@@ -73,7 +81,7 @@
         <div style="float: left; width: 700px; height: 600px;">
           <el-row style="">
             <el-col :span="6">
-              <div style="width: 100px; height: 100px; background-color: #fff; margin-left: 30px">
+              <div style="width: 100px; height: 100px; background-color: #fff; margin-left: 50px">
                 <img :src=logo style="width: 50px; height: 50px; padding-top: 25px">
               </div>
             </el-col>
@@ -100,7 +108,7 @@
         <div style="float: left; width: 700px; height: 600px;">
           <el-row style="">
             <el-col :span="6">
-              <div style="width: 100px; height: 100px; background-color: #fff; margin-left: 30px">
+              <div style="width: 100px; height: 100px; background-color: #fff; margin-left: 50px">
                 <img :src=logo style="width: 50px; height: 50px; padding-top: 25px">
               </div>
             </el-col>
@@ -127,7 +135,7 @@
         <div style="float: left; width: 700px; height: 600px;">
           <el-row style="">
             <el-col :span="6">
-              <div style="width: 100px; height: 100px; background-color: #fff; margin-left: 30px">
+              <div style="width: 100px; height: 100px; background-color: #fff; margin-left: 50px">
                 <img :src=logo style="width: 50px; height: 50px; padding-top: 25px">
               </div>
             </el-col>

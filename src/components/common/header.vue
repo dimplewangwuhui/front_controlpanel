@@ -35,7 +35,8 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="userInfo">个人信息</el-dropdown-item>
               <el-dropdown-item command="updatePwd">修改密码</el-dropdown-item>
-              <el-dropdown-item command="homePage" divided>返回首页</el-dropdown-item>
+              <el-dropdown-item command="firstPage" divided>返回主页</el-dropdown-item>
+              <el-dropdown-item command="homePage">返回首页</el-dropdown-item>
               <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -140,6 +141,9 @@
           }
           if(command === 'updatePwd'){
             this.$router.push('/updatePwd');
+          }
+          if(command === 'firstPage'){
+            this.$router.push('/firstPage')
           }
           if(command === 'homePage'){
             this.$router.push('/')
@@ -305,6 +309,9 @@
     height:40px;
     border-radius: 50%;
     margin-top: 8px
+  }
+  .headImg :hover {
+    cursor: pointer;
   }
 
   .btn-fullscreen{

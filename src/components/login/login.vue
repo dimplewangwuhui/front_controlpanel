@@ -132,7 +132,7 @@
           rules:{
             username: [
               {required: true, message: '请输入账号', trigger:'blur'},
-              { min: 5, max: 18, message: '长度在 5 到 18 个字符', trigger: 'blur' }
+              { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
             ],
             userpwd: [
               {required: true, message: '请输入密码', trigger:'blur'},
@@ -199,6 +199,9 @@
                       title: 'Error',
                       message: response.data.msg
                     });
+                    this.$set(this.ruleForm, 'validate', '');
+                    this.$set(this.ruleForm, 'userpwd', '');
+                    this.refreshCode();
                   }
                 }).catch(err => {
                   this.$notify.error({
@@ -207,9 +210,15 @@
                   });
                   console.log('登录失败');
                   console.log(err);
+                  this.$set(this.ruleForm, 'validate', '');
+                  this.$set(this.ruleForm, 'userpwd', '');
+                  this.refreshCode();
                 })
               } else {
                 console.log('用户信息错误');
+                this.$set(this.ruleForm, 'validate', '');
+                this.$set(this.ruleForm, 'userpwd', '');
+                this.refreshCode();
                 return false
               }
             })
@@ -235,7 +244,8 @@
           if (vcode !== ccode) {
             this.$message.error('验证码不正确!');
             this.$set(this.ruleForm, 'validate', '');
-            this.$set(this.ruleForm, 'password', '')
+            this.$set(this.ruleForm, 'userpwd', '');
+            this.refreshCode();
           } else {
             return 1
           }
@@ -324,19 +334,34 @@
         },
         //发送短信模板
         send_note(tel,code){
-          const text='验证码：'+code+'，您正在使用手机号进行登陆，该验证码仅用于身份验证，在五分钟之内有效，请勿泄露给其他人使用。'; //短信内容模板，已经在sms平台绑定此内容，所以会比普通的更快到达用户手机。
-          let param = new URLSearchParams();
-          param.append('Uid','Dimple老王');
-          param.append('Key', 'd41d8cd98f00b204e980');
-          param.append('smsMob',tel);
-          param.append('smsText',text);
+          // const text='验证码：'+code+'，您正在使用手机号进行登陆，该验证码仅用于身份验证，在五分钟之内有效，请勿泄露给其他人使用。'; //短信内容模板，已经在sms平台绑定此内容，所以会比普通的更快到达用户手机。
+          // let param = new URLSearchParams();
+          // param.append('Uid','Dimple老王');
+          // param.append('Key', 'd41d8cd98f00b204e980');
+          // param.append('smsMob',tel);
+          // param.append('smsText',text);
+          // console.log(param);
+
+          // 云之讯短信API
+          let param = {
+            "sid":"d0403809897d8a09b0cb77e2eaa30bcb",
+            "token":"97cbcd80d6ed7d3ba90ab972a9cb7e43",
+            "appid":"d4599eca5f6c4cb7941ec11d600cf838",
+            "templateid":"469825",
+            "param": code,
+            "mobile": tel,
+            "uid":""
+          };
+          console.log(param);
           this.$http.post(this.url,param,{
             headers:{
-              'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'
+              'Content-Type':'application/json'
             },
           }).then(function (response) {
-            console.log(response)}
-          )
+            console.log('=====', response)}
+          ).catch(e => {
+            console.log('-----', e)
+          })
         },
         phoneLogin(formName){
           console.log('自动生成的验证码:', this.phone_code);

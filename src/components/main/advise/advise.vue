@@ -70,7 +70,7 @@
               url: 'http://127.0.0.1:5000/messageAdd',
               data: params
             }).then((response) => {
-              if(response){
+              if(response.data.code === 'success'){
                 this.$message({message: '提交成功', type: 'success'});
                 this.get5Message();
               }
@@ -86,8 +86,12 @@
       get5Message() {
         this.$axios.get('http://127.0.0.1:5000/get5Message')
           .then((response) => {
-            console.log(response.data);
-            this.messages = response.data.data;
+            if(response.data.code === 'success'){
+              console.log(response.data);
+              this.messages = response.data.data;
+            }else {
+              this.$message.error(response.data.code)
+            }
           }).catch(err => {
           console.error(err);
           this.$alert('请求超时，刷新重试！')

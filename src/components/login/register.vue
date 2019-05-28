@@ -24,7 +24,7 @@
               </el-input>
             </el-form-item>
             <el-form-item prop="number">
-              <el-input class="form-input" v-model="ruleForm.number" show-password placeholder="手机号">
+              <el-input class="form-input" v-model="ruleForm.number"  placeholder="手机号">
                 <template slot="prepend"><i class="iconfont icon-shouji"></i></template>
               </el-input>
             </el-form-item>
@@ -110,7 +110,7 @@
         rules:{
           username: [
             {required: true, message: '请输入账号', trigger:'blur'},
-            { min: 5, max: 18, message: '长度在 5 到 18 个字符', trigger: 'blur' }
+            { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
           ],
           userpwd: [
             { validator: userpwd, trigger: 'blur' },
@@ -167,6 +167,10 @@
                     title: 'Error',
                     message: response.data.msg
                   });
+                  this.$set(this.ruleForm, 'validate', '');
+                  this.$set(this.ruleForm, 'userpwd', '');
+                  this.$set(this.ruleForm, 'reUserpwd', '');
+                  this.refreshCode();
                 }
               }).catch(err => {
                 this.$notify.error({
@@ -175,9 +179,17 @@
                 });
                 console.log('注册失败');
                 console.log(err);
+                this.$set(this.ruleForm, 'validate', '');
+                this.$set(this.ruleForm, 'userpwd', '');
+                this.$set(this.ruleForm, 'reUserpwd', '');
+                this.refreshCode();
               })
             } else {
               console.log('用户信息错误');
+              this.$set(this.ruleForm, 'validate', '');
+              this.$set(this.ruleForm, 'userpwd', '');
+              this.$set(this.ruleForm, 'reUserpwd', '');
+              this.refreshCode();
               return false
             }
           })
@@ -197,7 +209,8 @@
         if (vcode !== ccode) {
           this.$message.error('验证码不正确!');
           this.$set(this.ruleForm, 'validate', '');
-          this.$set(this.ruleForm, 'password', '')
+          this.$set(this.ruleForm, 'userpwd', '');
+          this.refreshCode();
         } else {
           return 1
         }

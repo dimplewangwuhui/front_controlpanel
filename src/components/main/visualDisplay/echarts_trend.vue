@@ -82,7 +82,7 @@
                 console.log('北京租金走势:',response.data);
                 this.bjTrendChart.setOption({
                   title: {
-                    text: '北京市3月份-5月份房租租金走势',
+                    text: '北京市房租租金走势',
                     subtext: '数据来源: 安居客',
                     x: 'center',
                     sublink: 'https://bj.anjuke.com'
@@ -108,7 +108,7 @@
                   }],
                   dataZoom: [{
                     startValue: '2019-03-01',
-                    endValue: '2019-04-01'
+                    endValue: '2019-05-01'
                   }, {
                     type: 'inside'
                   }],
@@ -154,7 +154,7 @@
                 console.log('上海租金走势:',response.data);
                 this.shTrendChart.setOption({
                   title: {
-                    text: '上海市3月份-5月份房租租金走势',
+                    text: '上海市房租租金走势',
                     subtext: '数据来源: 安居客',
                     x: 'center',
                     sublink: 'https://sh.anjuke.com'
@@ -165,7 +165,7 @@
                   toolbox: this.toolbox,
                   xAxis: {
                     data: response.data.map(function (item) {
-                      if(item[2] === '上海'){
+                      if(item[2] === "上海"){
                         return item[1];
                       }
                     }),
@@ -179,8 +179,8 @@
                     }
                   }],
                   dataZoom: [{
-                    startValue: '2019-03-01',
-                    endValue: '2019-04-01'
+                    startValue: '2019-03-17',
+                    endValue: '2019-05-01'
                   }, {
                     type: 'inside'
                   }],
@@ -201,7 +201,7 @@
                     name: '平均租金',
                     type: 'line',
                     data: response.data.map(function (item) {
-                      if(item[2] === '上海'){
+                      if(item[2] === "上海"){
                         return item[0];
                       }
                     }),
@@ -226,7 +226,7 @@
                 console.log('广州租金走势:',response.data);
                 this.gzTrendChart.setOption({
                   title: {
-                    text: '广州市3月份房租租金走势',
+                    text: '广州市房租租金走势',
                     subtext: '数据来源: 安居客',
                     x: 'center',
                     sublink: 'https://gz.anjuke.com'
@@ -251,8 +251,8 @@
                     }
                   }],
                   dataZoom: [{
-                    startValue: '2019-03-01',
-                    endValue: '2019-04-01'
+                    startValue: '2019-03-17',
+                    endValue: '2019-05-01'
                   }, {
                     type: 'inside'
                   }],
@@ -298,7 +298,7 @@
                 console.log('深圳租金走势:',response.data);
                 this.szTrendChart.setOption({
                   title: {
-                    text: '深圳市3月份房租租金走势',
+                    text: '深圳市房租租金走势',
                     subtext: '数据来源: 安居客',
                     x: 'center',
                     sublink: 'https://sz.anjuke.com'
@@ -324,7 +324,7 @@
                   }],
                   dataZoom: [{
                     startValue: '2019-03-17',
-                    endValue: '2019-04-01'
+                    endValue: '2019-05-01'
                   }, {
                     type: 'inside'
                   }],
@@ -370,7 +370,7 @@
                 console.log('武汉租金走势:',response.data);
                 this.whTrendChart.setOption({
                   title: {
-                    text: '武汉市3月份房租租金走势',
+                    text: '武汉市房租租金走势',
                     subtext: '数据来源: 安居客',
                     x: 'center',
                     sublink: 'https://wh.anjuke.com'
@@ -395,8 +395,8 @@
                     }
                   }],
                   dataZoom: [{
-                    startValue: '2019-03-01',
-                    endValue: '2019-04-01'
+                    startValue: '2019-03-17',
+                    endValue: '2019-05-01'
                   }, {
                     type: 'inside'
                   }],
@@ -442,7 +442,7 @@
                 console.log('杭州租金走势:',response.data);
                 this.hzTrendChart.setOption({
                   title: {
-                    text: '杭州市3月份房租租金走势',
+                    text: '杭州市房租租金走势',
                     subtext: '数据来源: 安居客',
                     x: 'center',
                     sublink: 'https://hz.anjuke.com'
@@ -467,8 +467,8 @@
                     }
                   }],
                   dataZoom: [{
-                    startValue: '2019-03-01',
-                    endValue: '2019-04-01'
+                    startValue: '2019-03-17',
+                    endValue: '2019-05-01'
                   }, {
                     type: 'inside'
                   }],
@@ -514,7 +514,7 @@
                 console.log('太原租金走势:',response.data);
                 this.tyTrendChart.setOption({
                   title: {
-                    text: '太原市3月份房租租金走势',
+                    text: '太原市房租租金走势',
                     subtext: '数据来源: 安居客',
                     x: 'center',
                     sublink: 'https://ty.anjuke.com'
@@ -540,7 +540,7 @@
                   }],
                   dataZoom: [{
                     startValue: '2019-03-01',
-                    endValue: '2019-04-01'
+                    endValue: '2019-05-01'
                   }, {
                     type: 'inside'
                   }],

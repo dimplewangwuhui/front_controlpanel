@@ -279,13 +279,22 @@
           this.$confirm('是否执行删除操作?', '提示',{
             type: 'warning'
           }).then(() => {
+            this.loading = true;
             api.notice_remove(row).then(res => {
-              this.$message.success('删除成功!');
-              this.getNotice();
+              if(res.code === 'success'){
+                this.$message.success(res.msg);
+                this.loading = false;
+                this.getNotice();
+              }else {
+                this.loading = false;
+                this.$message.error(res.msg)
+              }
             }).catch((res) => {
+              this.loading = false;
               this.$message.error('删除失败!');
             });
           }).catch(() => {
+            this.loading = false;
             this.$message.info('已取消操作!');
           });
         }
@@ -298,22 +307,31 @@
         if(sessionStorage.getItem('ms_username') === 'admin'){
           let ids= this.multipleSelection.map(item => item.id);
           console.log(ids);
-          if (ids.length == 0){
+          if (ids.length === 0){
             this.$message({message: '请选择要删除的项',type: "warning"});
             return;
           }
           this.$confirm('确认删除选中的记录吗？', '提示', {
             type: 'warning'
           }).then(() => {
+            this.loading = true;
             api.notice_removes(ids)
               .then((response) => {
-                this.$message({message: '删除成功', type: 'success'});
-                this.getNotice();
+                if(response.code === 'success'){
+                  this.$message.success(response.msg);
+                  this.loading = false;
+                  this.getNotice();
+                }else {
+                  this.$message.error(response.msg);
+                  this.loading = false;
+                }
               }).catch((err)=>{
               this.$message({message: '执行失败，请重试',type: "error"});
+              this.loading = false;
               console.log(err)
             });
           }).catch(() => {
+            this.loading = false;
             this.$message({type: 'info',message: '删除失败'});
           });
         }
